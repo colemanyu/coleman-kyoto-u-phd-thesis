@@ -1,0 +1,2 @@
+- This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).
+    - From [佐藤竜馬（さとう りょうま）'s website](https://joisino.net/).
