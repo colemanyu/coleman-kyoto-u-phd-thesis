@@ -1,0 +1,1174 @@
+\begin{thebibliography}{100}
+
+\bibitem{abadi2016deep}
+Mart{\'{\i}}n Abadi, Andy Chu, Ian~J. Goodfellow, H.~Brendan McMahan, Ilya Mironov, Kunal Talwar, and Li~Zhang.
+\newblock Deep learning with differential privacy.
+\newblock In {\em Proceedings of the 2016 {ACM} {SIGSAC} Conference on Computer and Communications Security}, pages 308--318, 2016.
+
+\bibitem{acar2018survey}
+Abbas Acar, Hidayet Aksu, A.~Selcuk Uluagac, and Mauro Conti.
+\newblock A survey on homomorphic encryption schemes: Theory and implementation.
+\newblock {\em {ACM} Comput. Surv.}, 51(4):79:1--79:35, 2018.
+
+\bibitem{agarwal2007generalized}
+Sameer Agarwal, Josh Wills, Lawrence Cayton, Gert R.~G. Lanckriet, David~J. Kriegman, and Serge~J. Belongie.
+\newblock Generalized non-metric multidimensional scaling.
+\newblock In {\em Proceedings of the 11th International Conference on Artificial Intelligence and Statistics, {AISTATS}}, pages 11--18, 2007.
+
+\bibitem{akcay2018ganomaly}
+Samet Akcay, Amir~Atapour Abarghouei, and Toby~P. Breckon.
+\newblock Ganomaly: Semi-supervised anomaly detection via adversarial training.
+\newblock In {\em Proceedings of the 14th Asian Conference on Computer Vision, {ACCV}}, volume 11363, pages 622--637, 2018.
+
+\bibitem{alamgir2012shortest}
+Morteza Alamgir and Ulrike von Luxburg.
+\newblock Shortest path distance in random k-nearest neighbor graphs.
+\newblock In {\em Proceedings of the 29th International Conference on Machine Learning, {ICML}}, 2012.
+
+\bibitem{alon2013from}
+Noga Alon, Nicol{\`{o}} Cesa{-}Bianchi, Claudio Gentile, and Yishay Mansour.
+\newblock From bandits to experts: {A} tale of domination and independence.
+\newblock In {\em Advances in Neural Information Processing Systems 26: Annual Conference on Neural Information Processing Systems 2013, {NeurIPS}}, pages 1610--1618, 2013.
+
+\bibitem{andrew2021differentially}
+Galen Andrew, Om~Thakkar, Brendan McMahan, and Swaroop Ramaswamy.
+\newblock Differentially private learning with adaptive clipping.
+\newblock In {\em Advances in Neural Information Processing Systems 34: Annual Conference on Neural Information Processing Systems 2021, NeurIPS}, pages 17455--17466, 2021.
+
+\bibitem{theotokis2004survey}
+Stephanos Androutsellis{-}Theotokis and Diomidis Spinellis.
+\newblock A survey of peer-to-peer content distribution technologies.
+\newblock {\em {ACM} Comput. Surv.}, 36(4):335--371, 2004.
+
+\bibitem{angluin1987queries}
+Dana Angluin.
+\newblock Queries and concept learning.
+\newblock {\em Mach. Learn.}, 2(4):319--342, 1987.
+
+\bibitem{arora2017simple}
+Sanjeev Arora, Yingyu Liang, and Tengyu Ma.
+\newblock A simple but tough-to-beat baseline for sentence embeddings.
+\newblock In {\em Proceedings of the 5th International Conference on Learning Representations, {ICLR}}, 2017.
+
+\bibitem{ash2020deep}
+Jordan~T. Ash, Chicheng Zhang, Akshay Krishnamurthy, John Langford, and Alekh Agarwal.
+\newblock Deep batch active learning by diverse, uncertain gradient lower bounds.
+\newblock In {\em Proceedings of the 8th International Conference on Learning Representations, {ICLR}}, 2020.
+
+\bibitem{atlas1989training}
+Les~E. Atlas, David~A. Cohn, and Richard~E. Ladner.
+\newblock Training connectionist networks with queries and selective sampling.
+\newblock In {\em Advances in Neural Information Processing Systems 2: Annual Conference on Neural Information Processing Systems 1989, {NeurIPS}}, pages 566--573, 1989.
+
+\bibitem{attenberg2011online}
+Josh Attenberg and Foster~J. Provost.
+\newblock Online active inference and learning.
+\newblock In {\em Proceedings of the 17th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 186--194, 2011.
+
+\bibitem{auer2002using}
+Peter Auer.
+\newblock Using confidence bounds for exploitation-exploration trade-offs.
+\newblock {\em J. Mach. Learn. Res.}, 3:397--422, 2002.
+
+\bibitem{auer2002finite}
+Peter Auer, Nicol{\`{o}} Cesa{-}Bianchi, and Paul Fischer.
+\newblock Finite-time analysis of the multiarmed bandit problem.
+\newblock {\em Mach. Learn.}, 47(2-3):235--256, 2002.
+
+\bibitem{babenko2015aggregating}
+Artem Babenko and Victor~S. Lempitsky.
+\newblock Aggregating local deep features for image retrieval.
+\newblock In {\em Proceedings of the 2015 {IEEE} International Conference on Computer Vision, {ICCV}}, pages 1269--1277, 2015.
+
+\bibitem{baevski2020wav2vec}
+Alexei Baevski, Yuhao Zhou, Abdelrahman Mohamed, and Michael Auli.
+\newblock wav2vec 2.0: {A} framework for self-supervised learning of speech representations.
+\newblock In {\em Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Processing Systems 2020, {NeurIPS}}, 2020.
+
+\bibitem{baezayates2005crawling}
+Ricardo~A. Baeza{-}Yates, Carlos Castillo, Mauricio Mar{\'{\i}}n, and M.~Andrea Rodr{\'{\i}}guez.
+\newblock Crawling a country: better strategies than breadth-first for web page ordering.
+\newblock In {\em Proceedings of the Web Conference 2005, {WWW}}, pages 864--872, 2005.
+
+\bibitem{bahdanau2015neural}
+Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio.
+\newblock Neural machine translation by jointly learning to align and translate.
+\newblock In {\em Proceedings of the 3rd International Conference on Learning Representations, {ICLR}}, 2015.
+
+\bibitem{baker1975relativizations}
+Theodore Baker, John Gill, and Robert Solovay.
+\newblock Relativizations of the p=?np question.
+\newblock {\em SIAM Journal on computing}, 4(4):431--442, 1975.
+
+\bibitem{balog2019transparent}
+Krisztian Balog, Filip Radlinski, and Shushan Arakelyan.
+\newblock Transparent, scrutable and explainable user models for personalized recommendation.
+\newblock In {\em Proceedings of the 42nd Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 265--274, 2019.
+
+\bibitem{baptista2018baysian}
+Ricardo Baptista and Matthias Poloczek.
+\newblock Bayesian optimization of combinatorial structures.
+\newblock In {\em Proceedings of the 37th International Conference on Machine Learning, {ICML}}, pages 471--480, 2018.
+
+\bibitem{barbosa2007adaptive}
+Luciano Barbosa and Juliana Freire.
+\newblock An adaptive crawler for locating hidden-web entry points.
+\newblock In {\em Proceedings of the Web Conference 2007, {WWW}}, pages 441--450, 2007.
+
+\bibitem{barkan2016item2vec}
+Oren Barkan and Noam Koenigstein.
+\newblock {ITEM2VEC:} neural item embedding for collaborative filtering.
+\newblock In {\em Proceedings of the 26th {IEEE} International Workshop on Machine Learning for Signal Processing, {MLSP}}, pages 1--6, 2016.
+
+\bibitem{baumer2000privacy}
+David~L. Baumer, Julia~Brande Earp, and Fay~Cobb Payton.
+\newblock Privacy of medical records: {IT} implications of {HIPAA}.
+\newblock {\em {SIGCAS} Comput. Soc.}, 30(4):40--47, 2000.
+
+\bibitem{belkin2003laplacian}
+Mikhail Belkin and Partha Niyogi.
+\newblock Laplacian eigenmaps for dimensionality reduction and data representation.
+\newblock {\em Neural Comput.}, 15(6):1373--1396, 2003.
+
+\bibitem{bell2015learning}
+Sean Bell and Kavita Bala.
+\newblock Learning visual similarity for product design with convolutional neural networks.
+\newblock {\em {ACM} Trans. Graph.}, 34(4):98:1--98:10, 2015.
+
+\bibitem{beluch2018power}
+William~H. Beluch, Tim Genewein, Andreas N{\"{u}}rnberger, and Jan~M. K{\"{o}}hler.
+\newblock The power of ensembles for active learning in image classification.
+\newblock In {\em Proceedings of the 2018 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 9368--9377, 2018.
+
+\bibitem{bertsimas2004solving}
+Dimitris Bertsimas and Santosh~S. Vempala.
+\newblock Solving convex programs by random walks.
+\newblock {\em J. {ACM}}, 51(4):540--556, 2004.
+
+\bibitem{beutel2019fairness}
+Alex Beutel, Jilin Chen, Tulsee Doshi, Hai Qian, Li~Wei, Yi~Wu, Lukasz Heldt, Zhe Zhao, Lichan Hong, Ed~H. Chi, and Cristos Goodrow.
+\newblock Fairness in recommendation ranking through pairwise comparisons.
+\newblock In {\em Proceedings of the 25th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 2212--2220, 2019.
+
+\bibitem{biega2018equity}
+Asia~J. Biega, Krishna~P. Gummadi, and Gerhard Weikum.
+\newblock Equity of attention: Amortizing individual fairness in rankings.
+\newblock In {\em Proceedings of the 41st Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 405--414, 2018.
+
+\bibitem{blatt2020secure}
+Marcelo Blatt, Alexander Gusev, Yuriy Polyakov, and Shafi Goldwasser.
+\newblock Secure large-scale genome-wide association studies using homomorphic encryption.
+\newblock {\em Proceedings of the National Academy of Sciences}, 117(21):11608--11613, 2020.
+
+\bibitem{bo2021er}
+Haohan Bo, Steven H.~H. Ding, Benjamin C.~M. Fung, and Farkhund Iqbal.
+\newblock {ER-AE:} differentially private text generation for authorship anonymization.
+\newblock In {\em Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, {NAACL-HLT}}, pages 3997--4007, 2021.
+
+\bibitem{bra1994information}
+Paul~De Bra and R.~D.~J. Post.
+\newblock Information retrieval in the world-wide web: Making client-based searching feasible.
+\newblock {\em Comput. Networks {ISDN} Syst.}, 27(2):183--192, 1994.
+
+\bibitem{brynjolfsson2019does}
+Erik Brynjolfsson, Xiang Hui, and Meng Liu.
+\newblock Does machine translation affect international trade? evidence from a large digital platform.
+\newblock {\em Manag. Sci.}, 65(12):5449--5460, 2019.
+
+\bibitem{bruke2017mltisided}
+Robin Burke.
+\newblock Multisided fairness for recommendation.
+\newblock In {\em The 4th Workshop on Fairness, Accountability, and Transparency in Machine Learning, {FAT/ML}}, 2017.
+
+\bibitem{buterin2013ethereum}
+Vitalik Buterin.
+\newblock Ethereum white paper, 2013.
+
+\bibitem{cano2006topology}
+Pedro Cano, Oscar Celma, Markus Koppenberger, and Javier~M Buldu.
+\newblock Topology of music recommendation networks.
+\newblock {\em Chaos: An interdisciplinary journal of nonlinear science}, 16(1):013107, 2006.
+
+\bibitem{cao2016deep}
+Yue Cao, Mingsheng Long, Jianmin Wang, Qiang Yang, and Philip~S. Yu.
+\newblock Deep visual-semantic hashing for cross-modal retrieval.
+\newblock In {\em Proceedings of the 22nd {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 1445--1454, 2016.
+
+\bibitem{carpentier2014extreme}
+Alexandra Carpentier and Michal Valko.
+\newblock Extreme bandits.
+\newblock In {\em Advances in Neural Information Processing Systems 27: Annual Conference on Neural Information Processing Systems 2014, {NeurIPS}}, pages 1089--1097, 2014.
+
+\bibitem{castelo2021auctus}
+Sonia Castelo, R{\'{e}}mi Rampin, A{\'{e}}cio S.~R. Santos, Aline Bessa, Fernando Chirigati, and Juliana Freire.
+\newblock Auctus: {A} dataset search engine for data discovery and augmentation.
+\newblock {\em Proc. {VLDB} Endow.}, 14(12):2791--2794, 2021.
+
+\bibitem{castillo2005effective}
+Carlos Castillo.
+\newblock Effective web crawling.
+\newblock {\em {SIGIR} Forum}, 39(1):55--56, 2005.
+
+\bibitem{celma2008new}
+{\`{O}}scar Celma and Perfecto Herrera.
+\newblock A new approach to evaluating novel recommendations.
+\newblock In {\em Proceedings of the 2008 {ACM} Conference on Recommender Systems, {RecSys}}, pages 179--186, 2008.
+
+\bibitem{chakrabarti1999focused}
+Soumen Chakrabarti, Martin van~den Berg, and Byron Dom.
+\newblock Focused crawling: {A} new approach to topic-specific web resource discovery.
+\newblock {\em Comput. Networks}, 31(11-16):1623--1640, 1999.
+
+\bibitem{chen2016mitosis}
+Hao Chen, Qi~Dou, Xi~Wang, Jing Qin, and Pheng{-}Ann Heng.
+\newblock Mitosis detection in breast cancer histology images via deep cascaded networks.
+\newblock In {\em Proceedings of the 30th {AAAI} Conference on Artificial Intelligence, {AAAI}}, pages 1160--1166, 2016.
+
+\bibitem{chen1998smart}
+Hsinchun Chen, Yi{-}Ming Chung, Marshall Ramsey, and Christopher~C. Yang.
+\newblock A smart itsy bitsy spider for the web.
+\newblock {\em J. Am. Soc. Inf. Sci.}, 49(7):604--618, 1998.
+
+\bibitem{cheng2009sketch}
+Tao Chen, Ming{-}Ming Cheng, Ping Tan, Ariel Shamir, and Shi{-}Min Hu.
+\newblock Sketch2photo: internet image montage.
+\newblock {\em {ACM} Trans. Graph.}, 28(5):124, 2009.
+
+\bibitem{chen2020simple}
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey~E. Hinton.
+\newblock A simple framework for contrastive learning of visual representations.
+\newblock In {\em Proceedings of the 37th International Conference on Machine Learning, {ICML}}, pages 1597--1607, 2020.
+
+\bibitem{cho2003effective}
+Junghoo Cho and Hector Garcia{-}Molina.
+\newblock Effective page refresh policies for web crawlers.
+\newblock {\em {ACM} Trans. Database Syst.}, 28(4):390--426, 2003.
+
+\bibitem{cho1998efficient}
+Junghoo Cho, Hector Garcia{-}Molina, and Lawrence Page.
+\newblock Efficient crawling through {URL} ordering.
+\newblock {\em Comput. Networks}, 30(1-7):161--172, 1998.
+
+\bibitem{christakopoulou2016towards}
+Konstantina Christakopoulou, Filip Radlinski, and Katja Hofmann.
+\newblock Towards conversational recommender systems.
+\newblock In {\em Proceedings of the 22nd {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 815--824, 2016.
+
+\bibitem{cicirello2005max}
+Vincent~A. Cicirello and Stephen~F. Smith.
+\newblock The max \emph{K-}armed bandit: {A} new model of exploration applied to search heuristic selection.
+\newblock In {\em Proceedings of the 20th {AAAI} Conference on Artificial Intelligence, {AAAI}}, pages 1355--1361, 2005.
+
+\bibitem{cimpoi2015deep}
+Mircea Cimpoi, Subhransu Maji, and Andrea Vedaldi.
+\newblock Deep filter banks for texture recognition and segmentation.
+\newblock In {\em Proceedings of the 2015 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 3828--3836, 2015.
+
+\bibitem{citovsky2021batch}
+Gui Citovsky, Giulia DeSalvo, Claudio Gentile, Lazaros Karydas, Anand Rajagopalan, Afshin Rostamizadeh, and Sanjiv Kumar.
+\newblock Batch active learning at scale.
+\newblock In {\em Advances in Neural Information Processing Systems 34: Annual Conference on Neural Information Processing Systems 2021, {NeurIPS}}, pages 11933--11944, 2021.
+
+\bibitem{corbett2017algorithmic}
+Sam Corbett{-}Davies, Emma Pierson, Avi Feller, Sharad Goel, and Aziz Huq.
+\newblock Algorithmic decision making and the cost of fairness.
+\newblock In {\em Proceedings of the 23rd {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 797--806, 2017.
+
+\bibitem{cryptomator}
+Cryptomator.
+\newblock Cryptomator.
+\newblock \url{https://cryptomator.org/}.
+\newblock Accessed: 2023-11-28.
+
+\bibitem{deepl}
+DeepL.
+\newblock Deepl.
+\newblock \url{https://deepl.com/}.
+\newblock Accessed: 2023-12-07.
+
+\bibitem{desautels2012parallelizing}
+Thomas Desautels, Andreas Krause, and Joel~W. Burdick.
+\newblock Parallelizing exploration-exploitation tradeoffs with gaussian process bandit optimization.
+\newblock In {\em Proceedings of the 29th International Conference on Machine Learning, {ICML}}, 2012.
+
+\bibitem{devlin2019bert}
+Jacob Devlin, Ming{-}Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock {BERT:} pre-training of deep bidirectional transformers for language understanding.
+\newblock In {\em Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, {NAACL-HLT}}, pages 4171--4186, 2019.
+
+\bibitem{dhariwal2021diffusion}
+Prafulla Dhariwal and Alexander~Quinn Nichol.
+\newblock Diffusion models beat gans on image synthesis.
+\newblock In {\em Advances in Neural Information Processing Systems 34: Annual Conference on Neural Information Processing Systems 2021, {NeurIPS}}, pages 8780--8794, 2021.
+
+\bibitem{diligenti2000focused}
+Michelangelo Diligenti, Frans Coetzee, Steve Lawrence, C.~Lee Giles, and Marco Gori.
+\newblock Focused crawling using context graphs.
+\newblock In {\em Proceedings of 26th International Conference on Very Large Data Bases, {VLDB}}, pages 527--534, 2000.
+
+\bibitem{du2018breast}
+Baolin Du, Qi~Qi, Han Zheng, Yue Huang, and Xinghao Ding.
+\newblock Breast cancer histopathological image classification via deep active learning and confidence boosting.
+\newblock In {\em Proceedings of the 27th International Conference on Artificial Neural Networks, {ICANN}}, volume 11140, pages 109--116, 2018.
+
+\bibitem{dua2017uci}
+Dheeru Dua and Casey Graff.
+\newblock {UCI} machine learning repository, 2017.
+
+\bibitem{dwork2006differential}
+Cynthia Dwork.
+\newblock Differential privacy.
+\newblock In {\em Proceedings of the 33rd International Colloquium on Automata, Languages and Programming, {ICALP}}, volume 4052 of {\em Lecture Notes in Computer Science}, pages 1--12, 2006.
+
+\bibitem{ekstrand2018exploring}
+Michael~D. Ekstrand, Mucun Tian, Mohammed R.~Imran Kazi, Hoda Mehrpouyan, and Daniel Kluver.
+\newblock Exploring author gender in book rating and recommendation.
+\newblock In {\em Proceedings of the 2018 {ACM} Conference on Recommender Systems, {RecSys}}, pages 242--250, 2018.
+
+\bibitem{erhan2009visualizing}
+Dumitru Erhan, Yoshua Bengio, Aaron Courville, and Pascal Vincent.
+\newblock Visualizing higher-layer features of a deep network.
+\newblock {\em University of Montreal}, 1341(3):1, 2009.
+
+\bibitem{fang2017learning}
+Meng Fang, Yuan Li, and Trevor Cohn.
+\newblock Learning how to active learn: {A} deep reinforcement learning approach.
+\newblock In {\em Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, {EMNLP}}, pages 595--605, 2017.
+
+\bibitem{feldman2015certifying}
+Michael Feldman, Sorelle~A. Friedler, John Moeller, Carlos Scheidegger, and Suresh Venkatasubramanian.
+\newblock Certifying and removing disparate impact.
+\newblock In {\em Proceedings of the 21st {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 259--268, 2015.
+
+\bibitem{feyisetan2020privacy}
+Oluwaseyi Feyisetan, Borja Balle, Thomas Drake, and Tom Diethe.
+\newblock Privacy- and utility-preserving textual analysis via calibrated multivariate perturbations.
+\newblock In {\em Proceedings of the 13th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, pages 178--186, 2020.
+
+\bibitem{feyistein2019leveraging}
+Oluwaseyi Feyisetan, Tom Diethe, and Thomas Drake.
+\newblock Leveraging hierarchical representations for preserving privacy and utility in text.
+\newblock In {\em Proceedings of the 2019 {IEEE} International Conference on Data Mining, {ICDM}}, pages 210--219, 2019.
+
+\bibitem{finn2017model}
+Chelsea Finn, Pieter Abbeel, and Sergey Levine.
+\newblock Model-agnostic meta-learning for fast adaptation of deep networks.
+\newblock In {\em Proceedings of the 34th International Conference on Machine Learning, {ICML}}, pages 1126--1135, 2017.
+
+\bibitem{fu2020fairness}
+Zuohui Fu, Yikun Xian, Ruoyuan Gao, Jieyu Zhao, Qiaoying Huang, Yingqiang Ge, Shuyuan Xu, Shijie Geng, Chirag Shah, Yongfeng Zhang, and Gerard de~Melo.
+\newblock Fairness-aware explainable recommendation over knowledge graphs.
+\newblock In {\em Proceedings of the 43rd Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 69--78, 2020.
+
+\bibitem{gal2017deep}
+Yarin Gal, Riashat Islam, and Zoubin Ghahramani.
+\newblock Deep bayesian active learning with image data.
+\newblock In {\em Proceedings of the 34th International Conference on Machine Learning, {ICML}}, pages 1183--1192, 2017.
+
+\bibitem{gatys2016image}
+Leon~A. Gatys, Alexander~S. Ecker, and Matthias Bethge.
+\newblock Image style transfer using convolutional neural networks.
+\newblock In {\em Proceedings of the 2016 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 2414--2423, 2016.
+
+\bibitem{geirhos2021partial}
+Robert Geirhos, Kantharaju Narayanappa, Benjamin Mitzkus, Tizian Thieringer, Matthias Bethge, Felix~A. Wichmann, and Wieland Brendel.
+\newblock Partial success in closing the gap between human and machine vision.
+\newblock In {\em Advances in Neural Information Processing Systems 34: Annual Conference on Neural Information Processing Systems 2021, {NeurIPS}}, pages 23885--23899, 2021.
+
+\bibitem{gentry2009fully}
+Craig Gentry.
+\newblock Fully homomorphic encryption using ideal lattices.
+\newblock In {\em Proceedings of the 41st Annual {ACM} Symposium on Theory of Computing, {STOC}}, pages 169--178, 2009.
+
+\bibitem{geyik2019fairness}
+Sahin~Cem Geyik, Stuart Ambler, and Krishnaram Kenthapadi.
+\newblock Fairness-aware ranking in search {\&} recommendation systems with application to linkedin talent search.
+\newblock In {\em Proceedings of the 25th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 2221--2231, 2019.
+
+\bibitem{geyik2018building}
+Sahin~Cem Geyik and Krishnaram Kenthapadi.
+\newblock Building representative talent search at {LinkedIn}, 2018.
+
+\bibitem{bachrach2016cryptonets}
+Ran Gilad{-}Bachrach, Nathan Dowlin, Kim Laine, Kristin~E. Lauter, Michael Naehrig, and John Wernsing.
+\newblock Cryptonets: Applying neural networks to encrypted data with high throughput and accuracy.
+\newblock In {\em Proceedings of the 33nd International Conference on Machine Learning, {ICML}}, pages 201--210, 2016.
+
+\bibitem{goodfellow2015explaining}
+Ian~J. Goodfellow, Jonathon Shlens, and Christian Szegedy.
+\newblock Explaining and harnessing adversarial examples.
+\newblock In {\em Proceedings of the 3rd International Conference on Learning Representations, {ICLR}}, 2015.
+
+\bibitem{googletranslate}
+Google.
+\newblock Google translate.
+\newblock \url{https://translate.google.com/}.
+\newblock Accessed: 2023-12-07.
+
+\bibitem{gordo2016deep}
+Albert Gordo, Jon Almaz{\'{a}}n, J{\'{e}}r{\^{o}}me Revaud, and Diane Larlus.
+\newblock Deep image retrieval: Learning global representations for image search.
+\newblock In {\em Proceedings of the 14th European Conference, Amsterdam, The Netherlands, {ECCV}}, pages 241--257, 2016.
+
+\bibitem{green2009generating}
+Stephen~J. Green, Paul Lamere, Jeffrey Alexander, Fran{\c{c}}ois Maillet, Susanna Kirk, Jessica Holt, Jackie Bourque, and Xiao{-}Wen Mak.
+\newblock Generating transparent, steerable recommendations from textual descriptions of items.
+\newblock In {\em Proceedings of the 2009 {ACM} Conference on Recommender Systems, {RecSys}}, pages 281--284, 2009.
+
+\bibitem{guan2008guide}
+Ziyu Guan, Can Wang, Chun Chen, Jiajun Bu, and Junfeng Wang.
+\newblock Guide focused crawler efficiently and effectively using on-line topical importance estimation.
+\newblock In {\em Proceedings of the 31st Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 757--758, 2008.
+
+\bibitem{hardt2016equality}
+Moritz Hardt, Eric Price, and Nati Srebro.
+\newblock Equality of opportunity in supervised learning.
+\newblock In {\em Advances in Neural Information Processing Systems 29: Annual Conference on Neural Information Processing Systems 2016, {NeurIPS}}, pages 3315--3323, 2016.
+
+\bibitem{harper2016movielens}
+F.~Maxwell Harper and Joseph~A. Konstan.
+\newblock The movielens datasets: History and context.
+\newblock {\em {ACM} Trans. Interact. Intell. Syst.}, 5(4):19:1--19:19, 2016.
+
+\bibitem{hashimoto2015metric}
+Tatsunori~B. Hashimoto, Yi~Sun, and Tommi~S. Jaakkola.
+\newblock Metric recovery from directed unweighted graphs.
+\newblock In {\em Proceedings of the 18th International Conference on Artificial Intelligence and Statistics, {AISTATS}}, 2015.
+
+\bibitem{haussmann2019deep}
+Manuel Hau{\ss}mann, Fred~A. Hamprecht, and Melih Kandemir.
+\newblock Deep active learning with adaptive acquisition.
+\newblock In {\em Proceedings of the 28th International Joint Conference on Artificial Intelligence, {IJCAI}}, pages 2470--2476, 2019.
+
+\bibitem{he2020momentum}
+Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross~B. Girshick.
+\newblock Momentum contrast for unsupervised visual representation learning.
+\newblock In {\em Proceedings of the 2020 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 9726--9735, 2020.
+
+\bibitem{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em Proceedings of the 2016 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 770--778, 2016.
+
+\bibitem{he2016ups}
+Ruining He and Julian~J. McAuley.
+\newblock Ups and downs: Modeling the visual evolution of fashion trends with one-class collaborative filtering.
+\newblock In {\em Proceedings of the Web Conference 2016, {WWW}}, pages 507--517, 2016.
+
+\bibitem{he2017neural}
+Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu, and Tat{-}Seng Chua.
+\newblock Neural collaborative filtering.
+\newblock In {\em Proceedings of the Web Conference 2017, {WWW}}, pages 173--182, 2017.
+
+\bibitem{hestness2017deep}
+Joel Hestness, Sharan Narang, Newsha Ardalani, Gregory~F. Diamos, Heewoo Jun, Hassan Kianinejad, Md. Mostofa~Ali Patwary, Yang Yang, and Yanqi Zhou.
+\newblock Deep learning scaling is predictable, empirically.
+\newblock {\em arXiv}, abs/1712.00409, 2017.
+
+\bibitem{hill2016goldilocks}
+Felix Hill, Antoine Bordes, Sumit Chopra, and Jason Weston.
+\newblock The goldilocks principle: Reading children's books with explicit memory representations.
+\newblock In {\em Proceedings of the 4th International Conference on Learning Representations, {ICLR}}, 2016.
+
+\bibitem{hoi2006batch}
+Steven C.~H. Hoi, Rong Jin, Jianke Zhu, and Michael~R. Lyu.
+\newblock Batch mode active learning and its application to medical image classification.
+\newblock In {\em Proceedings of the 23rd International Conference on Machine Learning, {ICML}}, pages 417--424, 2006.
+
+\bibitem{holub2008entropy}
+Alex Holub, Pietro Perona, and Michael~C. Burl.
+\newblock Entropy-based active learning for object recognition.
+\newblock In {\em The 2008 {IEEE} Conference on Computer Vision and Pattern Recognition workshops, {CVPR} Workshops}, pages 1--8, 2008.
+
+\bibitem{jeh2003scaling}
+Glen Jeh and Jennifer Widom.
+\newblock Scaling personalized web search.
+\newblock In {\em Proceedings of the Web Conference 2003, {WWW}}, pages 271--279, 2003.
+
+\bibitem{jiao2023chatgpt}
+Wenxiang Jiao, Wenxuan Wang, Jen{-}tse Huang, Xing Wang, and Zhaopeng Tu.
+\newblock Is chatgpt {A} good translator? {A} preliminary study.
+\newblock {\em arXiv}, abs/2301.08745, 2023.
+
+\bibitem{johnson2019billion}
+Jeff Johnson, Matthijs Douze, and Herv{\'{e}} J{\'{e}}gou.
+\newblock Billion-scale similarity search with gpus.
+\newblock {\em {IEEE} Trans. Big Data}, 7(3):535--547, 2021.
+
+\bibitem{johnson2003evolving}
+Judy Johnson, Kostas Tsioutsiouliklis, and C.~Lee Giles.
+\newblock Evolving strategies for focused web crawling.
+\newblock In {\em Proceedings of the 20th International Conference on Machine Learning, {ICML}}, pages 298--305, 2003.
+
+\bibitem{joshi2009multi}
+Ajay~J. Joshi, Fatih Porikli, and Nikolaos Papanikolopoulos.
+\newblock Multi-class active learning for image classification.
+\newblock In {\em Proceedings of the 2009 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 2372--2379, 2009.
+
+\bibitem{kamishima2012enhancement}
+Toshihiro Kamishima, Shotaro Akaho, Hideki Asoh, and Jun Sakuma.
+\newblock Enhancement of the neutrality in recommendation.
+\newblock In {\em Proceedings of the 2nd Workshop on Human Decision Making in Recommender Systems}, volume 893, pages 8--14, 2012.
+
+\bibitem{kamishima2012fairness}
+Toshihiro Kamishima, Shotaro Akaho, Hideki Asoh, and Jun Sakuma.
+\newblock Fairness-aware classifier with prejudice remover regularizer.
+\newblock In {\em Proceedings of the European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases, {ECML} {PKDD}}, volume 7524, pages 35--50, 2012.
+
+\bibitem{kaplan2020scaling}
+Jared Kaplan, Sam McCandlish, Tom Henighan, Tom~B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei.
+\newblock Scaling laws for neural language models.
+\newblock {\em arXiv}, abs/2001.08361, 2020.
+
+\bibitem{kato2008can}
+Makoto~P. Kato, Hiroaki Ohshima, Satoshi Oyama, and Katsumi Tanaka.
+\newblock Can social tagging improve web image search?
+\newblock In {\em Proceedings of the 9th International Conference on Web Information Systems Engineering, {WISE}}, pages 235--249, 2008.
+
+\bibitem{kirsch2019batchbald}
+Andreas Kirsch, Joost van Amersfoort, and Yarin Gal.
+\newblock Batchbald: Efficient and diverse batch acquisition for deep bayesian active learning.
+\newblock In {\em Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, {NeurIPS}}, pages 7024--7035, 2019.
+
+\bibitem{kleindessner2015dimensionality}
+Matth{\"{a}}us Kleindessner and Ulrike von Luxburg.
+\newblock Dimensionality estimation without distances.
+\newblock In {\em Proceedings of the 18th International Conference on Artificial Intelligence and Statistics, {AISTATS}}, 2015.
+
+\bibitem{kocak2014efficient}
+Tom{\'{a}}{\v{s}} Koc{\'{a}}k, Gergely Neu, Michal Valko, and R{\'{e}}mi Munos.
+\newblock Efficient learning by implicit exploration in bandit problems with side observations.
+\newblock In {\em Advances in Neural Information Processing Systems 27: Annual Conference on Neural Information Processing Systems 2014, {NeurIPS}}, pages 613--621, 2014.
+
+\bibitem{kocisky2018narrativeqa}
+Tom{\'{a}}s Kocisk{\'{y}}, Jonathan Schwarz, Phil Blunsom, Chris Dyer, Karl~Moritz Hermann, G{\'{a}}bor Melis, and Edward Grefenstette.
+\newblock The narrativeqa reading comprehension challenge.
+\newblock {\em Trans. Assoc. Comput. Linguistics}, 6:317--328, 2018.
+
+\bibitem{kordan2018deep}
+Saeid~Balaneshin Kordan and Alexander Kotov.
+\newblock Deep neural architecture for multi-modal retrieval based on joint embedding space for text and images.
+\newblock In {\em Proceedings of the 11th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, pages 28--36, 2018.
+
+\bibitem{koren2009matrix}
+Yehuda Koren, Robert~M. Bell, and Chris Volinsky.
+\newblock Matrix factorization techniques for recommender systems.
+\newblock {\em Computer}, 42(8):30--37, 2009.
+
+\bibitem{krichene2020sampled}
+Walid Krichene and Steffen Rendle.
+\newblock On sampled metrics for item recommendation.
+\newblock In {\em Proceedings of the 26th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 1748--1757, 2020.
+
+\bibitem{krishnamurthy2016contextual}
+Akshay Krishnamurthy, Alekh Agarwal, and Miroslav Dud{\'{\i}}k.
+\newblock Contextual semibandits via supervised learning oracles.
+\newblock In {\em Advances in Neural Information Processing Systems 29: Annual Conference on Neural Information Processing Systems 2016, {NeurIPS}}, pages 2388--2396, 2016.
+
+\bibitem{krizhevsky2012imagenet}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E. Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In {\em Advances in Neural Information Processing Systems 25: Annual Conference on Neural Information Processing Systems 2012, {NeurIPS}}, pages 1106--1114, 2012.
+
+\bibitem{kruskal1964multidimensional}
+Joseph~B Kruskal.
+\newblock Multidimensional scaling by optimizing goodness of fit to a nonmetric hypothesis.
+\newblock {\em Psychometrika}, 29(1):1--27, 1964.
+
+\bibitem{OpenImages}
+Alina Kuznetsova, Hassan Rom, Neil Alldrin, Jasper Uijlings, Ivan Krasin, Jordi Pont-Tuset, Shahab Kamali, Stefan Popov, Matteo Malloci, Alexander Kolesnikov, Tom Duerig, and Vittorio Ferrari.
+\newblock The open images dataset v4: Unified image classification, object detection, and visual relationship detection at scale.
+\newblock {\em Int. J. Comput. Vis.}, 128(7):1956--1981, 2020.
+
+\bibitem{kuznetsova2020open}
+Alina Kuznetsova, Hassan Rom, Neil Alldrin, Jasper R.~R. Uijlings, Ivan Krasin, Jordi Pont{-}Tuset, Shahab Kamali, Stefan Popov, Matteo Malloci, Alexander Kolesnikov, Tom Duerig, and Vittorio Ferrari.
+\newblock The open images dataset {V4}.
+\newblock {\em Int. J. Comput. Vis.}, 128(7):1956--1981, 2020.
+
+\bibitem{lai2015simultaneous}
+Hanjiang Lai, Yan Pan, Ye~Liu, and Shuicheng Yan.
+\newblock Simultaneous feature learning and hash coding with deep neural networks.
+\newblock In {\em Proceedings of the 2015 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 3270--3278, 2015.
+
+\bibitem{lamprecht2015improving}
+Daniel Lamprecht, Florian Geigl, Tomas Karas, Simon Walk, Denis Helic, and Markus Strohmaier.
+\newblock Improving recommender system navigability through diversification: a case study of imdb.
+\newblock In {\em Proceedings of the 15th International Conference on Knowledge Technologies and Data-driven Business, {I-KNOW}}, pages 21:1--21:8, 2015.
+
+\bibitem{lane2010balancing}
+Julia Lane and Claudia Schur.
+\newblock Balancing access to health data and privacy: a review of the issues and approaches for the future.
+\newblock {\em Health services research}, 45(5p2):1456--1467, 2010.
+
+\bibitem{lattimore2020bandit}
+Tor Lattimore and Csaba Szepesv{\'a}ri.
+\newblock {\em Bandit algorithms}.
+\newblock Cambridge University Press, 2020.
+
+\bibitem{laur2006cryptographically}
+Sven Laur, Helger Lipmaa, and Taneli Mielik{\"{a}}inen.
+\newblock Cryptographically private support vector machines.
+\newblock In {\em Proceedings of the 12nd {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 618--624, 2006.
+
+\bibitem{leiva2011query}
+Luis~A. Leiva, Mauricio Villegas, and Roberto Paredes.
+\newblock Query refinement suggestion in multimodal image retrieval with relevance feedback.
+\newblock In {\em Proceedings of the 13th International Conference on Multimodal Interfaces, {ICMI}}, pages 311--314, 2011.
+
+\bibitem{lewis1994sequential}
+David~D. Lewis and William~A. Gale.
+\newblock A sequential algorithm for training text classifiers.
+\newblock In {\em Proceedings of the 17th Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 3--12, 1994.
+
+\bibitem{li2010contextual}
+Lihong Li, Wei Chu, John Langford, and Robert~E. Schapire.
+\newblock A contextual-bandit approach to personalized news article recommendation.
+\newblock In {\em Proceedings of the Web Conference 2010, {WWW}}, pages 661--670, 2010.
+
+\bibitem{li2017anonymizing}
+Xiao{-}Bai Li and Jialun Qin.
+\newblock Anonymizing and sharing medical text records.
+\newblock {\em Inf. Syst. Res.}, 28(2):332--352, 2017.
+
+\bibitem{li2016learning}
+Zhizhong Li and Derek Hoiem.
+\newblock Learning without forgetting.
+\newblock In {\em Proceedings of the 14th European Conference, Amsterdam, The Netherlands, {ECCV}}, volume 9908, pages 614--629, 2016.
+
+\bibitem{linden2003amazon}
+Greg Linden, Brent Smith, and Jeremy York.
+\newblock Amazon. com recommendations: Item-to-item collaborative filtering.
+\newblock {\em IEEE Internet computing}, 7(1):76--80, 2003.
+
+\bibitem{lison2021anonymisation}
+Pierre Lison, Ildik{\'{o}} Pil{\'{a}}n, David S{\'{a}}nchez, Montserrat Batet, and Lilja {\O}vrelid.
+\newblock Anonymisation models for text data: State of the art, challenges and future directions.
+\newblock In {\em Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing, {ACL/IJCNLP}}, pages 4188--4203, 2021.
+
+\bibitem{liu2016deep}
+Haomiao Liu, Ruiping Wang, Shiguang Shan, and Xilin Chen.
+\newblock Deep supervised hashing for fast image retrieval.
+\newblock In {\em Proceedings of the 2016 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 2064--2072, 2016.
+
+\bibitem{liu2019personalized}
+Weiwen Liu, Jun Guo, Nasim Sonboli, Robin Burke, and Shengyu Zhang.
+\newblock Personalized fairness-aware re-ranking for microlending.
+\newblock In {\em Proceedings of the 2019 {ACM} Conference on Recommender Systems, {RecSys}}, pages 467--471, 2019.
+
+\bibitem{madry2018towards}
+Aleksander Madry, Aleksandar Makelov, Ludwig Schmidt, Dimitris Tsipras, and Adrian Vladu.
+\newblock Towards deep learning models resistant to adversarial attacks.
+\newblock In {\em Proceedings of the 6th International Conference on Learning Representations, {ICLR}}, 2018.
+
+\bibitem{mannor2011from}
+Shie Mannor and Ohad Shamir.
+\newblock From bandits to experts: On the value of side-observations.
+\newblock In {\em Advances in Neural Information Processing Systems 24: Annual Conference on Neural Information Processing Systems 2011, {NeurIPS}}, pages 684--692, 2011.
+
+\bibitem{mcauley2015image}
+Julian~J. McAuley, Christopher Targett, Qinfeng Shi, and Anton van~den Hengel.
+\newblock Image-based recommendations on styles and substitutes.
+\newblock In {\em Proceedings of the 38th Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 43--52, 2015.
+
+\bibitem{mccallum2000automating}
+Andrew McCallum, Kamal Nigam, Jason Rennie, and Kristie Seymore.
+\newblock Automating the construction of internet portals with machine learning.
+\newblock {\em Inf. Retr.}, 3(2):127--163, 2000.
+
+\bibitem{mcsherry2009privacy}
+Frank~D McSherry.
+\newblock Privacy integrated queries: an extensible platform for privacy-preserving data analysis.
+\newblock In {\em Proceedings of the 2009 ACM SIGMOD International Conference on Management of data, {SIGMOD}}, pages 19--30, 2009.
+
+\bibitem{mehrotra2018towards}
+Rishabh Mehrotra, James McInerney, Hugues Bouchard, Mounia Lalmas, and Fernando Diaz.
+\newblock Towards a fair marketplace: Counterfactual evaluation of the trade-off between relevance, fairness {\&} satisfaction in recommendation systems.
+\newblock In {\em Proceedings of the 27th {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 2243--2251, 2018.
+
+\bibitem{menczer2000adaptive}
+Filippo Menczer and Richard~K. Belew.
+\newblock Adaptive retrieval agents: Internalizing local context and scaling up to the web.
+\newblock {\em Mach. Learn.}, 39(2/3):203--242, 2000.
+
+\bibitem{meusel2014focused}
+Robert Meusel, Peter Mika, and Roi Blanco.
+\newblock Focused crawling for structured data.
+\newblock In {\em Proceedings of the 23rd {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 1039--1048, 2014.
+
+\bibitem{meystre2010automatic}
+Stephane~M Meystre, F~Jeffrey Friedlin, Brett~R South, Shuying Shen, and Matthew~H Samore.
+\newblock Automatic de-identification of textual documents in the electronic health record: a review of recent research.
+\newblock {\em BMC medical research methodology}, 10(1):1--16, 2010.
+
+\bibitem{mikolov2013efficient}
+Tom{\'{a}}s Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean.
+\newblock Efficient estimation of word representations in vector space.
+\newblock In {\em Proceedings of the 1st International Conference on Learning Representations, {ICLR}}, 2013.
+
+\bibitem{milano2020recommender}
+Silvia Milano, Mariarosaria Taddeo, and Luciano Floridi.
+\newblock Recommender systems and their ethical challenges.
+\newblock {\em {AI} Soc.}, 35(4):957--967, 2020.
+
+\bibitem{mosallanezhad2019deep}
+Ahmadreza Mosallanezhad, Ghazaleh Beigi, and Huan Liu.
+\newblock Deep reinforcement learning-based text anonymization against private-attribute inference.
+\newblock In {\em Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing, {EMNLP-IJCNLP}}, pages 2360--2369, 2019.
+
+\bibitem{executive2016big}
+Cecilia Mu{\~{n}}oz, Megan Smith, and DJ~Patil.
+\newblock {\em Big data: A report on algorithmic systems, opportunity, and civil rights}.
+\newblock Executive Office of the President, 2016.
+
+\bibitem{naehrig2011can}
+Michael Naehrig, Kristin~E. Lauter, and Vinod Vaikuntanathan.
+\newblock Can homomorphic encryption be practical?
+\newblock In {\em Proceedings of the 3rd {ACM} Cloud Computing Security Workshop, {CCSW}}, pages 113--124, 2011.
+
+\bibitem{nakamoto2008bitcoin}
+Satoshi Nakamoto.
+\newblock Bitcoin: A peer-to-peer electronic cash system.
+\newblock {\em Decentralized business review}, 2008.
+
+\bibitem{nakano2021webgpt}
+Reiichiro Nakano, Jacob Hilton, Suchir Balaji, Jeff Wu, Long Ouyang, Christina Kim, Christopher Hesse, Shantanu Jain, Vineet Kosaraju, William Saunders, Xu~Jiang, Karl Cobbe, Tyna Eloundou, Gretchen Krueger, Kevin Button, Matthew Knight, Benjamin Chess, and John Schulman.
+\newblock Webgpt: Browser-assisted question-answering with human feedback.
+\newblock {\em CoRR}, abs/2112.09332, 2021.
+
+\bibitem{neamatullah2008automated}
+Ishna Neamatullah, Margaret~M. Douglass, Li{-}Wei~H. Lehman, Andrew~T. Reisner, Mauricio Villarroel, William~J. Long, Peter Szolovits, George~B. Moody, Roger~G. Mark, and Gari~D. Clifford.
+\newblock Automated de-identification of free-text medical records.
+\newblock {\em {BMC} Medical Informatics Decis. Mak.}, 8:32, 2008.
+
+\bibitem{ness2007influence}
+Roberta~B Ness, Joint~Policy Committee, et~al.
+\newblock Influence of the {HIPAA} privacy rule on health research.
+\newblock {\em Journal of the American Medical Association}, 298(18):2164--2170, 2007.
+
+\bibitem{nguyen2016synthesizing}
+Anh~Mai Nguyen, Alexey Dosovitskiy, Jason Yosinski, Thomas Brox, and Jeff Clune.
+\newblock Synthesizing the preferred inputs for neurons in neural networks via deep generator networks.
+\newblock In {\em Advances in Neural Information Processing Systems 29: Annual Conference on Neural Information Processing Systems 2016, {NeurIPS}}, pages 3387--3395, 2016.
+
+\bibitem{nguyen2022how}
+Vu{-}Linh Nguyen, Mohammad~Hossein Shaker, and Eyke H{\"{u}}llermeier.
+\newblock How to measure uncertainty in uncertainty sampling for active learning.
+\newblock {\em Mach. Learn.}, 111(1):89--122, 2022.
+
+\bibitem{nie2012harvesting}
+Liqiang Nie, Shuicheng Yan, Meng Wang, Richang Hong, and Tat{-}Seng Chua.
+\newblock Harvesting visual concepts for image search with complex queries.
+\newblock In {\em Proceedings of the 20th {ACM} Multimedia Conference, {MM}}, pages 59--68, 2012.
+
+\bibitem{niu2018neural}
+Wei Niu, James Caverlee, and Haokai Lu.
+\newblock Neural personalized ranking for image recommendation.
+\newblock In {\em Proceedings of the 11th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, pages 423--431, 2018.
+
+\bibitem{oh2019combinatorial}
+ChangYong Oh, Jakub~M. Tomczak, Efstratios Gavves, and Max Welling.
+\newblock Combinatorial bayesian optimization using the graph cartesian product.
+\newblock In {\em Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, {NeurIPS}}, pages 2910--2920, 2019.
+
+\bibitem{openai2023gpt4}
+OpenAI.
+\newblock {GPT-4} technical report.
+\newblock {\em arXiv}, abs/2303.08774, 2023.
+
+\bibitem{openai2023chatgpt}
+OpenAI.
+\newblock Introducing chatgpt.
+\newblock \url{https://openai.com/blog/chatgpt/}, 2023.
+\newblock Accessed: 2023-11-28.
+
+\bibitem{orlin2009faster}
+James~B. Orlin.
+\newblock A faster strongly polynomial time algorithm for submodular function minimization.
+\newblock {\em Math. Program.}, 118(2):237--251, 2009.
+
+\bibitem{page1999pagerank}
+Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd.
+\newblock The pagerank citation ranking: Bringing order to the web.
+\newblock Technical report, Stanford InfoLab, 1999.
+
+\bibitem{pariser2011filter}
+Eli Pariser.
+\newblock {\em The filter bubble: What the Internet is hiding from you}.
+\newblock Penguin UK, 2011.
+
+\bibitem{patro2020fairrec}
+Gourab~K. Patro, Arpita Biswas, Niloy Ganguly, Krishna~P. Gummadi, and Abhijnan Chakraborty.
+\newblock Fairrec: Two-sided fairness for personalized recommendations in two-sided platforms.
+\newblock In {\em Proceedings of the Web Conference 2020, {WWW}}, pages 1194--1204, 2020.
+
+\bibitem{pennington2014glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D. Manning.
+\newblock {GloVe}: Global vectors for word representation.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing, {EMNLP}}, pages 1532--1543, 2014.
+
+\bibitem{pham2019bootstrapping}
+Kien Pham, A{\'{e}}cio S.~R. Santos, and Juliana Freire.
+\newblock Bootstrapping domain-specific content discovery on the web.
+\newblock In {\em Proceedings of the Web Conference 2019, {WWW}}, pages 1476--1486, 2019.
+
+\bibitem{united2014big}
+John Podesta, Penny Pritzker, Ernest~J. Moniz, John Holdren, and Jefrey Zients.
+\newblock {\em Big data: Seizing opportunities, preserving values}.
+\newblock White House, Executive Office of the President, 2014.
+
+\bibitem{raffel2020exploring}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter~J. Liu.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock {\em J. Mach. Learn. Res.}, 21:140:1--140:67, 2020.
+
+\bibitem{raj2022convergence}
+Anant Raj and Francis~R. Bach.
+\newblock Convergence of uncertainty sampling for active learning.
+\newblock In {\em Proceedings of the 39th International Conference on Machine Learning, {ICML}}, pages 18310--18331, 2022.
+
+\bibitem{rendle2009bpr}
+Steffen Rendle, Christoph Freudenthaler, Zeno Gantner, and Lars Schmidt{-}Thieme.
+\newblock {BPR:} bayesian personalized ranking from implicit feedback.
+\newblock In {\em Proceedings of the 25th Conference on Uncertainty in Artificial Intelligence, {UAI}}, pages 452--461, 2009.
+
+\bibitem{richardson2013mctest}
+Matthew Richardson, Christopher J.~C. Burges, and Erin Renshaw.
+\newblock Mctest: {A} challenge dataset for the open-domain machine comprehension of text.
+\newblock In {\em Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing, {EMNLP}}, pages 193--203, 2013.
+
+\bibitem{rombach2022high}
+Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj{\"{o}}rn Ommer.
+\newblock High-resolution image synthesis with latent diffusion models.
+\newblock In {\em Proceedings of the 2022 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 10674--10685, 2022.
+
+\bibitem{rosenfeld2020constructive}
+Jonathan~S. Rosenfeld, Amir Rosenfeld, Yonatan Belinkov, and Nir Shavit.
+\newblock A constructive prediction of the generalization error across scales.
+\newblock In {\em Proceedings of the 8th International Conference on Learning Representations, {ICLR}}, 2020.
+
+\bibitem{roy2001toward}
+Nicholas Roy and Andrew McCallum.
+\newblock Toward optimal active learning through sampling estimation of error reduction.
+\newblock In {\em Proceedings of the 18th International Conference on Machine Learning, {ICML}}, pages 441--448, 2001.
+
+\bibitem{ruff2020deep}
+Lukas Ruff, Robert~A. Vandermeulen, Nico G{\"{o}}rnitz, Alexander Binder, Emmanuel M{\"{u}}ller, Klaus{-}Robert M{\"{u}}ller, and Marius Kloft.
+\newblock Deep semi-supervised anomaly detection.
+\newblock In {\em Proceedings of the 8th International Conference on Learning Representations, {ICLR}}, 2020.
+
+\bibitem{russakovsky2015imagenet}
+Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael~S. Bernstein, Alexander~C. Berg, and Li~Fei{-}Fei.
+\newblock Imagenet large scale visual recognition challenge.
+\newblock {\em Int. J. Comput. Vis.}, 115(3):211--252, 2015.
+
+\bibitem{saito2015illustration}
+Masaki Saito and Yusuke Matsui.
+\newblock Illustration2vec: a semantic vector representation of illustrations.
+\newblock In {\em {SIGGRAPH} Asia Technical Briefs}, pages 5:1--5:4, 2015.
+
+\bibitem{sandler2018mobilenetv2}
+Mark Sandler, Andrew~G. Howard, Menglong Zhu, Andrey Zhmoginov, and Liang{-}Chieh Chen.
+\newblock Mobilenetv2: Inverted residuals and linear bottlenecks.
+\newblock In {\em Proceedings of the 2018 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 4510--4520, 2018.
+
+\bibitem{sato2022clear}
+Ryoma Sato.
+\newblock {CLEAR:} {A} fully user-side image search system.
+\newblock In {\em Proceedings of the 31st {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 4970--4974, 2022.
+
+\bibitem{sato2022enumerating}
+Ryoma Sato.
+\newblock Enumerating fair packages for group recommendations.
+\newblock In {\em Proceedings of the 15th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, pages 870--878, 2022.
+
+\bibitem{sato2022private}
+Ryoma Sato.
+\newblock Private recommender systems: How can users build their own fair recommender systems without log data?
+\newblock In {\em Proceedings of the 2022 {SIAM} International Conference on Data Mining, {SDM}}, pages 549--557, 2022.
+
+\bibitem{sato2021retrieving}
+Ryoma Sato.
+\newblock Retrieving black-box optimal images from external databases.
+\newblock In {\em Proceedings of the 15th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, pages 879--887, 2022.
+
+\bibitem{sato2022retrieving}
+Ryoma Sato.
+\newblock Retrieving black-box optimal images from external databases.
+\newblock In {\em Proceedings of the 15th {ACM} International Conference on Web Search and Data Mining, {WSDM}}, 2022.
+
+\bibitem{sato2022principled}
+Ryoma Sato.
+\newblock Towards principled user-side recommender systems.
+\newblock In {\em Proceedings of the 31st {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, 2022.
+
+\bibitem{sato2022towards}
+Ryoma Sato.
+\newblock Towards principled user-side recommender systems.
+\newblock In {\em Proceedings of the 31st {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 1757--1766, 2022.
+
+\bibitem{sato2023embarassingly}
+Ryoma Sato, Yuki Takezawa, Han Bao, Kenta Niwa, and Makoto Yamada.
+\newblock Embarrassingly simple text watermarks.
+\newblock {\em arXiv}, abs/2310.08920, 2023.
+
+\bibitem{sener2018active}
+Ozan Sener and Silvio Savarese.
+\newblock Active learning for convolutional neural networks: {A} core-set approach.
+\newblock In {\em Proceedings of the 6th International Conference on Learning Representations, {ICLR}}, 2018.
+
+\bibitem{serbos2017fairness}
+Dimitris Serbos, Shuyao Qi, Nikos Mamoulis, Evaggelia Pitoura, and Panayiotis Tsaparas.
+\newblock Fairness in package-to-group recommendations.
+\newblock In {\em Proceedings of the Web Conference 2017, {WWW}}, pages 371--379, 2017.
+
+\bibitem{settles2009active}
+Burr Settles.
+\newblock Active learning literature survey.
+\newblock 2009.
+
+\bibitem{settles2007multuple}
+Burr Settles, Mark Craven, and Soumya Ray.
+\newblock Multiple-instance active learning.
+\newblock In {\em Advances in Neural Information Processing Systems 20: Annual Conference on Neural Information Processing Systems 2007, {NeurIPS}}, pages 1289--1296, 2007.
+
+\bibitem{seyerlehner2009limitation}
+Klaus Seyerlehner, Arthur Flexer, and Gerhard Widmer.
+\newblock On the limitations of browsing top-n recommender systems.
+\newblock In {\em Proceedings of the 2009 {ACM} Conference on Recommender Systems, {RecSys}}, pages 321--324, 2009.
+
+\bibitem{seyerlehner2009browsing}
+Klaus Seyerlehner, Peter Knees, Dominik Schnitzer, and Gerhard Widmer.
+\newblock Browsing music recommendation networks.
+\newblock In {\em Proceedings of the 10th International Society for Music Information Retrieval Conference, {ISMIR}}, pages 129--134, 2009.
+
+\bibitem{shen2018baseline}
+Dinghan Shen, Guoyin Wang, Wenlin Wang, Martin~Renqiang Min, Qinliang Su, Yizhe Zhang, Chunyuan Li, Ricardo Henao, and Lawrence Carin.
+\newblock Baseline needs more love: On simple word-embedding-based models and associated pooling mechanisms.
+\newblock In {\em Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics, {ACL}}, pages 440--450, 2018.
+
+\bibitem{shetty2018a4nt}
+Rakshith Shetty, Bernt Schiele, and Mario Fritz.
+\newblock {A4NT:} author attribute anonymity by adversarial training of neural machine translation.
+\newblock In {\em Proceedings of the 27th {USENIX} Security Symposium, {USENIX}}, pages 1633--1650, 2018.
+
+\bibitem{shinden2023device}
+Kohei Shinden and Makoto~P. Kato.
+\newblock On-device privacy protection recommendation system by representative account.
+\newblock {\em Forum on Data Engineering and Information Management (DEIM)}, 2023.
+
+\bibitem{shui2020deep}
+Changjian Shui, Fan Zhou, Christian Gagn{\'{e}}, and Boyu Wang.
+\newblock Deep active learning: Unified and principled method for query and training.
+\newblock In {\em Proceedings of the 23rd International Conference on Artificial Intelligence and Statistics, {AISTATS}}, volume 108, pages 1308--1318, 2020.
+
+\bibitem{sibson1979studies}
+Robin Sibson.
+\newblock Studies in the robustness of multidimensional scaling: Perturbational analysis of classical scaling.
+\newblock {\em J. R. Stat. Soc. Series B}, 41(2):217--229, 1979.
+
+\bibitem{simonyan2014deep}
+Karen Simonyan, Andrea Vedaldi, and Andrew Zisserman.
+\newblock Deep inside convolutional networks: Visualising image classification models and saliency maps.
+\newblock In {\em Workshop Track Proceedings of the International Conference on Learning Representations, {ICLR} workshop}, 2014.
+
+\bibitem{singh2018fairness}
+Ashudeep Singh and Thorsten Joachims.
+\newblock Fairness of exposure in rankings.
+\newblock In {\em Proceedings of the 24th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 2219--2228, 2018.
+
+\bibitem{sinha2002role}
+Rashmi~R. Sinha and Kirsten Swearingen.
+\newblock The role of transparency in recommender systems.
+\newblock In {\em Extended abstracts of the 2002 Conference on Human Factors in Computing Systems, {CHI}}, pages 830--831, 2002.
+
+\bibitem{slivkins2019introduction}
+Aleksandrs Slivkins.
+\newblock Introduction to multi-armed bandits.
+\newblock {\em Found. Trends Mach. Learn.}, 12(1-2):1--286, 2019.
+
+\bibitem{smilkov2019tensorflow}
+Daniel Smilkov, Nikhil Thorat, Yannick Assogba, Ann Yuan, Nick Kreeger, Ping Yu, Kangyi Zhang, Shanqing Cai, Eric Nielsen, David Soergel, Stan Bileschi, Michael Terry, Charles Nicholson, Sandeep~N. Gupta, Sarah Sirajuddin, D.~Sculley, Rajat Monga, Greg Corrado, Fernanda~B. Vi{\'{e}}gas, and Martin Wattenberg.
+\newblock Tensorflow.js: Machine learning for the web and beyond.
+\newblock In {\em Proceedings of Machine Learning and Systems 2019, {MLSys}}, 2019.
+
+\bibitem{song2016deep}
+Hyun~Oh Song, Yu~Xiang, Stefanie Jegelka, and Silvio Savarese.
+\newblock Deep metric learning via lifted structured feature embedding.
+\newblock In {\em Proceedings of the 2016 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 4004--4012, 2016.
+
+\bibitem{sun2018conversational}
+Yueming Sun and Yi~Zhang.
+\newblock Conversational recommender system.
+\newblock In {\em Proceedings of the 41st Annual International {ACM-SIGIR} Conference on Research and Development in Information Retrieval, {SIGIR}}, pages 235--244, 2018.
+
+\bibitem{sundararajan2017axiomatic}
+Mukund Sundararajan, Ankur Taly, and Qiqi Yan.
+\newblock Axiomatic attribution for deep networks.
+\newblock In {\em Proceedings of the 34th International Conference on Machine Learning, {ICML}}, pages 3319--3328, 2017.
+
+\bibitem{tanaka1996intelligent}
+Yuzuru Tanaka.
+\newblock Intelligentpad as meme media and its application to multimedia databases.
+\newblock {\em Inf. Softw. Technol.}, 38(3):201--211, 1996.
+
+\bibitem{terada2014local}
+Yoshikazu Terada and Ulrike von Luxburg.
+\newblock Local ordinal embedding.
+\newblock In {\em Proceedings of the 31st International Conference on Machine Learning, {ICML}}, pages 847--855, 2014.
+
+\bibitem{thompson1933likelihood}
+William~R Thompson.
+\newblock On the likelihood that one unknown probability exceeds another in view of the evidence of two samples.
+\newblock {\em Biometrika}, 25(3/4):285--294, 1933.
+
+\bibitem{tintarev2007survey}
+Nava Tintarev and Judith Masthoff.
+\newblock A survey of explanations in recommender systems.
+\newblock In {\em Proceedings of the 23rd International Conference on Data Engineering Workshops, {ICDE} Workshops}, pages 801--810, 2007.
+
+\bibitem{tong2001support}
+Simon Tong and Daphne Koller.
+\newblock Support vector machine active learning with applications to text classification.
+\newblock {\em J. Mach. Learn. Res.}, 2:45--66, 2001.
+
+\bibitem{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in Neural Information Processing Systems 30: Annual Conference on Neural Information Processing Systems 2017, {NeurIPS}}, pages 5998--6008, 2017.
+
+\bibitem{vieira2023machine}
+Lucas~Nunes Vieira, Carol O’Sullivan, Xiaochun Zhang, and Minako O’Hagan.
+\newblock Machine translation in society: insights from uk users.
+\newblock {\em Language Resources and Evaluation}, 57(2):893--914, 2023.
+
+\bibitem{luxburg2013density}
+Ulrike von Luxburg and Morteza Alamgir.
+\newblock Density estimation from unweighted k-nearest neighbor graphs: a roadmap.
+\newblock In {\em Advances in Neural Information Processing Systems 26: Annual Conference on Neural Information Processing Systems 2013, {NeurIPS}}, pages 225--233, 2013.
+
+\bibitem{wang2017cost}
+Keze Wang, Dongyu Zhang, Ya~Li, Ruimao Zhang, and Liang Lin.
+\newblock Cost-effective active learning for deep image classification.
+\newblock {\em {IEEE} Trans. Circuits Syst. Video Technol.}, 27(12):2591--2600, 2017.
+
+\bibitem{way2013emerging}
+Andy Way.
+\newblock Emerging use-cases for machine translation.
+\newblock In {\em Proceedings of Translating and the Computer 35}, 2013.
+
+\bibitem{weggenmann2022dpvae}
+Benjamin Weggenmann, Valentin Rublack, Michael Andrejczuk, Justus Mattern, and Florian Kerschbaum.
+\newblock {DP-VAE:} human-readable text anonymization for online reviews with differentially private variational autoencoders.
+\newblock In {\em Proceedings of the Web Conference 2022, {WWW}}, pages 721--731, 2022.
+
+\bibitem{wilson2014share}
+Duane~C. Wilson and Giuseppe Ateniese.
+\newblock "to share or not to share" in client-side encrypted clouds.
+\newblock In {\em Proceedings of the 17th International Conference on Information Security, {ISC}}, volume 8783, pages 401--412, 2014.
+
+\bibitem{wu2019large}
+Yue Wu, Yinpeng Chen, Lijuan Wang, Yuancheng Ye, Zicheng Liu, Yandong Guo, and Yun Fu.
+\newblock Large scale incremental learning.
+\newblock In {\em Proceedings of the 2019 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 374--382, 2019.
+
+\bibitem{xiao2019beyond}
+Wenyi Xiao, Huan Zhao, Haojie Pan, Yangqiu Song, Vincent~W. Zheng, and Qiang Yang.
+\newblock Beyond personalization: Social content recommendation for creator equality and consumer satisfaction.
+\newblock In {\em Proceedings of the 25th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 235--245, 2019.
+
+\bibitem{xie2019improving}
+Xiaohui Xie, Jiaxin Mao, Yiqun Liu, Maarten de~Rijke, Qingyao Ai, Yufei Huang, Min Zhang, and Shaoping Ma.
+\newblock Improving web image search with contextual information.
+\newblock In {\em Proceedings of the 28th {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 1683--1692, 2019.
+
+\bibitem{xu2020algorithmic}
+Renzhe Xu, Peng Cui, Kun Kuang, Bo~Li, Linjun Zhou, Zheyan Shen, and Wei Cui.
+\newblock Algorithmic decision making with conditional fairness.
+\newblock In {\em Proceedings of the 26th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 2125--2135, 2020.
+
+\bibitem{yao2022webshop}
+Shunyu Yao, Howard Chen, John Yang, and Karthik Narasimhan.
+\newblock {WebShop}: Towards scalable real-world web interaction with grounded language agents.
+\newblock In {\em Advances in Neural Information Processing Systems 35: Annual Conference on Neural Information Processing Systems 2022, {NeurIPS}}, 2022.
+
+\bibitem{yao2017beyond}
+Sirui Yao and Bert Huang.
+\newblock Beyond parity: Fairness objectives for collaborative filtering.
+\newblock In {\em Advances in Neural Information Processing Systems 30: Annual Conference on Neural Information Processing Systems 2017, {NeurIPS}}, pages 2921--2930, 2017.
+
+\bibitem{yao2018judging}
+Yuan Yao and F.~Maxwell Harper.
+\newblock Judging similarity: a user-centric study of related item recommendations.
+\newblock In {\em Proceedings of the 2018 {ACM} Conference on Recommender Systems, {RecSys}}, pages 288--296, 2018.
+
+\bibitem{yoon2018tpa}
+Minji Yoon, Jinhong Jung, and U~Kang.
+\newblock {TPA:} fast, scalable, and accurate method for approximate random walk with restart on billion scale graphs.
+\newblock In {\em Proceedings of the 34th {IEEE} International Conference on Data Engineering, {ICDE}}, pages 1132--1143, 2018.
+
+\bibitem{yu2018recurrent}
+Qihang Yu, Lingxi Xie, Yan Wang, Yuyin Zhou, Elliot~K. Fishman, and Alan~L. Yuille.
+\newblock Recurrent saliency transformation network: Incorporating multi-stage visual cues for small organ segmentation.
+\newblock In {\em Proceedings of the 2018 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 8280--8289, 2018.
+
+\bibitem{yuan2020xgnn}
+Hao Yuan, Jiliang Tang, Xia Hu, and Shuiwang Ji.
+\newblock {XGNN:} towards model-level explanations of graph neural networks.
+\newblock In {\em Proceedings of the 26th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining, {KDD}}, pages 430--438, 2020.
+
+\bibitem{zafar2017fairness}
+Muhammad~Bilal Zafar, Isabel Valera, Manuel Gomez{-}Rodriguez, and Krishna~P. Gummadi.
+\newblock Fairness beyond disparate treatment {\&} disparate impact: Learning classification without disparate mistreatment.
+\newblock In {\em Proceedings of the Web Conference 2017, {WWW}}, pages 1171--1180, 2017.
+
+\bibitem{zehlike2017fair}
+Meike Zehlike, Francesco Bonchi, Carlos Castillo, Sara Hajian, Mohamed Megahed, and Ricardo Baeza{-}Yates.
+\newblock {FA*IR:} {A} fair top-k ranking algorithm.
+\newblock In {\em Proceedings of the 36th {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 1569--1578, 2017.
+
+\bibitem{zenke2017continual}
+Friedemann Zenke, Ben Poole, and Surya Ganguli.
+\newblock Continual learning through synaptic intelligence.
+\newblock In {\em Proceedings of the 34th International Conference on Machine Learning, {ICML}}, pages 3987--3995, 2017.
+
+\bibitem{zha2009visual}
+Zheng{-}Jun Zha, Linjun Yang, Tao Mei, Meng Wang, and Zengfu Wang.
+\newblock Visual query suggestion.
+\newblock In {\em Proceedings of the 17th International Conference on Multimedia, {MM}}, pages 15--24, 2009.
+
+\bibitem{zhai2022scaling}
+Xiaohua Zhai, Alexander Kolesnikov, Neil Houlsby, and Lucas Beyer.
+\newblock Scaling vision transformers.
+\newblock In {\em Proceedings of the 2022 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR}}, pages 1204--1213, 2022.
+
+\bibitem{zhang2021dsdd}
+Haoxiang Zhang, A{\'{e}}cio S.~R. Santos, and Juliana Freire.
+\newblock {DSDD:} domain-specific dataset discovery on the web.
+\newblock In {\em Proceedings of the 30th {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 2527--2536, 2021.
+
+\bibitem{zhou2023webarena}
+Shuyan Zhou, Frank~F. Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar, Xianyi Cheng, Yonatan Bisk, Daniel Fried, Uri Alon, and Graham Neubig.
+\newblock {WebArena}: {A} realistic web environment for building autonomous agents.
+\newblock {\em arxiv}, abs/2307.13854, 2023.
+
+\bibitem{zhu2017generative}
+Jia{-}Jie Zhu and Jos{\'{e}} Bento.
+\newblock Generative adversarial active learning.
+\newblock {\em arXiv}, abs/1702.07956, 2017.
+
+\bibitem{zhu2018fairness}
+Ziwei Zhu, Xia Hu, and James Caverlee.
+\newblock Fairness-aware tensor-based recommendation.
+\newblock In {\em Proceedings of the 37th {ACM} International Conference on Information {\&} Knowledge Management, {CIKM}}, pages 1153--1162, 2018.
+
+\bibitem{ziegler2005improving}
+Cai{-}Nicolas Ziegler, Sean~M. McNee, Joseph~A. Konstan, and Georg Lausen.
+\newblock Improving recommendation lists through topic diversification.
+\newblock In {\em Proceedings of the Web Conference 2005, {WWW}}, pages 22--32, 2005.
+
+\bibitem{zliobaite2014active}
+Indre Zliobaite, Albert Bifet, Bernhard Pfahringer, and Geoffrey Holmes.
+\newblock Active learning with drifting streaming data.
+\newblock {\em {IEEE} Trans. Neural Networks Learn. Syst.}, 25(1):27--39, 2014.
+
+\end{thebibliography}
