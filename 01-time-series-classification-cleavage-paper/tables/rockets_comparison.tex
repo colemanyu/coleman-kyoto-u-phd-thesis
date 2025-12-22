@@ -1,0 +1,32 @@
+\begin{table*}[htbp]
+\centering
+% \resizebox{\columnwidth}{!}{
+\begin{tabular}{l|c|c|c|c}
+\hline
+& ROCKET & MiniROCKET & MultiROCKET & Hydra \\
+\hline
+kernel length & \{7, 9, 11\} & 9 & 9 & 9 \\
+\hline
+kernel weights & $\mathcal{N}(0,1)$ & \{-1, 2\} & \{-1, 2\} & $\mathcal{N}(0,1)$ \\
+\hline
+bias & $\mathcal{U}(0,1)$ & from output & from output & none \\
+\hline
+dilation & random & fixed (input-relative) & fixed (input-relative) & random \\
+\hline
+padding & random & fixed & fixed & always\\
+\hline
+pooling operations & MAX, PPV & PPV & PPV, MPV, MIPV, LSPV & Response per Kernel/Group \\
+\hline
+1\textsuperscript{st} order difference & no & no & yes & yes \\
+\hline
+feature vector size & 20k & 10k & 50k & relative to input \\
+\hline
+\end{tabular}
+% }
+\caption{Comparison of rocket-based classifiers~\cite{middlehurst2024bake}. 
+$\mathcal{N}(0,1)$: a standard normal distribution, $U(0,1)$: a uniform distribution between 0 and 1,
+1\textsuperscript{st} order difference: $\Delta T = t_2-t_1, t_3-t_2, ..., t_{n}-t_{n-1}$
+.
+}
+\label{tab:rockets_comparison}
+\end{table*}

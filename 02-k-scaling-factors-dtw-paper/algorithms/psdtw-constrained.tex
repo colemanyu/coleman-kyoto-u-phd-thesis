@@ -1,0 +1,60 @@
+\begin{algorithm*}[t]
+\caption{Constrainted PSDTW (cPSDTW) with early abandoning and lower bounding}
+\label{alg:psdtw-constrained}
+\begin{algorithmic}[1]
+\Require Query series $Q$, Candidate series $C$, DTW constraint parameter $r$ (in fraction), Number of pieces $P$, best\_so\_far $\mathrm{bsf}$
+\Ensure The final distance $D[m, n, P]$ if $D[m, n, P] \leq \mathrm{bsf}$, otherwise $\infty$
+\State Execute Algorithm~\ref{alg:psdtw-constrained-initial} for initialization
+\For{$p \gets 1$ \textbf{to} $P$}
+    {\color{blue}\For{$i \gets (p \cdot L_{\mathrm{gmin}}^Q)$ \textbf{to} $\min(p \cdot L_{\mathrm{gmax}}^Q, m)$} \Comment{The iterations can be parallelized.}
+        {\color{black}\For{$L^Q \gets L_{\mathrm{gmin}}^Q$ \textbf{to} $L_{\mathrm{gmax}}^Q$}
+            \State $i' \gets i - L^Q$ \Comment{$i'$: End point of previous segment on $Q$.}
+            \State $Q' \gets \operatorname{rev}(Q(i'+1: i))$ \Comment{$\operatorname{rev}(T)$: Reverse the input series $T$.}
+            \State $L_{\min}^C \gets \max(L_{\mathrm{gmin}}^C, \ceil{L^Q/l})$
+            \State $L_{\max}^C \gets \min(\floor{L^Q/l}, L_{\mathrm{gmax}}^C)$
+            {\color{green}
+            \State $r' \gets r \times \max(L^Q, L_{\max}^C)$ \Comment{Compute the integer value of $r$.}
+            \For{$k \gets 1$ \textbf{to} $L_{\max}^C$} 
+                \State $\mathbbm{q}_k \gets (q'_{\max(1, \ceil{k/l} - r')}, \ldots, q'_{\min(\floor{kl} + r', L^Q)})$ \Comment{Construct indexed collection $\mathbbm{Q}$.}
+                \State $\tilde{\mathbbm{q}}_k \gets \operatorname{sort}(\mathbbm{q}_k)$
+            \EndFor
+            }
+            \For{$j \gets (p \cdot L_{\mathrm{gmin}}^C$) \textbf{to} $\min(p \cdot L_{\mathrm{gmax}}^C, n)$} 
+                \For{$L^C \gets L_{\min}^C$ \textbf{to} $L_{\max}^C$}
+                    \State $j' \gets j - L^Q$
+                    \State $C' \gets \operatorname{rev}(C(j'+1: j))$
+                    \State $\mathit{dist}_{\mathrm{prev}} \gets D[i', j', p-1]$
+                    \If{$\mathit{dist}_\mathrm{prev} = \infty$}
+                        \State \textbf{continue}
+                    \EndIf
+                    {\color{orange}\If{$\mathit{dist}_\mathrm{prev} > \mathrm{bsf}$} 
+                        \State \textbf{continue}
+                    \EndIf}
+                    \If{$\mathit{dist}_{\mathrm{prev}}> D[i,j,p]$} \Comment{$D[i,j,p]$ stores the best so far.}
+                        \State \textbf{continue}
+                    \EndIf
+                    {\color{green}
+                        \If{$L^C = L_{\min}^C$} \Comment{Compute the lower bound from sketch.}
+                            \State $\mathit{lb} = (c'_1 - q'_1)^2$ \Comment{Partial distance contributed by the first alignment.}
+                            \For{$k \gets 2$ \textbf{to} $L^C$}
+                                \State $\mathit{lb} = \mathit{lb} + \delta(c'_k, \tilde{\mathbbm{q}}_k)$
+                            \EndFor
+                        \Else
+                            \State $\mathit{lb} = \mathit{lb} + \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C})$ \Comment{Compute the lower bound incrementally.}
+                        \EndIf
+                        \State $\mathit{lb}_\mathrm{check} = \mathit{lb} - \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C}) + (c'_{-1} - q'_{-1})^2$ \Comment{Tighten the lower bound by using the last alignment.}
+                        \If{$\mathit{dist}_{\mathrm{prev}} + \mathit{lb}_\mathrm{check}> D[i,j,p]$} 
+                            \State \textbf{continue}
+                        \EndIf
+                    }
+                    \State $\mathit{dist}_{\mathrm{seg}} \gets \operatorname{DTW}_r(Q'^L, C'^L$)                    \If{$\mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}} < D[i,j,p]$}
+                        \State $D[i,j,p] \gets \mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}}$ \Comment{Also save pointer $(i', j')$ for the cut.}
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor}
+    \EndFor}
+\EndFor
+\State \Return $D[m, n, P]$
+\end{algorithmic}
+\end{algorithm*}

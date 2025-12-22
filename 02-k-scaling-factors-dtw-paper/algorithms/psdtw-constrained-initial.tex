@@ -1,0 +1,17 @@
+\begin{algorithm}[t]
+\caption{Initialization of PSDTW}
+\label{alg:psdtw-constrained-initial}
+\begin{algorithmic}[1]
+% \Require Query series $Q$, Candidate series $C$, DTW constraint parameter $r$, Number of pieces $P$, best\_so\_far $\mathrm{bsf}$
+% \Ensure The final distance $D[m, n, P]$ if $D[m, n, P] \leq \mathrm{bsf}$, otherwise $\infty$
+
+\State $L_{\mathrm{gmin}}^Q \gets \ceil{(m/P)/\sqrt{l}}, 
+\quad L_{\mathrm{gmax}}^Q \gets \floor{(m/P)\sqrt{l}}$ \Comment{``$\mathrm{g}$'' refers to ``global''.}
+\State $L_{\mathrm{gmin}}^C \gets \ceil{(n/P)/\sqrt{l}}, 
+\quad L_{\mathrm{gmin}}^C \gets \floor{(n/P)\sqrt{l}}$
+\State $L = \max(L_{\mathrm{gmax}}^Q, L_{\mathrm{gmin}}^C)$
+
+\State Initialize $D$ of size $(m+1) \times (n+1) \times (P+1)$ with $\infty$
+\State $D[0,0,0] \gets 0$
+\end{algorithmic}
+\end{algorithm}

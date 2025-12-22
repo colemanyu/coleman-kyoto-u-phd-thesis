@@ -1,0 +1,24 @@
+% \textbf{Background:} 
+MicroRNAs (miRNAs) are small non-coding RNAs (ncRNAs) that regulate gene expression at the post-transcriptional level, thereby playing essential roles in diverse biological processes.
+% Such as development and differentiation.
+The biogenesis of miRNAs requires dicer to cleave at specific sites on the precursor miRNAs (pre-miRNAs).
+Several machine learning approaches have been proposed to predict whether an input sequence contains a cleavage site. However, they rely heavily on complex feature engineering or opaque deep neural networks. 
+It results in a lack of generalizability and a long running time.
+% Additionally, the probabilities of the base pairs in the predicted secondary structure have been ignored in the classification.
+There is a need for an alternative modeling paradigm that is accurate, fast, and simple.
+
+% \textbf{Results:} 
+We proposed a novel approach to frame the task as a multivariate time series classification problem. 
+Nine encoding methods have been proposed to convert the sequence and the predicted secondary structure into a time series.
+We also leveraged the probabilities of the base pairs in the predicted secondary structure.
+Computational experiments demonstrate that our proposed method can achieve better or comparable results in terms of using a simpler, more intuitive model and less computational time.
+It achieves 3.7X to 28.8X speedup.
+Through perturbation experiments, we found that regions close to the center of pre-miRNAs are essential for predicting human dicer cleavage sites.
+
+% \textbf{Conclusion:} 
+% Our proposed scheme enables us to approach this problem in a novel way. 
+By transforming the RNA sequence and its secondary structure information into a time series and utilizing simple, state-of-the-art time series classifiers, we achieved comparable or even superior performance in a simpler and faster manner.
+% We introduced the use of probabilities of base pairs in the classification. 
+% The analysis of the importance of the subsequences suggests that the regions close to the center of the pre-miRNA are essential for this problem.
+
+Code is available at: \url{https://github.com/colemanyu/time-series-classification-cleavage}.

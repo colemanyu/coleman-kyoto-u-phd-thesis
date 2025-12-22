@@ -1,0 +1,31 @@
+\section{Related Work} \label{sec:related-work}
+
+This study focuses on distance measures of time series.
+For the overall review of time series, we direct the readers to \cite{fu2011review, esling2012timeseries} for a more comprehensive understanding of this field.
+
+% Distance measure
+For many tasks, having appropriate distance measures that align with our intuition for the domains we work with is essential.
+One well-known distance measure is Dynamic Time Warping (DTW).
+It is initially designed for speech analysis~\cite{sakoe1978dynamic}.
+However, DTW is computationally expensive.
+Lower bounds are used to speed up time series similarity search by admissibly pruning the unpromising candidates.
+One of the popular exact lower bounds of DTW is $\lbKeogh$.
+\cite{rakthanmanon2013addressing} improves the scalability of DTW by introducing a subsequence search suite of their four novel ideas, namely the UCR suite.
+% It successfully re-establishes DTW as a practical tool rather than a theoretical study. 
+For an overall review of lower bounds, we refer readers to \cite{tan2019elastic, shifaz2023elastic}.
+There is an approximate algorithm that approximates DTW with high accuracy while drastically cutting down the time and space requirements~\cite{salvador2007accurate}.
+
+While ED is sensitive to distortions in the time axis, uniform scaling (US) has been shown to be a critical invariance in domains such as motion capture.
+\cite{keogh2004indexing} demonstrated that DTW is insufficient for handling global scaling effects, and that identifying DTW is not the solution to achieve this kind of invariance. There is a need for US.
+\cite{yankov2007detecting} extends the importance of uniform scaling to motif discovery. The authors show that meaningful motifs often suffer from a global scaling effect, causing standard motif finding algorithms to miss them completely.
+
+To the best of our knowledge, three studies analyze the combination of US and DTW, namely USDTW.
+It was first proposed by~\cite{fu2008scaling}.
+It extended $\lbKeogh$ to bound the USDTW.
+However, the extended $\lbKeogh$ is still too loose with invariance to large amounts of uniform scaling.
+\cite{shen2017searching} and its follow-up study~\cite{shen2018accelerating} proposed a new lower bound, namely $\lbShen$
+~\footnote{It is denoted as $\lbNew$ in the original study. We rename it to prevent any confusion.}
+, which has been shown to be tighter than $\lbKeogh$ on USDTW.
+
+To our surprise, despite a fruitful discussion of DTW, US, and USDTW, no study has proposed a distance measure capable of handling scaling effects across multiple scaling factors.
+This is precisely what we will address in this study.

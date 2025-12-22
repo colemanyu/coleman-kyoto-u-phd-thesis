@@ -1,0 +1,21 @@
+\section{Conclusions} \label{sec:conclusions}
+We proposed an accurate, fast, and simple multivariate time series classification (MTSC)-based method, termed MTSCCleav, for predicting human dicer cleavage sites.
+% by transforming RNA sequences and their secondary structures into time series.
+Base-pair probability sequences of the secondary structures have also been leveraged in the classification.
+MTSCCleav consists of three parts: time series encoding, time series transformation, and classification.
+ROCKET-based methods were used for time series transformation.
+Ridge Classifier was used for classification.
+For the computational experiments, we evaluated nine time series encoding methods in conjunction with five time series transformation methods.
+MTSCCleav outperformed the SOTA method in all five evaluation metrics for the 5p-arm and multi-class datasets, and four of the metrics for the 3p-arm dataset.
+In terms of computational efficiency, MTSCCleav with the optimal setting achieved an average 3.7X to 27.0X speedup over the SOTA method on the three datasets.
+With the use of a less accurate but faster time series classification method, MTSCCleav achieved an average speedup of 16.1X to 28.8X, respectively.
+We analyzed the subsequence importance of the input multivariate time series.
+The results show that subsequences near the center of the pre-miRNA sequences are more important.
+This aligns with the findings from previous work.
+This study demonstrates that time series analysis provides a powerful alternative to conventional modeling in the context of RNA processing. 
+This framework may be extended to other RNA-processing tasks.
+Notably, the encoding of RNA sequence into time series enables us to utilize any well-established tools from the time series community. 
+
+%%%
+%%%
+%%%

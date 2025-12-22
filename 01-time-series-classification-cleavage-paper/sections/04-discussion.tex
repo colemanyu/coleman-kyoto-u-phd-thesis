@@ -1,0 +1,55 @@
+\section{Discussion} \label{sec:discussion}
+% More accurate, faster
+% Our results show that MTSCCleav outperforms the SOTA, DiCleave, in both accuracy and efficiency.
+The channel ablation study reveals that the involvement of the time series derived from the secondary structure can improve accuracy.
+It suggests the importance of RNA folding in dicer processing.
+Futhermore, we found that the base-pair probability sequence of the secondary structure can also enhance accuracy.
+To the best of our knowledge, it is a novel application of the base-pair probability sequence.
+% We can make use of the probability sequence either by involving it in the time series encoding of the complementary strand or as a standalone channel in the multivariate time series.
+Experiments show that using the probability sequence as an additional channel can enhance accuracy more than incorporating it in the encoding.
+It is likely because keeping it as an additional channel can preserve more information, of both the probability sequence itself and the complementary strand.
+
+% Discuss classifier
+Out of the three datasets, the best classifier is ROCKET.
+The ranking of the five classifiers by performance, starting from the best, is as follows: ROCKET, Hydra, MiniROCKET, MultiROCKET-Hydra, and MultiROCKET.
+It indicates that the features created from the pooling operations that are only in MultiROCKET but not in MiniROCKET, confuse the final classifier.
+They are mean of positive values (MPV), mean of indices of positive values (MIPV) and longest stretch of positive values (LSPV)~\cite{tan2022multirocket}.
+In contrast, the pooling operator that is only present in ROCKET but not in MiniROCKET, enhances the classification performance. 
+It is maximum (MAX).
+
+% Discuss encoding methods, why, any overall observations
+For the encoding methods, we have the following observations.
+Fixed-length grouped channel mappings outperform variable-length counterparts with one exception in the multi-class dataset, likely because fixed-length schemes better preserve the original positional information of nucleotides within the sequence.
+Global cumulative methods consistently yield better performance than local cumulative methods.
+% with one exception in the 3p arm dataset.
+It suggests that the upstream information of the cleavage pattern plays a critical role in identifying cleavage sites.
+Cumulative-based encodings perform better than single-value mappings, with one exception in the 3p dataset, suggesting that the accumulated nucleotide signal is more informative for cleavage site prediction than the local or isolated presence of nucleotides.
+% In the 3p dataset, grouped fixed-length is better than its counterpart. 
+In the 5p arm dataset, encoding RNA sequence in two channels appears to worsen the result.
+This suggests that the 5p arm dataset and the 3p arm dataset need different nucleotide grouping methods for the encoding.
+
+% Using few data
+One limitation of DiCleave is overfitting during training because of the relatively small size of the dataset~\cite{mu2024dicleave}.
+DiCleave is a deep learning-based method.
+Deep learning models typically require a large amount of training data to generalize effectively.
+They are data-hungry.
+In contrast, MTSCCleav leverages ROCKET-based methods for the classification.
+They rely on random convolutional feature extraction followed by a simple linear classifier.
+The Ridge classifier used in this study is less data-hungry compared to deep learning methods due to its use of L2 regularization and the simplicity of its linear model nature.
+It allows ROCKET-based classifiers, and hence MTSCCleav, to maintain strong predictive performance even in settings with a relatively small dataset size.
+
+% Explain feature importance, why, any overall observations
+The subsequence importance reveals some connections between RNA secondary structure and human dicer cleavage site prediction.
+The perturbation experiment shows that the leading part of 5p arm and the tailing part of 3p arm are important for the classification.
+These parts are close to the center of the RNA secondary structure of pre-miRNA.
+It indicates that the center region is more crucial for human dicer cleavage site prediction.
+It is consistent with the previous study~\cite{liu2021recgbm}.
+%%%
+%%%
+%%%
+
+
+
+
+
+

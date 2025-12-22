@@ -1,0 +1,13 @@
+\begin{algorithm}[t]
+	\caption{Line 6 in Algorithm~\ref{alg:psdtw}}
+	\label{alg:psdtw-recurrence}
+	\begin{algorithmic}[1]
+		\For{$i' \gets 0$ \textbf{to} $i-1$}
+		\For{$j' \gets 0$ \textbf{to} $j-1$}
+		\State $\textit{dist}_{\text{prev}} \gets D[i', j', p-1]$
+		\State $\textit{dist}_{\text{seg}} \gets \operatorname{DTW}_r(Q{(i'+1: i)}^L, C{(j'+1: j)}^L)$
+		\State $D[i,j,p] \gets \min(D[i,j,p],~ \textit{dist}_{\text{prev}} + \textit{dist}_{\text{seg}})$
+		\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}

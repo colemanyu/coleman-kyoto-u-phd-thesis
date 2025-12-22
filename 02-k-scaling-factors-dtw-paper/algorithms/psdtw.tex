@@ -1,0 +1,20 @@
+\begin{algorithm}[t]
+	\caption{Naive PSDTW}
+	\label{alg:psdtw}
+	\begin{algorithmic}[1]
+		\Require Query series $Q$, Candidate series $C$, DTW constraint parameter $r$ (in fraction), Number of pieces $P$, Scaling parameter $L$
+		\Ensure Distance Matrix $D$ of size $(m+1) \times (n+1) \times (P+1)$
+		
+		\State Initialize $D$ with $\infty$
+		\State $D[0,0,0] \gets 0$
+		\For{$p \gets 1$ \textbf{to} $P$}
+		\For{$i \gets 1$ \textbf{to} $m$}
+		\For{$j \gets 1$ \textbf{to} $n$}
+		\State $D[i, j, p] \gets \min_{i' < i, j' < j} \big\{ D[i', j', p - 1]$
+		\Statex \hspace{6em} $+ \operatorname{DTW}_r(Q(i'+1: i)^L, C(j'+1: j)^L) \big\}$
+		\EndFor
+		\EndFor
+		\EndFor
+		\State \Return $D[m, n, P]$
+	\end{algorithmic}
+\end{algorithm}

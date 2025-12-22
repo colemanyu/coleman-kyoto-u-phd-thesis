@@ -12,7 +12,7 @@
 \usepackage{amsthm}
 \usepackage{xcolor}
 \usepackage{booktabs}
-\usepackage[ruled, algo2e, vlined]{algorithm2e}
+% \usepackage[ruled, algo2e, vlined]{algorithm2e}
 \usepackage[numbers]{natbib}
 \bibliographystyle{plain}
 \usepackage{url}
@@ -43,14 +43,140 @@
 
 % Coleman: Custom libraries
 % ___________________________________________________
+% Japanese
+\usepackage{CJKutf8}
+
+\newcommand{\firstpaper}{01-time-series-classification-cleavage-paper}
+\newcommand{\secondpaper}{02-k-scaling-factors-dtw-paper}
+
 % Multi-file
 \usepackage{blindtext}
 \usepackage{subfiles} % Best loaded last in the preamble
-% ___________________________________________________
 
-\title{Time Series Analysis with Applications in Bioinformatics}
-% 時系列分析と生命情報学への応用
-\author{Coleman Yu}
+% For the figure paths
+\usepackage{graphicx}
+\graphicspath{
+    {\firstpaper/}
+    {\secondpaper/}
+}
+
+% time-series-classification-cleavage-paper
+% ===============================
+% Table
+\usepackage{makecell}
+% sub figure
+% \usepackage{subcaption} % It results "Package caption Warning".
+
+\definecolor{teal}{rgb}{0.0, 0.5, 0.5}
+
+\usepackage{multirow}
+\usepackage{booktabs}%
+
+% \usepackage{subcaption}
+\usepackage[caption=false]{subfig}
+
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\usepackage{hyperref} % Load this after xurl
+% ===============================
+
+% k-scaling-factors-dtw-paper
+% ===============================
+\DeclareMathOperator{\lbKeogh}{LB_{Keogh}}
+\DeclareMathOperator{\lbNew}{LB_{New}}
+\DeclareMathOperator{\lbShen}{LB_{Shen}}
+\DeclareMathOperator{\lbKim}{LB_{Kim}}
+\DeclareMathOperator{\lbKimFL}{LB_{KimFL}}
+
+% https://www.overleaf.com/learn/latex/Theorems_and_proofs
+% Counter
+% https://tex.stackexchange.com/questions/64931/using-newtheorem
+% https://tex.stackexchange.com/questions/173349/setting-counters-for-theorems
+% \theoremstyle{definition}
+% \newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+% \newtheorem{theorem}{Theorem}
+
+% Ceiling, Floor
+% https://tex.stackexchange.com/questions/42271/floor-and-ceiling-functions
+% https://tex.stackexchange.com/questions/118173/how-to-write-ceil-and-floor-in-latex
+\usepackage{mathtools}
+% \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+% \DeclarePairedDelimiter{\floor}{\lfoor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Math font
+\usepackage{bbm}
+
+% Algorithm
+% Hide closing statements
+% https://tex.stackexchange.com/questions/9837/hide-closing-statements-for-algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+% Add Input, Output
+% https://tex.stackexchange.com/questions/355937/how-to-add-input-and-output-before-algorithm-procedure
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+% Number on every line
+% https://tex.stackexchange.com/questions/18111/how-to-put-a-line-number-every-line-of-algorithmic
+% Return
+% https://tex.stackexchange.com/questions/238574/algorithm-return-statement-does-not-begin-on-new-line
+\algnewcommand{\Continue}{\State \textbf{continue}}
+% \usepackage[utf8]{inputenc}
+% \usepackage{amsmath}
+% \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+% Define a command for your "patch" or "new" code
+% Usage: \algnew{content}
+% \newcommand{\blue}[1]{\textcolor{blue}{#1}}
+% \newcommand{\green}[1]{\textcolor{green}{#1}}
+
+% Royal Blue
+\definecolor{blue}{rgb}{0.0, 0.0, 0.8}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+% Burnt Orange / Rust
+\definecolor{orange}{rgb}{0.7, 0.3, 0.0} 
+\newcommand{\orange}[1]{\textcolor{orange}{#1}}
+
+% Forest Green
+\definecolor{green}{rgb}{0.0, 0.5, 0.0}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+
+% Deep Violet
+\definecolor{violet}{rgb}{0.5, 0.0, 0.5}
+\newcommand{\violet}[1]{\textcolor{violet}{#1}}
+
+% Mean, average, bar on top
+% https://tex.stackexchange.com/questions/22100/the-bar-and-overline-commands
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% Table
+\usepackage{booktabs}
+\usepackage{multirow}
+
+\usepackage{graphicx}
+% \usepackage{subcaption} % Recommended over subfigure
+% \usepackage{subfigure} % Use the legacy package as an alternative
+
+\usepackage[caption=false]{subfig}
+
+% For the mulit-figure
+\usepackage[export]{adjustbox}
+
+\newcommand{\RuninHead}[1]{\textbf{#1:}\hspace{0.5em}}
+
+\usepackage{hyperref}
+\usepackage{bookmark}
+
+\usepackage{xurl}
+\usepackage{hyperref} % Load this after xurl
+% ===============================
+% ___________________________________________________
+\title{Time Series Analysis with Applications in Bioinformatics \\ \begin{CJK*}{UTF8}{ipxm}時系列分析と生命情報学への応用\end{CJK*}}
+\author{Coleman Yu \\ \begin{CJK*}{UTF8}{ipxm}余\hspace{1em}浩旻\end{CJK*}}
 \date{}
 
 \widowpenalty=10000
@@ -73,16 +199,16 @@
 \maketitle
 
 \begin{abstract}
-\subfile{sections/abstract}
+\subfile{chapters/abstract}
 \end{abstract}
 \newpage
 
 \setcounter{page}{3}
-\subfile{sections/acknowledgements}
+\subfile{chapters/acknowledgements}
 \newpage
 
 \setcounter{page}{4}
-\subfile{sections/publications}
+\subfile{chapters/publications}
 
 \tableofcontents
 \listoffigures
@@ -90,26 +216,28 @@
 
 \newpage
 
-\chapter{Introduction}
+\subfile{chapters/introduction}
 
-\chapter{Preliminaries}
+\subfile{chapters/preliminaries}
 
-\chapter{Scaling with Multiple Scaling Factors and Dynamic Time Warping in Time Series Searching}
-\section{Introduction}
-\section{Related Work}
-\section{Preliminaries}
-\section{Piecewise Scaling \& Dynamic Time Warping}
-\section{Experiments}
-\section{Conclusion and Future Work}
+\chapter{MTSCCleav: a Multivariate Time Series Classification (MTSC)-based Method for Predicting Human Dicer Cleavage Sites}
+\subfile{\firstpaper/sections/00-abstract}
+\subfile{\firstpaper/sections/01-background}
+\subfile{\firstpaper/sections/02-methods}
+\subfile{\firstpaper/sections/03-results}
+\subfile{\firstpaper/sections/04-discussion}
+\subfile{\firstpaper/sections/05-conclusions}
 
-\chapter{MTSCCleave: a Multivariate Time Series Classification (MTSC)-based method for predicting human Dicer cleavage sites}
-\section{Background}
-\section{Methods}
-\section{Results}
-\section{Discussion}
-\section{Conclusions}
+\chapter{Scaling with Multiple Scaling Factors in Time Series Searching}
+\subfile{\secondpaper/sections/00-abstract}
+\subfile{\secondpaper/sections/01-introduction}
+\subfile{\secondpaper/sections/02-related-work}
+\subfile{\secondpaper/sections/03-preliminaries}
+\subfile{\secondpaper/sections/04-method}
+\subfile{\secondpaper/sections/05-experiment}
+\subfile{\secondpaper/sections/06-conclusion}
 
-\chapter{Conclusion}
+\subfile{chapters/conclusion}
 
 % \appendix
 % \chapter{Additional Material}

@@ -1,0 +1,51 @@
+% \begin{table*}[ht]
+% \centering
+% \caption{The number of distance calls and runtime on PSED\_vanilla and PSED\_parallel\_bsf of the ten datasets}
+% % Note: The column specification now has 7 columns: l (Name) + c c (Size, Length) + (c c) * 2 (PSED groups)
+% \begin{tabular}{l c c c c c c}
+% \toprule
+% \multirow{2}{*}{Name} & \multirow{2}{*}{Size} & \multirow{2}{*}{Length} & \multicolumn{2}{c}{PSED\_vanilla} & \multicolumn{2}{c}{PSED\_parallel\_bsf} \\
+% \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+% & & & \# distance calls & Time (s) & \# distance calls & Time (s)\\
+% \midrule
+% % Original PSED Data
+% SonyAIBORobotSurface1 & 601 & 70 & 3212093055 & 697 & 308323603 & 69 \\
+% ECG200 & 100 & 96 & 367078356 & 91 & 32746898 & 3 \\
+% MedicalImages & 381 & 99 & 8449375162 & 2082 & 335106685 & 40 \\
+% CBF & 30 & 128 & 144715449 & 43 & 35732630 & 2 \\
+% SwedishLeaf & 500 & 128 & 34180325786 & 16601 & 1286324350 & 107 \\
+% Plane & 105 & 144 & 2020267770 & 621 & 79732626 & 6 \\
+% PowerCons & 180 & 144 & 6698798003 & 3629 & 1184577517 & 49 \\
+% GunPoint & 50 & 150 & 659109745 & 159 & 69752469 & 3 \\
+% Adiac & 390 & 175 & 54549344741 & 23550 & 1793395497 & 123 \\
+% Epilepsy & 137 & 206 & 18885650765 & 13131 & 11354378205 & 336 \\
+% \bottomrule
+% \end{tabular}
+% \label{tab:ten_datasets_efficiency_two_sets}
+% \end{table*}
+
+\begin{table*}[ht]
+\centering
+\caption{The number of distance calls and runtime on PSED\_vanilla and PSED\_parallel\_bsf of the ten datasets}
+% Note: The column specification has 7 columns
+\begin{tabular}{l c c c c c c}
+\toprule
+\multirow{2}{*}{Name} & \multirow{2}{*}{Size} & \multirow{2}{*}{Length} & PSED\_vanilla & PSED\_parallel\_bsf & \multirow{2}{*}{\% distance calls pruned} & \multirow{2}{*}{Speed Up} \\
+\cmidrule(lr){4-4} \cmidrule(lr){5-5}
+& & & Time (s) & Time (s) & & \\
+\midrule
+% Original PSED Data
+SonyAIBORobotSurface1 & 601 & 70 & 697 & 69 & 90.40\% & 10.10X \\
+ECG200 & 100 & 96 & 91 & 3 & 91.08\% & 30.33X \\
+MedicalImages & 381 & 99 & 2082 & 40 & 96.03\% & 52.05X \\
+CBF & 30 & 128 & 43 & 2 & 75.31\% & 21.50X \\
+SwedishLeaf & 500 & 128 & 16601 & 107 & 96.24\% & 155.15X \\
+Plane & 105 & 144 & 621 & 6 & 96.05\% & 103.50X \\
+PowerCons & 180 & 144 & 3629 & 49 & 82.32\% & 74.06X \\
+GunPoint & 50 & 150 & 159 & 3 & 89.42\% & 53.00X \\
+Adiac & 390 & 175 & 23550 & 123 & 96.71\% & 191.46X \\
+Epilepsy & 137 & 206 & 13131 & 336 & 39.88\% & 39.08X \\
+\bottomrule
+\end{tabular}
+\label{tab:ten_datasets_efficiency}
+\end{table*}

@@ -1,0 +1,100 @@
+\begin{table*}[htbp]
+\centering
+\resizebox{2.0\columnwidth}{!}{
+\begin{tabular}{llccccc|ccccc|ccccc}
+\toprule
+\multirow{2}{*}{} & \multirow{2}{*}{Classifier} 
+& \multicolumn{5}{c|}{5p arm} 
+& \multicolumn{5}{c|}{3p arm} 
+& \multicolumn{5}{c}{multi-class} \\
+\cmidrule(lr){3-7} \cmidrule(lr){8-12} \cmidrule(lr){13-17}
+& & Acc & Sp & Sn & F1 & MCC & Acc & Sp & Sn & F1 & MCC & Acc & Sp & Sn & F1 & MCC \\
+\midrule
+\multirow{5}{*}{\makecell{\, \, Baseline \\ (cfg 1)}} 
+              & ROCKET  
+              & 0.781 & 0.743 & 0.819 & 0.789 & 0.563  
+              & 0.790 & 0.773 & 0.807 & 0.793 & 0.580  
+              & 0.717 & 0.838 & 0.685 & 0.700 & 0.538 \\
+              & MiniROCKET 
+              & 0.755 & 0.728 & 0.782 & 0.762 & 0.512  
+              & 0.788 & 0.781 & 0.794 & 0.789 & 0.576  
+              & 0.685 & 0.823 & 0.653 & 0.662 & 0.486 \\
+              & MultiROCKET 
+              & 0.784 & 0.767 & 0.801 & 0.787 & 0.569  
+              & 0.803 & 0.792 & 0.814 & 0.805 & 0.606  
+              & 0.691 & 0.830 & 0.667 & 0.672 & 0.501 \\
+              & Hydra 
+              & 0.830 & 0.800 & 0.860 & 0.835 & 0.663  
+              & 0.808 & 0.797 & 0.820 & 0.810 & 0.617  
+              & 0.731 & 0.844 & 0.696 & 0.712 & 0.560 \\
+              & MultiROCKET-Hydra 
+              & 0.796 & 0.778 & 0.815 & 0.800 & 0.594  
+              & 0.807 & 0.767 & 0.816 & 0.808 & 0.614  
+              & 0.701 & 0.836 & 0.681 & 0.686 & 0.520 \\
+\midrule
+\multirow{5}{*}{\makecell{\, \, Baseline + \\Secondary \\ Structre \\ (cfg 2)}} 
+              & ROCKET  
+              & \textcolor{red}{\textbf{0.847}} & \textcolor{red}{\textbf{0.832}} & 0.862 & \textcolor{red}{\textbf{0.849}} & \textcolor{red}{\textbf{0.695}}  
+              & \textcolor{red}{\textbf{0.855}} & 0.842 & 0.868 & \textcolor{red}{\textbf{0.857}} & \textcolor{red}{\textbf{0.711}}  
+              & \textcolor{red}{\textbf{0.836}} & \textcolor{red}{\textbf{0.907}} & \textcolor{red}{\textbf{0.828}} & \textcolor{red}{\textbf{0.833}} & 0.736 \\
+              & MiniROCKET 
+              & 0.825 & 0.807 & 0.843 & 0.827 & 0.652  
+              & 0.822 & 0.802 & 0.843 & 0.826 & 0.646 
+              & 0.823 & 0.900 & 0.812 & 0.818 & 0.715 \\
+              & MultiROCKET 
+              & 0.812 & 0.803 & 0.822 & 0.814 & 0.626  
+              & 0.824 & 0.809 & 0.839 & 0.826 & 0.649  
+              & 0.796 & 0.888 & 0.791 & 0.792 & 0.673 \\
+              & Hydra 
+              & 0.845 & 0.816 & \textcolor{red}{\textbf{0.873}} & \textcolor{red}{\textbf{0.849}} & 0.691  
+              & 0.846 & 0.817 & \textcolor{red}{\textbf{0.874}} & 0.850 & 0.693  
+              & 0.830 & 0.901 & 0.814 & 0.826 & 0.724 \\
+              & MultiROCKET-Hydra 
+              & 0.817 & 0.809 & 0.826 & 0.819 & 0.635  
+              & 0.825 & 0.816 & 0.834 & 0.826 & 0.652  
+              & 0.803 & 0.891 & 0.798 & 0.800 & 0.684 \\
+\midrule
+\multirow{5}{*}{\makecell{\, Baseline + \\Base-pair \\probability \\(Standalone) \\ (cfg 3)}} 
+              & ROCKET  
+              & 0.842 & 0.828 & 0.855 & 0.844 & 0.684  
+              & \textcolor{red}{\textbf{0.855}} & \textcolor{red}{\textbf{0.856}} & 0.854 & 0.855 & 0.710  
+              & 0.795 & 0.885 & 0.783 & 0.789 & 0.670 \\
+              & MiniROCKET 
+              & 0.817 & 0.820 & 0.814 & 0.816 & 0.634  
+              & 0.836 & 0.834 & 0.838 & 0.836 & 0.673  
+              & 0.772 & 0.872 & 0.757 & 0.764 & 0.632 \\
+              & MultiROCKET 
+              & 0.822 & 0.813 & 0.832 & 0.824 & 0.645  
+              & 0.825 & 0.831 & 0.820 & 0.824 & 0.651  
+              & 0.758 & 0.866 & 0.747 & 0.750 & 0.612 \\
+              & Hydra 
+              & 0.846 & 0.827 & 0.865 & \textcolor{red}{\textbf{0.849}} & 0.693  
+              & 0.851 & 0.840 & 0.861 & 0.852 & 0.702  
+              & 0.789 & 0.879 & 0.769 & 0.780 & 0.658 \\
+              & MultiROCKET-Hydra 
+              & 0.822 & 0.809 & 0.834 & 0.824 & 0.644  
+              & 0.835 & 0.840 & 0.830 & 0.834 & 0.670  
+              & 0.759 & 0.866 & 0.746 & 0.750 & 0.611 \\
+\midrule
+\multirow{5}{*}{\makecell{Baseline + \\Base-pair \\probability \\(Incorporated) \\ (cfg 4)}} 
+              & ROCKET  
+              & 0.799 & 0.771 & 0.827 & 0.805 & 0.600  
+              & 0.809 & 0.786 & 0.832 & 0.813 & 0.619  
+              & 0.737 & 0.850 & 0.712 & 0.724 & 0.573 \\
+              & MiniROCKET & 0.776 & 0.756 & 0.797 & 0.781 & 0.554  
+              & 0.801 & 0.808 & 0.794 & 0.799 & 0.603  
+              & 0.705 & 0.835 & 0.675 & 0.684 & 0.521 \\
+              & MultiROCKET & 0.814 & 0.801 & 0.828 & 0.817 & 0.630  
+              & 0.816 & 0.812 & 0.820 & 0.816 & 0.634  
+              & 0.726 & 0.848 & 0.706 & 0.712 & 0.556 \\
+              & Hydra & 0.822 & 0.787 & 0.857 & 0.828 & 0.647  
+              & 0.834 & 0.828 & 0.840 & 0.835 & 0.669  
+              & 0.759 & 0.862 & 0.734 & 0.746 & 0.608 \\
+              & MultiROCKET-Hydra & 0.814 & 0.802 & 0.820 & 0.817 & 0.629  
+              & 0.820 & 0.825 & 0.816 & 0.819 & 0.642  
+              & 0.736 & 0.853 & 0.717 & 0.723 & \textcolor{red}{\textbf{0.874}} \\
+\bottomrule
+\end{tabular}}
+\caption{Channel ablation study. The best results are highlighted in \textcolor{red}{\textbf{bold}}.}
+\label{tab:channel_ablation}
+\end{table*}

@@ -1,0 +1,378 @@
+\section{Methods} \label{sec:methods}
+
+\input{../figures/pipeline}
+
+The overall pipeline of this study is summarized in Figure~\ref{fig:pipeline}.
+% In this session, we first discuss data preparation.
+% We then briefly review the concepts of time series and propose time series encoding methods.
+% After that, time series classifiers are discussed.
+% Finally, we discuss the evaluation metrics.
+
+\subsection{Data Preparation}
+
+\input{../tables/miRBase_representative}
+
+We used miRBase database~\cite{griffiths-jones2008mirbase}\footnote{The website is \url{www.mirbase.org}, and the newest version of the database is Release 22.1 (Accessed on 2025-06-22).}. 
+The database comprises miRNA data from various organisms~\cite{xu2018mirbaseconverter}.
+% , including humans, mice, and C. elegans~\cite{MiRBaseConverterBioconductorPackage2018}.
+The database contains 38,589 miRNA records.
+Each record refers to an miRNA sequence, along with other properties such as name, accession, organism, and information on its derivative miRNA products.
+We are interested in pri-miRNA in humans.
+The derivative miRNA products are the mature miRNAs. 
+The database also annotates the location of the mature miRNA within the original sequence and indicates whether its existence has experimental evidence.
+
+Table~\ref{tab:miRBase_representative} shows its four representative records.
+% We use it to elucidate our selection criteria. 
+% The rows are records.
+We first selected the records from humans (Homo sapiens).
+It resulted in 1,917 records.
+To identify the actual locations of the two cleavage sites in the pri-miRNA sequence supported by experimental evidence, we selected records that have two mature miRNAs resulting from cleavage at the 5p arm and the 3p arm, both of which have experimental support.
+Hence, only ``MI0000060'' (``hsa-let-7a-1'') would be selected in the table.
+It would serve as our running example.
+Its whole sequence is listed in Table~\ref{tab:hsa-let-7a-1}.
+After the selection process, we selected 827 experimental validated pre-miRNA sequences, each with its two mature miRNA products.
+This formed our dataset.
+
+
+\input{../tables/hsa-let-7a-1}
+
+
+
+\subsubsection{Argument the dataset with Secondary Structure information}
+% We aim to utilize domain knowledge about pre-miRNA sequences to enhance the accuracy of our classifier. 
+We leveraged the predicted secondary structure of these sequences to enhance the accuracy of the classification. 
+Recall that a specific three-dimensional (3D) structure is required for DNA, RNA, and protein to perform functions~\cite{zvelebil2008understanding}.
+However, finding these 3D structures using experimental methods
+such as X-ray crystallography or nuclear magnetic resonance (NMR)
+is costly and time-consuming.
+Hence, prediction methods for such 3D structures are necessary and helpful for downstream analysis.
+However, predicting the 3D structures is challenging. 
+One of the reasons is that there are some ``nonconventional'' base-pair interactions (e.g., noncanonical and rare A-G) that allow an RNA sequence to fold into a 3D structure, in addition to the (G, U) wobble pair, which is common and functionally important in RNA secondary structures. 
+It makes the search space for prediction much larger than, in the 2D case, the secondary structure.
+The local structures of the 3D structures, the secondary structures, only focus on the conventional base-pair interactions~\cite{alberts2022molecular}.
+Hence, predicting secondary structures is easier and faster.
+% It facilitates the prediction of secondary structure more easily and effectively than predicting the 3D structure.
+% Secondary structure can still shed light on some of these functions in the structure-function relationships.
+We employed RNAfold from the ViennaRNA Package\footnote{The latest stable release is Version 2.7.0 (Accessed on 2025-06-22).} to predict the secondary structure for a given pri-miRNA  $S$~\cite{lorenz2011viennarna}.
+RNAfold returns the secondary structure in the dot-bracket notation and a matrix of base-pair probabilities.
+The matrix is a square matrix with the side length $|S|$, where each entry $m_{ij}$ is the probability of base $s_i$ paired up with base $s_j$.
+Dot-bracket notation is a way of representing the secondary structure of $S$. Open parentheses ``$($'' (Close parentheses ``$)$'') indicates that the base is paired with a complementary base further (earlier) along in $S$. Dot ``$.$'' indicates that the base is unpaired.
+Equipped with the matrix, we can construct the base-pair probability sequence of $S$. 
+The predicted secondary structure and the base-pair probability sequence of our running example are shown in Table~\ref{tab:hsa-let-7a-1}.
+% For the unpaired nucleotide, its base-pair probability is 0.  
+
+\subsubsection{Extract cleavage patterns}
+The locations of the two mature miRNAs on the whole sequence indicate the probable locations of the two cleavage sites. 
+The 5p cleavage site must be beyond and near the ending location of the 5p mature miRNA. 
+% For example, the ending position of the 5p mature miRNA for ``hsa-let-7a-1'' is 27. So, the 5p cleavage site would be one of the bonds beyond the 27\textsuperscript{th} nucleotide. 
+We deemed the immediate bond next to the 5p mature miRNA's ending position the 5p cleavage site, with the knowledge that the actual cleavage site may not be this immediate bond but rather the nearby bonds after it. 
+The same applies to the 3p cleavage site. It is located at the immediate bond before the starting position of the 3p mature miRNA. 
+% which is 57.
+
+For each arm of each whole sequence, we extracted a 14-string\footnote{String with length $= 14$.} with the cleavage site located at the center of the string.
+The first 7 nt (nucleotide) before the center are highlighted in \textcolor{red}{\textbf{bold}}.
+In our running example, it would be ``\textcolor{red}{\textbf{UAUAGUU}}UUAGGU'' for the 5p cleavage site and ``\textcolor{red}{\textbf{GAGAUAA}}CUAUACA'' for the 3p cleavage site.
+We refer to these 14-strings as cleavage patterns.
+% , as they contain the cleavage sites.
+We also generate non-cleavage patterns by selecting a 14-string with the center 6 nt away from the corresponding cleavage sites towards the corresponding mature miRNA~\cite{bao2016lbsizecleav, liu2021recgbm} for each arm of each whole sequence.
+% For example, the bond that is 6 nt away from the 5p cleavage site towards 5p mature miRNA is the bond between 21\textsuperscript{st} and 22\textsuperscript{nd} nucleuotides.
+% It is based on the assumption that dicer is less likely to cut the middle of the mature miRNA than the opposite side.
+So, in our running example, the 5p non-cleavage pattern would be ``\textcolor{red}{\textbf{AGGUUGU}}AUAGUUU''.
+% The center of the 3p non-cleavage pattern is the bond between 62\textsuperscript{nd} and 63\textsuperscript{rd} nucleuotides. 
+The 3p non-cleavage pattern would be ``\textcolor{red}{\textbf{ACUAUAC}}AAUCUAC''.
+
+In conclusion, for a given pri-miRNA sequence, we can generate two cleavage patterns and two non-cleavage patterns.
+We call these four patterns simply the ``four strings'' of a given pri-miRNA.
+We also call each string a strand.
+The ``four strings'' of our running example are listed in Table~\ref{tab:hsa-let-7a-1_eight_strings}.
+% https://tex.stackexchange.com/questions/48632/underscores-in-words-text
+% https://tex.stackexchange.com/questions/534381/underscore-is-shorter-for-ttfamily
+
+\input{../tables/hsa-let-7a-1_eight_strings}
+
+
+We can construct the complementary strand of each of the strands in the ``four strings'' by finding the corresponding paired base for each of the bases in the input strand by considering the secondary structure information. 
+% Bases refer to the nucleotides. These two terms are used interchangeably.
+We use ``\_'' to denote the unpaired base in the complementary strand.
+For example, in Figure~\ref{fig:hsa-let-7a-1_ss}, ``UUAGG'' in the 5p cleavage pattern 
+% ``UAUAGUUUUAGGGU'' 
+is unpaired, while other bases pair with some bases, the resulting complementary strand is ``AUAUCAA\_\_\_\_\_UA''. 
+% Note that the five underscores indicate that ``UUAGG'' is unpaired. 
+There is a loop/budge there.
+% The strand and its complementary strand together can then encode the loop/budge information.
+We refer to the ``four strings'' and the four complementary strands together as the ``eight strings'' of the input pre-miRNA.
+It is also shown in Table~\ref{tab:hsa-let-7a-1_eight_strings}.
+% We are now ready to transform the ``eight strings'' into time series.
+% Of note, we also have the base-pair probability sequences that are of the same length as these strings. 
+
+\subsection{Time Series Encoding}
+A \textit{time series} $T = t_1, t_2, ..., t_n$ is a sequence of real-valued numbers\footnote{Unless otherwise specified, we denote entries of a time series (e.g., $T$) using the corresponding lowercase letter (e.g., $t$).}. A short contiguous region of $T$ is called a subsequence. 
+A \textit{subsequence} $T(i:j) = t_i, t_{i+1}, ..., t_j$ of a time series $T$ is a shorter time series that starts from position $i$ and ends at position $j$, where $i < j$.
+% Formally, $T(i:j) = t_i, t_{i+1}, ..., t_j$, where $1 \leq i \leq j \leq n$.
+
+% https://tex.stackexchange.com/questions/47170/how-to-write-conditional-equations-with-one-sided-curly-brackets
+% https://tex.stackexchange.com/questions/76189/how-to-put-a-formula-into-a-table-cell
+% They are the values on the x-axis if we plot them on an x-y plane.
+Strings and time series are temporal sequences. 
+% The order in a sequence usually represents time ordering. 
+The difference between strings and time series lies in their behavioral attributes~\cite{aggarwal2015data}. 
+% They are the values on the y-axis.
+For strings, 
+% also known as words, 
+an entry is a letter from a predefined set called the \textit{alphabet}. 
+% Thus, we also refer to the symbols as letters.
+For example, the alphabet is $\{A, C, G, T\}$ in the DNA string, while $\{A, C, G, U\}$ in the RNA string.
+For time series, an entry is a real number. 
+% The number can be an integer or a real number.
+Unlike real numbers, there is no ordering in the alphabet unless some external domain knowledge is introduced.
+
+% In the bioinformatics community, 
+The study of applying signal processing techniques to genomic data
+% which includes DNA and RNA strings, 
+is called ``Genomic Signal Processing'' (GSP)~\cite{mendizabal-ruiz2017dna, anastassiou2001genomic}.
+In the field of GSP, the time series representations of DNA strings are referred to as DNA numeric representations (DNR).
+Many DNRs have been proposed.
+% with applications including identifying protein-coding regions in DNA sequences~\cite{IdentificationProteinCodingRegions2011}, biological sequence querying~\cite{TimefrequencyBasedBiological2010}, and finding similarities between DNA sequences~\cite{NovelMethodComparative2014}.
+We noted that DNA strings and RNA strings are equivalent from a computational standpoint. 
+% They are simply strings with different alphabets.
+Many transformation methods designed for DNA can be applied to RNA by simply substituting $T$ with $U$.
+We present nine encoding methods. The relationship among them is shown in Figure~\ref{fig:encodings_relationship}.
+
+\input{../figures/encodings_relationship}
+
+\subsubsection{Single value versus Cumulative}
+% https://www.reddit.com/r/grammar/comments/bfuqx4/what_is_the_correct_wording_for_one_of_if_not_the/
+One of the simple, if not the simplest, encoding is to map the letters into numbers.
+% without considering any domain knowledge.
+Domain knowledge can be utilized.
+This approach is called the ``Single value mapping''~\cite{rakthanmanon2012searching, cristea2002conversion, chakravarthy2004autoregressive, zhao2001dna, mendizabal-ruiz2017dna}.
+One single value is assigned to each of the letters.
+\cite{holden2007atcg} employed the atomic number of each nucleotide as the transformed values, where $\{G = 78, A= 70, C = 58, T = 66\}$.
+\cite{nair2006coding} used electron-ion interaction potential representation (EIIP) as such value, where $\{G = 0.0806, A = 0.1260, C = 0.1340, T = 0.1335\}$.
+Our goal is to transform the input strand and its complementary strand into time series, aiming to capture the information contained in these sequences and the secondary structure implied by them.
+We employed the following reasoning to assign the value:
+\begin{enumerate}
+  \item We employ the complementary property~\cite{akhtar2007dna, chakravarthy2004autoregressive} during encoding.
+Recall that in the base-pairing rules, $G$ pairs with $C$ to form three hydrogen bonds while $A$ pairs with $U$\footnote{In DNA, $A$ pairs with $T$.} to form two hydrogen bonds.
+$G$-$C$ pairs are more stable than $A$-$U$ pairs.
+$G$ ($U$) can be regarded as the ``inverse'' of $C$ ($A$).
+% ~\footnote{Recall that we call ``-1' as the inverse of ``1''' and vice versa under addition in Algebra.}.
+We can preserve these base-pairing rules in the encoding by assigning $G$ ($A$) and $C$ ($U$)  opposite values.
+% The time series of the complementary strand would then be a flipped version along the y-axis of the original strand. 
+  \item $G$ and $A$ have a two-ring structure. They are purines.
+$C$ and $U$ have a single-ring structure. They are pyrimidines.
+Hence, we put $G$ and $A$ ($C$ and $U$) on the same side of the number line with zero in the middle.
+  \item % Now, the only remaining question is which nucleotide on the same side we should assign a larger absolute value to.
+% For example, for ``A' and `'G'', which one should be assigned a larger absolute value?
+% We adopted the ``A = 2 and G = 1'' assignment.
+The lower stability of $A$-$U$ pairs promotes strand separation, thereby facilitating the unwinding of the miRNA duplex during RISC loading.
+Regions rich in $A$ and $U$ are thus more likely to undergo strand selection and cleavage events.
+We assigned $A$ ($U$) with a larger absolute value than $G$ ($C$) to reflect this functional relevance.
+It aims to highlight sequence regions with higher cleavage potential.
+% The dicer cleavage sites are the bonds along the strands, the phosphodiester linkages.
+% Dicer cleaves the pre-miRNA.
+% The resulting double-stranded miRNA molecule is unwound to form the guide strand and the passenger strand.
+% The stability of the double strand would affect the unwinding process.
+% Since $G$-$C$ pairs are more stable than $A$-$U$ pairs, the unwinding process is less likely to occur in the regions with more $G$-$C$ pairs
+% This means that in regions with more C-G pairs, the double strands hold more tightly, and the unwinding process is less likely to occur than in regions with more A-U pairs. 
+% So, we want to emphasize the existence of such less stable A-U pairs in the double strands in our time series representations. 
+% We assign A and U with larger absolute values than those of G and C.
+\end{enumerate}
+It results in our baseline transformation method, namely ``Single value mapping'' as shown in row 1 of Table~\ref{tab:ts_encoding}. 
+$S$ is the input strand.
+When we encode $S$ without incorporating the corresponding base-pair probability sequence $P$, we set $p_i$ = 1 for all the entries of $P$. 
+We use the first ten nucleotides of the complementary strand of the 3p cleav of ``hsa-let-7a-1'', as shown in Table~\ref{tab:hsa-let-7a-1_eight_strings} as $S$ in the examples in Table~\ref{tab:ts_encoding}.
+
+
+\input{../tables/ts_encoding}
+
+With the assigned value to each nucleotide defined in single-value mapping, we can compute a cumulative sum of those values over time.
+It captures the aggregated signal by accumulating past events, allowing us to focus on the trend~\cite{zhang1994curves, berger2004visualization}.
+We named this method as ``Cumulative mapping'', shown in row 4 of Table~\ref{tab:ts_encoding}.
+
+\subsubsection{Grouped variable-length channel versus Grouped local-length channel}
+We can transform the input strand into a multivariate time series with two channels using grouped binary encoding, where nucleotides are grouped into ($A$, $U$) and ($G$, $C$). 
+It releases our third assumption that $A$ ($U$) has a larger absolute value than $G$ ($C$).
+We proposed two variations. 
+The first one allows the output to be variable-length sequences per channel, depending on group-specific occurrences. 
+The second one always returns two resulting sequences of a fixed length.
+Two variations extended from single value mapping are shown in rows 2 and 3, while those extended from cumulative mapping are shown in rows 5 and 6 in Table~\ref{tab:ts_encoding}. 
+% To conclude, the single value mapping and its two variations: grouped variable-length channel mapping and grouped fixed-length channel mapping, 
+% Of note, some our proposed transformations are lossy.
+% Lossy transformation refers to a transformation that does not allow us to restore the original string from the new time series representation.
+% Methods 2, 4, and 5 are lossy.
+% It does not guarantee that lossless transformation performs better than lossy transformation for the downstream analysis because lossy transformation may provide better generalization.
+
+\subsubsection{Global cumulative versus Local Cumulative}
+In cumulative mapping and its variations, we can choose where to start the accumulation.
+For a given subsequence $S'$ of the whole sequence $S$, accumulation can start from the beginning of $S$ even if only $S'$ is used downstream.
+It can also begin just at the start of the $S'$.
+The first one preserves the global context.
+% by recording the previous counts of the nucleotide up to $S'$.
+It can be useful when previous nucleotides (those before $S'$) influence later interpretation. 
+The second one focuses solely on local history in $S'$, ignoring global history.
+It is helpful if the previous nucleotides do not affect the chemical property of $S'$.
+
+Consider $T = 0, -1, ..., -6$ of the input string $S$ in ``Cumulative mapping'' in Table~\ref{tab:ts_encoding}, which accumulates from 0.
+$S$ is the suffix with length $= 10$ of the constructed complementary strand of $S(1:63)$ in Figure~\ref{fig:hsa-let-7a-1_ss}.
+If we start the accumulation from the first entry of the constructed complementary strand instead, it will yield a different result.
+Suppose that the last entry of the time series encoded in the cumulative mapping of the constructed complementary strand is -8, the time series encoded in the ``Global cumulative mapping'' for $S$ would accumulate from -8 instead of 0.
+The result is $T = -8, -9, ..., -14$.
+Note that it has the same trend as the original $T$. 
+This ``Global cumulative'' concept can be applied to every cumulative-based method, as shown in Figure~\ref{fig:encodings_relationship}.
+% We refer to the first approach as ``Global Cumulative'' and the latter as ``Local Cumulative'' or simply "Cumulative".
+% After Z-normalization, these two time series will have similar trends but not the same trends as they have different means and variances.
+
+\subsubsection{Incorporating base-pair probabilities}
+We can incorporate the base-pair probabilities $P$ in the encoding by
+thinking of it as the weight or confidence $p_i$ in the value assignment of each nucleotide $s_i$.
+It is implemented by multiplying the base-pair probability $p_i$ of the nucleotide $s_i$ with the assigned value of the kind of nucleotide of $s_i$ during encoding, as shown in Table~\ref{tab:ts_encoding}.
+% Recall that RNA secondary structure prediction algorithm is a kind of RNA folding algorithm.
+% The RNA secondary structure prediction algorithm returns the predicted secondary structure of a given RNA sequence, a planar graph such as the minimum free energy structure.
+% It also returns a probability matrix for the base-pair probabilities, which denote the probabilities of pairing one nucleotide with the other nucleotide.
+% In our case, the bases in an RNA sequence will either be paired with another base in the same sequence or remain unpaired.
+% For example in Figure~\ref{fig:hsa-let-7a-1_ss}, the 1\textsuperscript{st} base `U' is paired up with the 80\textsuperscript{th} base `A'.
+% The 6\textsuperscript{th} base `U' is unpaired.
+% The width and height of the probability matrix correspond to the length of the RNA sequence, as it is a pairwise matrix.
+% From this matrix, we can construct the base-pair probability time series $s^P$ of the whole sequence $s$.
+% The unpaired base will have very small probabilities in any base pair.
+% In our formulation, we deemed these small probabilities as $0$ to emphasize that these bases are deemed to be unpaired in the resulting predicted secondary structure. 
+
+\subsubsection{Transforming the secondary structure into time series}
+We can transform the secondary structure in the dot-bracket notation into a time series by ``Single value mapping'', where ``('' maps to 1, ``.'' maps to 0, and ``)'' maps to -1.
+
+\subsection{Time series classification}
+In univariate time series classification, an instance in the dataset consists of a time series $x = x_1, x_2, ..., x_m$ with $m$ observations and a discrete class label $y$, which takes $c$ possible values~\cite{bagnall2017great, ruiz2021great}.
+If $c = 2$, we refer to binary classification.
+If $c > 2$, we refer to multi-class classification.
+In multivariate time series classification, the time series is not a single sequence but a list of sequences.
+Each sequence is called a channel.
+% over $d$ dimensions and $m$ observations.
+% $x = <x_1, x_2, ..., x_d>$, where $x_k = x_{1,k}, x_{2,k}, ..., x_{m,k}$.
+% We also denote the $j$\textsuperscript{th} of the $i$\textsuperscript{th} case of dimension $k$ as a scalar number $x_{i,j,k}$.
+There are many classifiers defined for time series data, including distance-based, feature-based, interval-based, shapelet-based, dictionary-based, convolution-based, and deep learning-based classifiers. Additionally, two or more of the above approaches can be combined, resulting in hybrid approaches~\cite{middlehurst2024bake, ruiz2021great, bagnall2017great}.
+We employed convolution-based classifiers due to their simplicity and accuracy.
+
+\subsubsection{Convolution-based classifiers}
+Convolution-based classifiers first use randomly parameterized kernels to perform convolutions on the original time series $T$.
+A kernel is referred to as parameterized because its behavior is governed by a set of parameters, which will be discussed in detail later.
+Convolution is an operation to transform $T$ to another time series $M$, where $M$ is called the activation map.
+Its entry $M_i$ is calculated by applying a kernel $\omega$ with length $l$ to $T$ at position $i$, defined as follows:
+\begin{align*}
+M_i = T(i:i+l-1) * \omega = \sum_{j=0}^{l-1} t_{i+j}\cdot \omega_{1+j}
+\end{align*}
+To note, $|T(i:i+l-1)| = |\omega| = l$.
+Entries $M_i$'s are calculated by sliding $\omega$ across $T$ and computing a dot product.
+Additionally, although the original paper~\cite{dempster2020rocket} used the term ``convolution'' to refer to the above operation, ``cross-correlation'' may be a more suitable term for this operation.
+Recall $T$ with length $m$ has $(m-l+1)$ sliding windows of length $l$, given that the increment is 1\footnote{One step to the right per time.}, which defines the length of $M$.
+
+
+\input{../figures/rocket_convolution}
+
+Figure~\ref{fig:rocket_convolution} shows two kernels $\omega^1$ and $\omega^2$ with lengths 3 and 5, respectively.
+Each of which performs a convolution with $T$ and returns two activation maps, $M^1$ and $M^2$, respectively.
+For example, $M^1_1 = T(1:3) * \omega^1 = 3$.
+% For example, $\omega_1$ performs dot product with $T(1:3)$ and result $3$ as the first entry of the activation map.
+By sliding $\omega^1$ one time stamp at a time, an activation map $M^1$ with length $= (m-l+1) = 11-3+1=9$ is obtained.
+Then, pooling operations, such as the maximum (MAX) and proportion of positive values (PPV), are applied on $M^1$ to derive the summary features.
+In Figure~\ref{fig:rocket_convolution}, MAX and PPV are applied on $M^1$ and $M^2$.
+The summary features of $M^1$ are 4 and 5/9, which correspond to MAX and PPV, respectively.
+Dilation refers to a method that enables a kernel to cover a larger portion by creating empty spaces between entries in the kernel.
+The dilation $d$ of $\omega^2$ is 2. It introduces a gap of 1 in every two values of  $\omega^2$.
+
+The most popular convolution-based approach is the Random Convolutional Kernel Transform (ROCKET)~\cite{dempster2020rocket}.
+It generates a large number of randomly parameterized kernels, ranging from thousands to tens of thousands.
+The kernel's parameters include length, weights (the entries inside the kernel), bias (the value added to the result of the convolution operation), and dilation.
+Additionally, padding can be applied to $T$ at the start and end, ensuring $M$ has the same length as the input.
+To note, $T$, $M_1$, and $M_2$ in Figure~\ref{fig:rocket_convolution} have different lengths.
+The summary statistics of the activation map are obtained through two pooling operations: MAX and PPV.
+Hence, for $k$ kernels, the transformed data has $2k$ features.
+The default value of $k$ is 10,000.
+
+There are two extensions of ROCKET.
+They are MiniROCKET~\cite{dempster2021minirocket} and MultiROCKET~\cite{tan2022multirocket}.
+MiniROCKET removes unnecessary operations and many of the random components in the definition of kernels used by ROCKET.
+It speeds up Rocket by over an order of magnitude with no significant difference in accuracy, making the classifier almost deterministic.
+For example, the kernel length is fixed, and only two weight values are used.
+Only PPV is used for the summary statistics.
+MultiROCKET is extended from MiniROCKET.
+The main improvement of it is to extract features from first-order differences as defined in Table~\ref{tab:rockets_comparison} and add three new pooling operations~\cite{tan2022multirocket}.
+The three added operations are mean of positive values (MPV), mean of indices of positive values (MIPV) and longest stretch of positive values (LSPV).
+
+% Hydra
+
+\input{../figures/hydra_convolution}
+
+The HYbrid Dictionary-ROCKET Architecture (Hydra) combines dictionary-based and convolution-based models~\cite{dempster2023hydra}.
+Similar to ROCKET-based classifiers, it uses random kernels to extract features from the input time series.
+But it groups the kernels into $g$ groups of $k$ kernels each, as shown in Figure~\ref{fig:hydra_convolution}.
+Each time series is passed through all the groups.
+For each group of kernels, we slide them across $T$ and compute the dot product at each timestamp.
+Recall that the dot product of two input vectors ($x$ and $w_i$) has the maximum value when the two vectors align in the same direction and the minimum value when they are oriented in opposite directions.
+We record the kernel that best matches the subsequence of $T$ at each timestamp in each group (i.e., argmax). We refer to these kernels as the winning kernels.
+This results in a $k$-dimensional count vector for each of the $g$ groups, where $k=3$ in Figure~\ref{fig:hydra_convolution}.
+This results in a total of $g \times k$ features, with default values of $g = 64$ and $k=8$
+It uses a total of $k \times g = 512$ kernels per dilation.
+In addition to recording the kernel with the maximum response, we can also record the kernel with the minimum response, knowing that this kernel will be the best match with the ``inverted'' subsequence of $T$.
+Hydra is applied to both the original time series and its first-order differences.
+Hydra generated approximately 1000 features for each instance in our dataset.
+\cite{dempster2023hydra} found that it can improve the accuracy by concatenating features generated from Hydra with those from MultiRocket.
+This classifier is called MultiROCKET-Hydra.
+
+These five classifiers share the same simple design pattern.
+It involves the overproduction of features followed by a selection strategy.
+A large number of features (1,000 $\sim$ 50,000) are generated for each instance. 
+The features are then fed into a simple linear classifier.
+It determines which features are most useful and returns the final classification result.
+A ridge classifier is used in this study.
+It is a linear classifier that extends ridge regression to classification tasks by applying a threshold to the predicted values.
+It uses L2 regularization to prevent overfitting.
+The regularization strength is selected by internal cross-validation.
+A Ridge classifier is suggested for small datasets, as in our case, while a logistic regression classifier is suggested for large datasets~\cite{middlehurst2024bake}.
+
+While these five classifiers are often referred to as classifiers~\cite{middlehurst2024bake}, they are technically time series transformation methods for generating features that are then fed to a downstream classifier. The comparison of them is shown in Table~\ref{tab:rockets_comparison}.
+% The first five rows are the parameters of $\omega$.
+For MiniROCKET and MultiROCKET, the bias is determined from the convolution output, and the dilation depends on the length of the input time series~\cite{dempster2021minirocket, tan2022multirocket}.
+The main differences among ROCKET-based classifiers lie in how the summary features are generated.
+The generation of the summary features depends on:
+\begin{enumerate}
+    \item Kernels, which are defined based on the parameters, which consist of kernel length, kernel weights, bias, and dilation. 
+    % It is related to rows 1 to 4 in the table.
+    \item The way that padding applies to $T$, which leads to activation maps with different lengths.
+    \item The pooling operations, which are used in extracting features on the activation map.
+\end{enumerate}
+
+
+\input{../tables/rockets_comparison}
+
+\subsection{Evaluation metrics}
+To evaluate the performance of our time series-based classification (MTSC) model, we adopted five standard classification metrics.
+They are Accuracy (Acc), Specificity (Sp), Sensitivity (Sn), F1 score (F1), and Matthews Correlation Coefficient (MCC)~\cite{matthews1975comparison}.
+\begin{align*}
+Acc &= \frac{TP + TN}{TP + TN + FP + FN} \\
+Sp &= \frac{TN}{TN + FP} \\
+Sn &= \frac{TP}{TP + FN} \\
+F1  &= \frac{2 \times TP}{2 \times TP + FP + FN} \\
+MCC &= \frac{TP \times TN - FP \times FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}
+\end{align*}
+where TP, TN, FP, and FN are the number of true positives, true negatives, false positives, and false negatives, respectively. 
+
+% 3.4.4.1. From binary to multiclass and multilabel
+% https://scikit-learn.org/stable/modules/model_evaluation.html#from-binary-to-multiclass-and-multilabel
+To extend a binary metric to multi-class problems, we can treat the data as a collection of binary problems, one for each class.
+One class is treated as positive while the other classes are treated as negative.
+Then, the multi-class metrics can be obtained by averaging binary metric calculations across the set of classes.
+There are different ways of doing the averaging.
+Here, we adopted a macro-averaging approach.
+It treats each class equally and calculates the mean of the binary metrics.
+% 3.4.4.13. Matthews correlation coefficient
+% https://scikit-learn.org/stable/modules/model_evaluation.html#matthews-correlation-coefficient
+To use $MCC$ in the multiclass case, it can be defined in terms of a confusion matrix $C$ for $K$ classes, where $C_{i,j}$ is the number of observations that are actually in class $i$ and predicted to be in class $j$~\cite{gorodkin2004comparing}.  
+\begin{align*}
+MCC_{multi} = \frac{c \times s - \sum_k^K p_k \times t_k}
+{\sqrt{(s^2 - \sum_k^K p_k^2) \times (s^2 - \sum_k^K t_k^2)}}
+\end{align*}
+where $t_k = \sum_i^K C_{i, k}$ (denoting the number of times class $k$ actually occurred), $p_k = \sum_i^K C_{k, i}$ (denoting the number of times class $k$ was predicted), $c = \sum_k^K C_{k, k}$ (denoting the total number of samples correctly predicted) and $s = \sum_i^K \sum_j^K C_{i, j}$ (denoting the total number of samples).
+%%%
+%%%
+%%%

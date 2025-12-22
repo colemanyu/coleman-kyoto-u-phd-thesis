@@ -1,0 +1,37 @@
+\begin{table*}[ht]
+\centering
+\caption{The accuracy comparison for six PSED-guided distance measures of the ten datasets}
+\setlength{\tabcolsep}{4pt} % (Default is 6pt.)
+\begin{tabular}{c|cccccccccccc}
+\toprule
+\multirow{2}{*}{Dataset}
+& \multicolumn{2}{c}{DTW\textsuperscript{PSED}} 
+& \multicolumn{2}{c}{ADTW\textsuperscript{PSED}} 
+& \multicolumn{2}{c}{DDTW\textsuperscript{PSED}} 
+& \multicolumn{2}{c}{shapeDTW\textsuperscript{PSED}} 
+& \multicolumn{2}{c}{WDDTW\textsuperscript{PSED}} 
+& \multicolumn{2}{c}{WDTW\textsuperscript{PSED}} \\
+% \cmidrule(lr){3-4} \cmidrule(lr){5-6}
+& 
+$\overline{P@1}$ & $\overline{P@3}$ &
+$\overline{P@1}$ & $\overline{P@3}$ & 
+$\overline{P@1}$ & $\overline{P@3}$ & 
+$\overline{P@1}$ & $\overline{P@3}$ & 
+$\overline{P@1}$ & $\overline{P@3}$ & 
+$\overline{P@1}$ & $\overline{P@3}$ \\
+\midrule
+SonyAIBORobotSurface1 & 0.53 & 0.64 & 0.64 & 0.76 & \textbf{0.37} & 0.53 & 0.65 & 0.76 & \textbf{0.38} & 0.53 & 0.53 & 0.65 \\
+ECG200 & 0.73 & 0.84 & 0.80 & 0.88 & \textbf{0.54} & 0.68 & 0.81 & 0.88 & \textbf{0.53} & 0.69 & 0.73 & 0.84 \\
+MedicalImages & 0.66 & 0.78 & 0.76 & 0.88 & 0.51 & 0.69 & 0.74 & 0.88 & 0.51 & 0.70 & 0.66 & 0.79 \\ 
+CBF & 0.90 & 1.00 & 0.93 & 1.00 & 0.73 & 0.93 & 0.93 & 0.97 & \textbf{0.70} & 0.93 & 0.90 & 1.00 \\
+SwedishLeaf & 0.82 & 0.92 & 0.97 & 0.99 & 0.72 & 0.87 & 0.97 & 0.99 & 0.73 & 0.88 & \textbf{0.82} & 0.92 \\ 
+Plane & 0.60 & 0.80 & 0.75 & 0.94 & 0.50 & 0.67 & 0.74 & 0.90 & 0.50 & 0.69 & 0.59 & 0.80 \\
+GunPoint & 0.86 & 1.00 & 0.96 & 1.00 & 0.72 & 0.90 & 0.94 & 1.00 & 0.80 & 0.90 & 0.88 & 1.00 \\
+PowerCons & 0.78 & 0.99 & 0.79 & 1.00 & 0.79 & 1.00 & 0.79 & 1.00 & 0.79 & 1.00 & 0.78 & 1.00 \\
+Adiac & \textbf{0.33} & 0.45 & 0.57 & 0.71 & \textbf{0.21} & 0.34 & 0.53 & 0.70 & \textbf{0.20} & 0.33 & \textbf{0.34} & 0.45 \\
+Epilepsy & 0.77 & 0.88 & \textbf{0.78} & 0.88 & 0.66 & 0.79 & 0.74 & 0.89 & 0.66 & 0.82 & 0.80 & 0.89 \\ 
+
+\bottomrule
+\end{tabular}
+\label{tab:ten_datasets_PSED-guided_accuracy}
+\end{table*}

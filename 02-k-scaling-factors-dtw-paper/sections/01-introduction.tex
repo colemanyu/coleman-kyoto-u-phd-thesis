@@ -1,0 +1,94 @@
+\section{Introduction} \label{sec:introduction}
+
+To study the mechanism of a process, we take measurements.
+Measurements are usually taken continuously by the sensors. 
+Measurements of processes always yield continuous values at discrete timestamps. They are time series data.
+For example, smartphones collect users' GPS data.
+ECG monitors measure patients' heart rate.
+The continuous measurements compose a time series.
+It is not hard to see why time series data are ubiquitous across many different fields.
+%
+% univariate VS multivariate
+In GPS data, each time series data point consists of the user's latitude and longitude information.
+They are multivariate time series.
+In ECG data, each data point represents the amplitude of the patient's cardiac electrical activity.
+They are univariate time series
+In this study, we focus on univariate time series.
+
+% time series tasks
+Many data mining tasks can be defined on time series data.
+For example, given a time series database, we can perform clustering based on the pairwise similarity of the time series instances.
+A classifier can be trained when categorical labels are available.
+Alternatively, given a long time series, for motif finding, we identify recurring patterns.
+In contrast, for anomaly detection, we identify abnormal subsequences.
+% Many time series tasks can be reduced to similarity comparison.
+Almost all time series data mining tasks can be reduced to arguing the similarity between two time series.
+A good distance measure, also known as a similarity measure, can determine the success or failure of the algorithms built on it. The choice of an appropriate distance measure is particularly evident in classification.
+Studies show that simple nearest-neighbor classification (1-NN) is difficult to beat and can compete with more complex methods~\cite{bagnall2017great}.
+
+% Some common similarity measures
+A time series is treated as a whole rather than as a collection of individual values. 
+The relationships between values are important. 
+They constitute trends and shapes. 
+Hence, similarity search in time series data is approximate-based rather than exact match-based~\cite{fu2011review}. 
+Besides, different invariances should be allowed during the comparison. 
+
+% DTW
+% https://www.reddit.com/r/grammar/comments/bfuqx4/what_is_the_correct_wording_for_one_of_if_not_the/
+Dynamic Time Warping (DTW) is one of, if not the most common, similarity measures.
+DTW provides invariance to time distortion by aligning and measuring the similarity between two series that may be misaligned in time.
+However, it assumes that the time series are expressed on a similar global expression rate.
+This assumption limits its performance when comparing two time series expressed at different global expression rates. 
+We often see this behavior in domains such as speech recognition, motion analysis, patient biomedical signals, and sensor data in the manufacturing industry.
+
+% US
+\input{../figures/nn-interpolation}
+\input{../figures/us-prefix}
+Uniform Scaling (US) can achieve global scaling invariance by scaling the two time series to the same length via interpolation, such as nearest-neighbor interpolation, before comparison, as shown in Figures~\ref{fig:nn-interpolation}.
+It is reported that in some domains, such as gestures~\cite{rose1996efficient, li2002motion} and music performance~\cite{dannenberg2004musart}, the scaling is about 10-15\% (i.e., scaling factors: 1.1 to 1.15). 
+The scaling factors are relatively small, since the nature of the music and the gait will change with significant scaling factors. 
+% For example, the mood of the music will change from sad to happy if the tempo is so fast, and the gait pattern would become running on such a large scale~\cite{shen2018accelerating}.
+However, in some other domains, we may encounter larger scaling factors.
+In bioinformatics, gene expression time series data could differ by a factor of 1.41~\cite{li2002simple, batista2014cid}.
+% Studies found that the time series of the electrical loads of the dishwasher could differ by a factor of 1.7~\cite{AcceleratingTimeSeries2018}.
+In Figure~\ref{fig:us-prefix}, $Q$ and a prefix of $C$ are similar, but at different rates.
+In searching, we typically have a query $Q$ and a longer candidate $C$.
+We seek a prefix of $C$ that is close to $Q$.
+For better comparison, we need to eliminate the scaling effect.
+These observations demonstrate the necessity of uniform scaling.
+
+% DTW + US
+DTW and US are used to achieve different kinds of invariance. 
+DTW handles local distortion, while US handles global scaling.
+Furthermore, some studies show that the combination of US and DTW, namely USDTW, better reflects similarity~\cite{fu2008scaling, shen2017searching, shen2018accelerating}. 
+US is first applied to transform the two time series into the same length to eliminate the effect resulting from the different rates. Then, DTW, rather than ED, is applied to address local misalignment.
+USDTW is computationally more expensive than DTW because it involves the calculation of the DTW between $Q$ and different lengths of each prefix of $C$. 
+The different lengths of the prefixes correspond to different scaling factors.
+
+% Something is missing
+\input{../figures/psdtw-intuition}
+It is not uncommon for the data sampling strategy to change over time~\cite{aggarwal2013data}.
+There are different phases, each with its own rate.
+To achieve invariance for this kind of scaling effect resulting from multiple rates, rather than using a single scaling factor, it is beneficial to identify these different phases and use the appropriate scaling factors for these segments, also known as pieces.
+We refer to this as piecewise scaling (PS).
+Figure~\ref{fig:psdtw-intuition} shows the intuition of PS.
+The prefix of $C$ (i.e., $C(1:k)$) and $Q$ share the same set of segments, but each has a different scaling.
+Multiple scaling factors must be used.
+It motivates us to design a new distance measure or framework that considers applying a scaling factor on each of the phases as defined by dashed lines in Figure~\ref{fig:psdtw-intuition}, during the comparison of two time series.
+
+% Contributions
+Our contributions are as follows:
+\begin{itemize}
+  \item We propose the first framework to achieve piecewise scaling (PS) invariance. In particular, we focus on two instantiations of PSD, namely PSED (i.e., ED with PS invariance) and PSDTW (i.e., DTW with PS invariance).
+  \item We design a dynamic programming method to compute PSD.
+  % Its time complexity has also been analyzed.
+  \item We propose a constrained version of PSD (cPSD) based on the allowed segment lengths. Besides, two other speedup techniques have been proposed. For a particular instantiation of PSD, PDTW, we demonstrate the usage of a lower bound to further speed it up.
+  \item We demonstrate that the segmentation results returned by PSD can improve the accuracy of other distance measures.
+\end{itemize}
+
+% Roadmap
+The rest of this paper is structured as follows. 
+We present related work in Section~\ref{sec:related-work} and preliminaries in Section~\ref{sec:preliminaries}. 
+Section~\ref{sec:method} introduces our new distance measure framework, its constrained version, and speedup techniques.
+It is experimentally demonstrated in Section~\ref{sec:experiment} for the problem of querying. 
+In Section~\ref{sec:conclusion}, we conclude this study with some future work. 

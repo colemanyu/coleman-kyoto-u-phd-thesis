@@ -1,0 +1,360 @@
+\section{Preliminaries} \label{sec:preliminaries}
+
+We refer to time as the contextual attribute because it provides the context for the measurements to be made.
+We refer to the measurements as the behavioral attributes. 
+Time series are multivariate when more than one behavioral attribute is present. Otherwise, it is called univariate.
+We focus on the univariate case.
+
+\begin{definition}[Time Series] 
+    \label{def:ts}
+    A time series $T = t_1, t_2, ..., t_n$ is a sequence of real-valued numbers with length = $n$.
+\end{definition}
+
+When two time series are involved in the discussion, we denote them as $Q$ (Query) and $C$ (Candidate), with lengths $m$ and $n$, respectively.
+Since $Q$ is the query sequence, it is not longer than $C$ (i.e., $m \leq n$).
+The requirement of ``$m \leq n$'' is a natural setting.
+In ``Query by Content'', a user is going to search for a candidate in the database from a user-input query in which the query may only contain partial information of the target candidate.
+For example, a user often wants to find a song or tune that is lingering in their head by humming a part but not whole of the tune~\cite{zhu2003warping}.
+We are also interested in a segment or subsequence of a time series. 
+
+\begin{definition}[Subsequence] 
+    \label{def:subseq}
+    A subsequence $T(i:j)$ of a time series $T$ is a shorter time series that starts from position $i$ and ends at position $j$ with length = $j - i + 1$. Both ends are inclusive.
+    Formally, $T(i:j) = t_i, t_{i+1}, ..., t_j$, $1 \leq i \leq j \leq n$.
+\end{definition}
+We call $T(1:j)$ the prefix of $T$ of length $j$.
+
+% Normalization
+\input{../figures/normalization}
+Before comparison, we need to standardize or normalize them.
+A common way is Z-Normalization, which is $T = (T-\operatorname{mean}(T))/\operatorname{std}(T)$, as shown in Figure~\ref{fig:normalization}. 
+The most fundamental distance measure is the Euclidean Distance (ED).
+
+\subsection{Euclidean Distance (ED)}
+
+Given two points on a plane, it is intuitive to define the distance between them as the length of the line segment between them. 
+This idea extends to the case of $n$-dimensions in time series with length $n$.
+
+\begin{definition}[Euclidean Distance (ED)]
+    \label{def:ed}
+    Given two series $Q$ and $C$ both with length $n$, the Euclidean Distance between them is defined as:
+    \begin{equation} 
+        \label{eq:ed}
+        \operatorname{ED}(Q, C) = \sqrt{\sum_{i=1}^n (q_i-c_i)^2}
+    \end{equation}
+\end{definition}
+
+A square root is usually involved in the computation of distance measures.
+It is a monotonic function. Since it does not change the relative ranking of the results, we can omit the square root operation for simplicity and optimization.
+ED aligns the entries between two series in a one-to-one manner.
+Two similar series will have a large distance under ED if they are not aligned well in the time dimension.
+ED cannot handle local distortion along the time axis because warping in the alignment is not allowed.
+A standard distance measure that provides warping invariance is called Dynamic Time Warping (DTW).
+
+\subsection{Dynamic Time Warping (DTW)}
+
+Dynamic Time Warping (DTW) is an algorithm that measures similarity between two time series while accounting for local distortions.
+DTW aligns the two series by nonlinearly warping the time axis to minimize the final cumulative distance.
+
+Given two time series, $Q$ and $C$, we first construct an $m$ by $n$ distance matrix $M$.
+The origin ($1$, $1$) is set at the bottom-left element of $M$.
+The ($i$, $j$) element of $M$ contains the distance $\operatorname{d}(q_i, c_j)$ between points $q_i$ and $c_j$.
+This local distance $\operatorname{d}(\cdot, \cdot)$ is usually calculated by $(q_i - c_j)^2$.
+Each ($i$, $j$) element refers to an alignment or mapping of the two points.
+A contiguous set of such elements forms a warping path $W$.
+$W$ represents the non-linear alignment of $Q$ and $C$.
+$W = w_1, w_2, ..., w_K$ in which $w_k = (i, j)_k$ represents the mapping between $q_i$ in $Q$ and $c_j$ in $C$, where $\max(m, n) \leq K \leq m + n -1$.
+``$\max(m, n) \leq K$'' because the alignment of two series must include every point in both $Q$ and $C$.
+``$K \leq m + n -1$'' because the longest warping path is either the ``concatenation of the bottom row and the rightmost column'' (with the bottom-right cell being overlapped) or the ``concatenation of the leftmost column and the top row'' (with the top-left cell being overlapped).
+
+The warping path $W$ is typically subject to the following three constraints.
+\begin{itemize}
+  \item Boundary conditions: $w_1 = (1, 1)$ and $w_K = (m, n)$. The first (last) point of $Q$ must map to that of $C$.
+  \item Continuity: Given $w_k = (i, j)$ and $w_{k-1} = (i', j')$, $i - i' \leq 1$ and $j - j' \leq 1$. An entry in the warping path $W$ is adjacent to its one-step previous entry.  
+  % It restricts the allowable steps in the warping path to adjacent cells.
+  \item Monotonicity: Given $w_k = (i, j)$ and $w_{k-1} = (i', j')$, $i - i' \geq 0$ and $j - j' \geq 0$. The warping path $W$ does not go back. 
+  % It either goes up, down, or remains stationary with respect to the vertical axis.
+\end{itemize}
+We denote $W^*$ as a set of all allowed possible paths.
+
+\begin{definition}[Dynamic Time Warping (DTW)~\cite{sakoe1978dynamic}]
+    \label{def:dtw}
+    DTW returns the minimum warping cost:
+    \begin{equation} 
+        \label{eq:dtw}
+        \operatorname{DTW}(Q, C) = \min_{W \in W^*}{\sum_{k=1}^{|W|} w_k}
+    \end{equation}
+\end{definition}
+To find the minimum warping cost and its corresponding warping path, we can use dynamic programming (DP) to evaluate the following recurrence.
+
+\begin{equation}
+\label{eq:dtw-recurrence}
+\begin{split}
+    D(i, j) &= \operatorname{d}(q_i, c_j) \\
+    &\quad + \min \begin{cases}
+        D(i-1, j-1), \\
+        D(i-1, j), \\
+        D(i, j-1)
+    \end{cases}
+\end{split}
+\end{equation}
+
+It can be solved by building the accumulated cost matrix $D$, where the y-axis refers to $Q$, and the x-axis refers to $C$.
+The base cases, which are the first row and the first column, are defined as $D(1, j) = \sum_{k=1}^{j} \operatorname{d}(q_1, c_k), j \in [1, n]$ and $D(i, 1) = \sum_{k=1}^{i} d(q_k, c_1), i \in [1, m]$. 
+After we have initialized the base cases, we can fill up $D$ starting from the bottom up.
+There are $m \times n$ entries in $D$. It takes $\mathcal{O}(mn)$ to fill it up.
+Once $D$ is built, we can find the path corresponding to this minimum cost by simple backtracking from the end cell $D(m, n)$ to the origin cell $D(1, 1)$.
+
+\input{../figures/dtw-matrix}
+Some constraints have been proposed to prevent pathological warping paths with the aim of accuracy and efficiency.
+Two of the most popular are Sakoe-Chiba Band~\cite{sakoe1978dynamic} and Itakura Parallelogram~\cite{itakura1975minimum}.
+They only allow the warping paths to pass through the allowed region, as shown in Figure~\ref{fig:dtw-matrix}, by setting the cells outside this region in $D$ to have $\infty$ accumulated distance cost.
+\cite{keogh2005exact} suggested that these constraints can be viewed as constraints on the warping path entry $w_k = (i,j)_k$.
+It represents these constraints as inequalities applying to the indices $i$ and $j$ locally, without depending on the main diagonal in $D$.
+In the Sakoe-Chiba Band, the constraints can be represented as $j -r \leq i \leq j+r$, where $r$ is an integer.
+It is sometimes specified as a fraction (or percentage) of the longer time series length to ensure length invariance.
+For clarity, we assume $r$ is an integer unless specified otherwise.
+This means that $q_i$ can only align with $c_j$ if their indices differ by at most $r$.
+Since $r$ defines the maximum allowed difference between the mapping indices, $|n - m| \leq r$, to ensure that the end points of $Q$ and $C$ can map.
+In the Itakura Parallelogram, $r$ is a function of $i$ rather than a constant value.
+ED can be seen as a special case of DTW where the warping path is fixed to be diagonal. $q_i$ aligns to $c_i$ for every $i$ (i.e., $r = 0$).
+%
+DTW minimizes over all possible warping paths, and the warping path of ED is one of them.
+Because of the band, we only need to fill up the cells within the band. The complexity is $\mathcal{O}(\#\_of\_cells\_inside)$.
+In the case of the Sakoe-Chiba Band, the band has a constant width $w = 2r + 1$.
+The complexity becomes $\mathcal{O}(w \times length\_of\_diagonal) = \mathcal{O}(rn)$.
+The constrained DTW is denoted as $\operatorname{DTW}_r$.
+
+\subsection{Uniform Scaling (US)}
+
+% Given a query series $Q$ and a candidate series $C$, of length $m$ and $n$ respectively, where $m \leq n$.
+In US, we compare the whole sequence of $Q$ to a prefix of $C$, as shown in Figure~\ref{fig:us-prefix}.
+The two compared sequences are scaled to the same length via interpolation before ED is applied.
+A common interpolation method is nearest neighbor interpolation.
+
+\begin{definition}[Nearest Neighbor Interpolation]
+    \label{def:interpolation}
+    Given a time series $T$ of length $n$ and an integer $L$  , Nearest Neighbor Interpolation scales $T$ into $T^L$ as follows:
+    \begin{equation} 
+        \label{eq:interpolation}
+        T^L_j = T_{\ceil{n(j/L)})} \quad where\; 1 \leq j \leq L
+    \end{equation}
+\end{definition}
+We can scale up or down a given series using Equation~\ref{eq:interpolation}, as shown in Example~\ref{ex:interpolation}.
+
+\begin{example}
+    \label{ex:interpolation}
+    Given a series $T = 1, 2, \cdots, 6$ with length $n = 6$. 
+    Let $T(1:4)$ be the prefix of $T$ of length $k = 4$ (i.e., $T(1:4) = 1, 2, 3, 4$).
+    Given an integer $L = 8$, we compute $T(1:4)^8$ as follows.
+    \begin{align*}
+        T(1:4)^8 &= T_{\ceil{4(1/8)}}, T_{\ceil{4(2/8)}}, T_{\ceil{4(3/8)}}, \dots, T_{\ceil{4(8/8)}} \\
+                 &= T_1, T_1, T_2, \dots, T_4 \\
+                 &= 1, 1, 2, \dots, 4.
+    \end{align*}
+\end{example}
+
+When $L > k$, $T$ is said to be stretched. When $L < k$, $T$ is said to be shrunk.
+
+\begin{definition}[Uniform Scaling (US)~\cite{keogh2004indexing}]
+    \label{def:us}
+    Given two series $Q$ and $C$, of length $m$ and $n$ respectively, and a scaling factor bound $l$, where $l \geq 1$.
+    Let $C(1:k)$ be the prefix of $C$, where $\ceil{m/l} \leq k \leq \min(\floor{lm}, n)$, and ${C(1:k)}^L$ be a rescaled version of $C(1:k)$ with length $L$, where $L = \min (\floor{lm}, n)$. 
+    $L$ is called the alignment factor.
+    $\min (\floor{lm}, n)$ is the largest alignment factor.
+    \begin{equation} 
+        \label{eq:us}
+        \operatorname{US}(Q,C,l,L) = \min_{k=\ceil{m/l}}^{\min (\floor{lm}, n)} \operatorname{ED}(Q^L, {C(1:k)}^L)
+    \end{equation}
+\end{definition}
+$L$ is set as the largest alignment factor~\cite{shen2018accelerating} to ensure all the points in $Q$ and $C(1:k)$ are preserved during interpolation because of up-sampling, and the scaled version of all the prefixes is going to have the same length (i.e., $L$), for fair comparison, since comparison between two longer time series generally results in a larger distance measure.
+Through Equation~\ref{eq:us}, we find the minimum value and the corresponding argument (i.e., $k$) by checking the minimum value of the ED function from $\ceil{m/l}$ to $\min (\floor{lm}, n)$.  
+The scaling factor is defined by the argument minimum value of $k$.
+The smaller $k$ is, the more we need to ``stretch'' $C$ for $Q$ to compare with $C(1:k)$, which is $m/k$ times.
+
+Consider a time series database $D$ comprising a set of candidate instances, and a single query series $Q$. The search task aims to retrieve the most similar instance (or top-$k$ instances) from $D$ to $Q$. 
+We maintain $Q$ as a fixed reference and extract only the prefixes from each instance in $D$ for comparison. 
+Furthermore, to simplify notation, we apply scaling exclusively to the instances in $D$, leaving $Q$ unscaled.
+% However, the same methodology also works in an alternative way.
+
+\subsection{Uniform Scaling \& Dynamic Time Warping (USDTW)}
+
+Uniform Scaling \& Dynamic Time Warping (USDTW) measures the similarity by applying scaling with an appropriate scaling factor on $C$ and then applying DTW. 
+The tail part of $C$ can be ignored, as shown in Figure~\ref{fig:us-prefix}.
+
+\begin{definition}[Uniform Scaling \& Dynamic Time Warping (USDTW) \cite{shen2018accelerating}]
+    \label{def:usdtw}
+    With the same notations defined in Definition~\ref{def:us},
+    \begin{equation} \label{eq:usdtw}
+    \begin{split}
+        \operatorname{USDTW}_r(Q,C,l, L) &= \\
+        \min_{k=\ceil{m/l}}^{\min (\floor{lm}, n)} & \operatorname{DTW}_r(Q^L, {C(1:k)}^L)
+    \end{split}
+    \end{equation}
+where $r$ is the DTW constraint parameter.
+\end{definition}
+We replace the ED function in Equation~\ref{eq:us} by DTW function to form Equation~\ref{eq:usdtw}.
+
+As mentioned in Section~\ref{sec:introduction}, there may exist more than one scaling factor. 
+Hence, both the existing distance measures, US and USDTW, which are designed to handle only one scaling factor, are insufficient.
+This motivates us to design a new framework of distance measures.
+
+\subsection{Lower Bounds for DTW and USDTW}
+
+We first introduce the concept of lower bounds and explain how they can benefit search.
+%
+DTW is computationally more expensive than ED.
+They compute an accumulated cost matrix of size $m \times n$, where $m$ and $n$ denote the lengths of the two time series. 
+It results in quadratic complexity.
+This complexity poses a challenge for similarity search.
+The most common approach is to compute a lower bound of the real value, which is computationally cheap and tight.
+We can use this lower bound to filter out unpromising candidates and perform the expensive distance computation only on the small set of promising candidates.
+In searching, we would keep track of the best\_so\_far distance $\mathrm{bsf}$ between the query $Q$ and the testing candidates.
+When testing a new candidate $C$, we first compute the $\operatorname{LB}(Q, C)$. We only compute the actual DTW when $\operatorname{LB}(Q, C) \leq \mathrm{bsf}$.
+
+We then introduce some common lower bounds.
+
+\noindent\RuninHead{Kim Lower Bound~\cite{kim2001indexbased}} $\lbKim$ is a simple and fast lower bound of DTW.
+The complexity is $O(1)$.
+It uses the four features in $Q$ and $C$.
+We denote $t_{-1}$ as the last point and $t_{\max}$ ($t_{\min}$) as the maximum (minimum) point in time series $T$.
+
+\begin{equation} 
+    \label{eq:lb-kim}
+    \lbKim= \max
+        \begin{cases}
+            \operatorname{d}(q_1, c_1)\\
+            \operatorname{d}(q_{-1}, c_{-1})\\
+            \operatorname{d}(q_{\max}, c_{\max})\\
+            \operatorname{d}(q_{\min}, c_{\min)}\\
+        \end{cases}
+\end{equation}
+
+$\operatorname{d}(\cdot, \cdot)$ refers to the local distance used in the point alignment.
+The first two lines come from the boundary condition in DTW.
+The alignment between the first pair of points and the last pair of points must contribute to the accumulated sum of DTW.
+Each point in $Q$ must align with some point in $C$, and vice versa. Each alignment contributes a local distance to the final sum.
+The minimum possible local distance for the alignment of $q_{\max}$ would be the one aligned with $c_{\max}$.
+The same applies to the last line in the equation.
+
+There is a simplification of $\lbKim$. Only the first and last pair are used in the lower bound computation. In the normalized time series, the third and fourth rows in Equation~\ref{eq:lb-kim} should have small values~\cite{rakthanmanon2013addressing}. Ignoring them can improve the complexity from $\mathcal{O}(n)$ to $\mathcal{O}(1)$.
+The simplified lower bound is $\lbKimFL = \operatorname{d}(q_1, c_1) + \operatorname{d}(q_{-1}, c_{-1})$.
+
+\noindent\RuninHead{Keogh Lower Bound~\cite{keogh2005exact}} $\lbKeogh$ builds the upper $U$ and lower envelopes $L$ of one of the time series out of the two compared sequences.
+Usually, the envelopes are constructed for $Q$ instead of $C$ as we will compare one $Q$ against many $C$'s. 
+Otherwise, we need to build the envelopes for each candidate instead~\cite{rakthanmanon2013addressing}. 
+
+\input{../figures/lb_keogh-lb_shen-visualization}
+To the best of our knowledge, they are the first to interpret the constraint as a restriction on the indices of the warping path $w_k = (i, j)_k$ such that $j - r \leq i \leq j + r$, where $r$ defines the allowable deviation of alignment between $q_i$ and $c_j$.
+For ease of exposition, we focus on the most used constraint in the literature, which is the Sakoe-Chiba Band~\cite{tan2018efficient}.
+Two sequences are constructed for $Q$, namely the upper $U^Q$ and lower envelopes $L^Q$ of $Q$ as shown in Figure~\ref{fig:lb_keogh-lb_shen-visualization}.
+For each $q_i$, we would assign a window of $q_i$ based on its index $i$ as follows.
+
+\begin{equation}
+    \label{eq:lb_keogh-envelope}
+    \begin{aligned}
+        U_i^Q = \max(q_{\max(1,i-r)}:q_{\min(i+r,m)}) \\
+        L_i^Q = \min(q_{\max(1,i-r)}:q_{\min(i+r,m)}) \\
+    \end{aligned}
+\end{equation}
+
+$\max(1, \cdot)$ and $\min(\cdot, m)$ are used for handling the boundary cases.
+$U^Q$ and $L^Q$ together form a bounding envelope that encloses the original $Q$, it is the grey region in the figure.
+For each $c_j$, either $(c_j, U_j^Q)$ or $(c_j, L_j^Q)$ corresponds to the possible alignment that contributes the minimum distances if $c_j$ falls outside the envelope.
+Herein, the lower bound is the sum of these distances, as shown in the following equation.
+
+\begin{equation} 
+    \label{eq:lb_keogh}
+    \lbKeogh(Q,C) = \sum_{j=1}^{n}
+    \begin{cases}
+        d(c_j, U_j^Q) & \text{if } c_j > U_j^Q\\
+        d(c_j, L_j^Q) & \text{if } c_j < L_j^Q\\
+        0 & \text{otherwise}\\    
+    \end{cases}
+\end{equation}
+
+Visually, these distances are the distances between $c_j$ outside the envelope and the vertically corresponding points on the envelope.
+The distances are the green bars in the figure.
+Equation~\ref{eq:lb_keogh} returns the sum of the green bars.
+
+\noindent\RuninHead{Shen Lower Bound~\cite{shen2017searching, shen2018accelerating}} It leverages the boundary and continuity conditions to create a lower bound of DTW. 
+It can be used to lower-bound the USDTW with slight modification.
+The intuition is to find the minimum possible alignment of each $c_j$ with points in $Q$, subject to the local constraint $r$ from DTW and the global constraint $l$ from US.
+
+We will first introduce $\operatorname{LB}_\mathrm{Shen}$ for DTW.
+Given the candidate sequence $C$ with length $n$, 
+for each $c_j$, we create its possible reach $\mathbbm{q}_j$ in $Q$ under DTW as in Equation~\ref{eq:lb_shen-dtw-q}.
+The elements $\mathbbm{q}_j$ form an indexed collection $\mathbbm{Q} = (\mathbbm{q}_1, \mathbbm{q}_2, \dots, \mathbbm{q}_{\min(\floor{lm}, n)}$).
+
+\begin{equation} 
+    \label{eq:lb_shen-dtw-q}
+    \mathbbm{q}_j = (q_{\max(1, j-r)}, \ldots, q_{\min(j + r, m)})
+\end{equation}
+
+We define $\delta(x, Y) = \min_{y \in Y}d(x, y)$.
+The possible minimum cost contributed by the alignment of $c_j$ and some point in $Q$ to the accumulated sum would be $\delta(c_j, \mathbbm{q}_j)$.
+The lower bound $\lbShen$ is defined as:
+
+\begin{equation}
+    \label{eq:lb_shen-dtw}
+    \lbShen(Q, C) = \operatorname{d}(c_1, q_1) + \sum_{j=2}^{n-1} \delta(c_j, \mathbbm{q}_j) + \operatorname{d}(c_n, q_m)
+\end{equation}
+
+We direct the reader to \cite{shen2017searching} for the formal proof, while an intuition of the proof is presented here.
+There are three items on the right-hand side of Equation \ref{eq:lb_shen-dtw}.
+The continuity requirement ensures that each $c_i$ is involved in at least one alignment.
+The first and the last items are from the boundary condition.
+The middle item returns the possible minimum distances contributed by each $c_j$'s, where $2 \leq j \leq n-1$.
+It is obvious that $\lbShen$ in Equation~\ref{eq:lb_shen-dtw} is tighter when we use the first pair of points and the last pair of points instead of doing the middle summation all from $j=1$ to $n$.
+It is because the distance contributed by the first pair (last pair) must be greater than $\delta(c_1, \mathbbm{q}_1)$ ($\delta(c_n, \mathbbm{q}_n)$).
+
+It is proven that it is tighter than $\lbKeogh$~\cite{shen2017searching}.
+It is shown in Figure~\ref{fig:lb_keogh-lb_shen-visualization} visually.
+The black bars refer to the additional lower bound distance sum on top of $\lbKeogh$.
+%
+We will give an intuitive proof here.
+Both $\lbKeogh$ and $\lbShen$ compute the lower bounds by summing the local distance resulting from the alignment of each $c_j$ with some points in $Q$, which is guaranteed to be not greater than the partial distance contributed by the real alignment, which we only know until we compute the exact distance measure.
+In $\lbKeogh$,  if this $c_j$ falls outside the envelope, this local distance is the vertical distance between $c_j$ and the envelope.
+If $c_j$ falls inside, this local distance would be 0.
+For those points outside the envelope, the local distances for $c_j$ of $\lbKeogh$ and $\lbShen$ are the same.
+But $\lbShen$ aims to return the minimum possible partial distance for each $c_j$, even within the envelope.
+Hence, $\lbKeogh \leq \lbShen$.
+
+In order to compute Equation~\ref{eq:lb_shen-dtw} efficiently, we first sort sequences $\mathbbm{q}_j$ and the resulting sorted sequences are denoted as $\tilde{\mathbbm{q}_j}$. 
+% The elements $\tilde{\mathbbm{q}_j}$ forms an indexed collection $\tilde{\mathbbm{Q}} = (\tilde{\mathbbm{q}}_1, \tilde{\mathbbm{q}}_2, \dots, \tilde{\mathbbm{q}}_{\min(\floor{lm}, n)}$).
+The sorted sequences allow us to do a binary search when we are calculating $\delta(c_j, \tilde{\mathbbm{q}}_j)$ in contrast to $\delta(c_j, \mathbbm{q}_j)$. The sorting only needs to be done once because we are testing the same $Q$ with different candidates.
+% To note, for unconstrained DTW (i.e., $r = \infty$), $\mathbbm{q}_j$ is the same for each $i$.
+% thus only one sorting is enough.
+
+It can be extended to the USDTW case~\cite{shen2017searching, shen2018accelerating}.
+The possible reach now is not only defined by $r$, but also by the scaling factor bound $l$.
+
+\begin{equation}
+    \label{eq:lb_shen-usdtw-q}
+    \mathbbm{q}_j = (q_{\max(1, \ceil{j/l} - r)}, \ldots, q_{\min(\floor{jl} + r, m)})
+\end{equation}
+
+\cite{shen2017searching} proves the following theorem to allow us to consider the lower bound between each prefix of $C$ and $Q$ without the scaling up of each prefix of $C$ (i.e., $C(1:k)^L$) and the scaling up of $Q$ (i.e., $Q^L$).
+
+\begin{theorem}[] 
+\label{thm:lb_shen}
+    For any $\ceil{m/l} \leq k \leq \min(\floor{lm}, n)$, 
+    $\operatorname{DTW}_r(Q^{\min(\floor{lm},n)}, C(1:k)^{\min(\floor{lm},n))})$ is always lower bounded by $\sum_{j=1}^k \delta(c_j, \mathbbm{q}_j)$.
+\end{theorem}
+
+Recall that USDTW calculates DTW distances between each rescaled prefix of $C$ to the rescaled $Q$, and outputs the minimum DTW distance, as in Equation~\ref{eq:usdtw}.
+The incremental nature of the lower bound frees us to calculate the lower bound of each DTW distance from scratch.
+This theorem allows us to first calculate the lower bound of the shortest prefix $C(1:\ceil{m/l})$ of $C$ and $Q$, and then incrementally calculate the lower bound of the longer prefix with length from $\ceil{m/l} + 1$ to $\min(\floor{lm}, n)$ by adding on each $\delta(c_j, \mathbbm{q}_j)$.
+To note, it also means that if $\lbShen(Q, C(1:k))$ is larger than a value, namely $\mathrm{bsf}$, $\lbShen(Q, C(1:k'))$, where $k' > k$, would also be larger than $\mathrm{bsf}$.
+%
+To note, we can tighten $\lbShen$ by using $\operatorname{d}(c_1,q_1)$ instead of $\delta(c_1,\mathbbm{q}_1)$.
+
+The above analysis can also apply to the case of US distance.
+We only need to define the corresponding reaches as follows: 
+\begin{equation}
+    \label{eq:lb_shen-us-q}
+    \mathbbm{q}_j = (q_{\max(1, \ceil{j/l})}, \ldots, q_{\min(\floor{jl}, m)})
+\end{equation}
+% However, it may slow down computation because ED already runs in linear time.
+% The reduction in time from pruning unpromising candidates may not compensate for the extra time we spend computing the lower bound.
+

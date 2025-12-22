@@ -1,0 +1,38 @@
+\begin{table*}[htbp]
+    \centering
+      % Overfull \hbox (x pt too wide) 
+      % https://blog.csdn.net/weixin_46777569/article/details/126260667
+      % \resizebox{\columnwidth}{!}{
+      \begin{tabular}{c | c}
+         \hline
+         Sequence & \makecell{
+         Secondary Structure \\ 
+         (In Dot-bracket notation)
+         } \\
+         \hline  
+         \makecell{
+         1 UGGGA\textcolor{red}{\textbf{UGAGGUAGUAGGUUGUAUAGUU}} 27\\
+         28 UUAGGGUCACACCCACCACUGGGAGAU 54\\
+         55 AA\textcolor{red}{\textbf{CUAUACAAUCUACUGUCUUUC}}CUA 80
+         } &
+         \makecell{
+         1 (((((\textcolor{red}{\textbf{.(((((((((((((((((((((}} 27\\
+         28 UUAGGGUCACACCCACCACUGGGAGAU 54\\
+         55 ))\textcolor{red}{\textbf{)))))))))))))))))))))}}))) 80
+         } \\
+         \hline
+         Base-pair probabilities sequence (the first 10 bases) & \\
+         \hline
+         \makecell{
+         1 (0.549, 0.946, 0.987, 0.987, 0.904) 5 \\
+         6 (\textcolor{red}{\textbf{0.000}}, 0.841, 0.974, 0.981, 0.890) 10
+         } & \\
+         \hline
+    \end{tabular}
+    % }
+    % https://tex.stackexchange.com/questions/531/what-is-the-best-way-to-use-quotation-mark-glyphs
+    \caption{The whole sequence of ``hsa-let-7a-1'' and its predicted secondary structure by RNAfold.
+    % We have numbered each line with the starting and ending positions.
+    The corresponding positions of the two mature miRNAs and the probability of the unpaired ``U'' are highlighted in \textcolor{red}{\textbf{bold}}.}
+    \label{tab:hsa-let-7a-1}
+\end{table*}

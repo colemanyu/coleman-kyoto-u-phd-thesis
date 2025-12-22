@@ -1,0 +1,27 @@
+\begin{table*}[htbp]
+\centering
+% \resizebox{\columnwidth}{!}{
+\begin{tabular}{llcccccc}
+\toprule
+Dataset & Methods & Acc & Sp & Sn & F1 & MCC & Time (s) \\
+\midrule
+5p arm & enc 9 + MiniROCKET & \textcolor{red}{\textbf{0.857}} & \textcolor{red}{\textbf{0.845}} & \textcolor{red}{\textbf{0.870}} & \textcolor{red}{\textbf{0.859}} & \textcolor{red}{\textbf{0.715}} & \textcolor{red}{\textbf{0.787}} \\
+              & DiCleave & 0.818 & 0.790 & 0.846 & 0.822 & 0.653  & 21.249 \\
+              
+\midrule
+3p arm & enc 9 + ROCKET  & \textcolor{red}{\textbf{0.870}} & 0.861 & \textcolor{red}{\textbf{0.879}} & \textcolor{red}{\textbf{0.871}} & \textcolor{red}{\textbf{0.741}} & 4.311 \\
+              & enc 7 + MiniROCKET & 0.848 & 0.839 & 0.857 & 0.850 & 0.697 & \textcolor{red}{\textbf{0.989}} \\
+              & DiCleave & 0.854 & \textcolor{red}{\textbf{0.891}} & 0.817 & 0.847 & 0.715  & 15.919 \\
+\midrule
+multi-class & enc 9 + ROCKET  & \textcolor{red}{\textbf{0.863}} & \textcolor{red}{\textbf{0.921}} & \textcolor{red}{\textbf{0.852}} & \textcolor{red}{\textbf{0.860}} & \textcolor{red}{\textbf{0.780}} & 12.208 \\
+              & enc 3 + MiniROCKET & 0.851 & 0.915 & 0.844 & 0.849 & 0.760 & \textcolor{red}{\textbf{4.550}} \\
+              & DiCleave & 0.820 & 0.895 & 0.804 & 0.815 & 0.710  & 131.151 \\
+\bottomrule
+\end{tabular}
+% }
+    \caption{Comparative analysis between MTSCCleav with the best combination of the encoding method and classifier, with the SOTA, DiCleave, on the three datasets. 
+    The best results of using MiniROCKET have also been shown to compare the computational efficiency.
+    The best results are highlighted in \textcolor{red}{\textbf{bold}}.
+    }
+    \label{tab:results_best_minirocket_dicleave}
+\end{table*}

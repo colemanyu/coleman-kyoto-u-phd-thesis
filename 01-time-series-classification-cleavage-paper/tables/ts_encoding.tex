@@ -1,0 +1,246 @@
+\begin{table*}[htbp]
+    \centering
+    \footnotesize % Float too large for page by 35.9162pt on input line 568.
+    \resizebox{1.5\columnwidth}{!}{
+    \begin{tabular}{c | c | c | c}
+         \hline
+         & Encoding & Algorithm & 
+         \makecell{
+            Example \\
+            $S = C, \_, C, U, G, U, U, G, A, U$ \\
+            $P = 0.843, 0.000, 0.807, 0.807, 0.793,$\\
+            $0.914, 0.982, 1.000, 0.999, 0.999$
+         } \\
+         \hline
+         1 & 
+         % Name
+         \makecell{Single value mapping \\ \cite{rakthanmanon2012searching, cristea2002conversion, chakravarthy2004autoregressive, zhao2001dna, mendizabal-ruiz2017dna}}
+         % \makecell{Single value mapping \\ with \\ domain knowledge} 
+         &
+         % Numeric representation
+         \makecell[l]{
+         for $i = 1$ to $|S|$: \\ 
+         \quad \(\displaystyle
+         t_i= 
+            \begin{cases}
+                2 \cdot p_i & \text{if } s_i = A\\
+                1 \cdot p_i & \text{if } s_i = G\\
+                -1 \cdot p_i & \text{if } s_i = C\\
+                -2 \cdot p_i & \text{if } s_i = U\\
+                0 & \text{otherwise}\\
+            \end{cases}
+         \) \\
+         return $T$
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T = -1, 0, -1, -2, 1, -2, -2, 1, 2, -2$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T = -0.843, 0.000, -0.807, -1.614, $\\
+         $0.793, -1.829, -1.963,$ \\ 
+         $1.000, 1.999, -1.998$ 
+         } \\
+         \hline
+         2 & 
+         % Name
+         \makecell{Grouped \\ variable-length \\ channel mapping} &
+         % Numeric representation
+         \makecell[l]{
+         $ j=1, k=1 $ \\
+         for $i = 1$ to $|S|$: \\ 
+        \quad \(\displaystyle
+         t^1_j= 
+            \begin{cases}
+                1 \cdot p_i & \text{if } s_i = A\\
+                - 1 \cdot p_i & \text{if } s_i = U\\
+                0 & \text{otherwise}\\
+            \end{cases}
+         \) \\
+          \quad \(\displaystyle
+         t^2_k= 
+            \begin{cases}
+                1 \cdot p_i & \text{if } s_i = G\\
+                -1 \cdot p_i & \text{if } s_i = C\\
+            \end{cases}
+         \) \\
+         \quad if ($s_i = G$) or ($s_i = C$): \\
+         \quad \quad \quad increment $k$ by 1 \\
+         \quad else: \\
+         \quad \quad \quad increment $j$ by 1 \\
+         return $T^1, T^2$ 
+         % \textcolor{teal}{// Only consist of assigned $t^1_j$, $t^2_k$}
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T^1 = 0, -1, -1, -1, 1, -1$ \\
+         $T^2 = -1, -1, 1, 1$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T^1 = 0.000, -0.807, -0.914, -0.982, 0.999, -0.999$ \\
+         $T^2 = -0.843, -0.807, 0.793, 1.000$ 
+         } \\
+         \hline
+         3 & 
+         % Name
+         \makecell{Grouped \\ fixed-length \\ channel mapping} &
+         % Numeric representation
+         \makecell[l]{
+         for $i = 1$ to $|S|$: \\ 
+        \quad  \(\displaystyle
+         t^1_i= 
+            \begin{cases}
+                1 \cdot p_i & \text{if } s_i = A\\
+                - 1 \cdot p_i & \text{if } s_i = U\\
+                0 & \text{otherwise } \\
+            \end{cases}
+         \) \\
+         \quad  \(\displaystyle
+         t^2_i= 
+            \begin{cases}
+                1 \cdot p_i & \text{if } s_i = G\\
+                -1 \cdot p_i & \text{if } s_i = C\\
+                0 & \text{otherwise} \\
+            \end{cases}
+         \) \\
+         % \quad increment $j$ and $k$ by 1 \\
+         return $T^1, T^2$
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T^1 = 0, 0, 0, -1, 0, -1, -1, 0, 1, -1$ \\
+         $T^2 = -1, 0, -1, 0, 1, 0, 0, 1, 0, 0$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T^1 = 0.000, 0.000, 0.000, -0.807, $\\
+         $0.000, -0.914, -0.982, $ \\
+         $0.000, 0.999, -0.9999$ \\
+         $T^2 = -0.843, 0.000, -0.807, 0.000, $\\
+         $0.793, 0.000, 0.000, $ \\
+         $1.000, 0.000, 0.000$ 
+         } \\
+         \hline
+         4 & 
+         % Name
+         \makecell{Cumulative mapping \\~\cite{zhang1994curves, berger2004visualization} } &
+         % Numeric representation
+         % https://www.overleaf.com/learn/latex/Spacing_in_math_mode
+         % Not used
+         \makecell[l]{
+         $t_1 = 0$ \\
+         for $i = 1$ to $|S|$: \\ 
+         \quad \(\displaystyle
+         t_{i+1}= 
+            \begin{cases}
+                t_i + 2 \cdot p_i & \text{if } s_i = A\\
+                t_i + 1 \cdot p_i & \text{if } s_i = G\\
+                t_i - 1 \cdot p_i & \text{if } s_i = C\\
+                t_i - 2 \cdot p_i & \text{if } s_i = U\\
+                t_i & \text{otherwise}\\
+            \end{cases}
+         \) \\
+         return $T$ \textcolor{teal}{// $|T| = |S| + 1$}
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T = 0, -1, -1, -2, -4, -3, -5, -7, -6, -4, -6$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T = 0.000, -0.843, -0.843, -1.650, $\\
+         $-3.265, -2.471, -4.300, -6.263, $ \\ 
+         $-5.264, -3.265, -5.263$ 
+         } \\
+         \hline
+         5 & 
+         % Name
+         \makecell{Cumulative grouped \\ variable-length \\ channel mapping} &
+         % Numeric representation
+         \makecell[l]{
+         $t^1_1 = 0, t^2_1 = 0$ \\
+         $j = 1, k = 1$ \\
+         for $i = 1$ to $|S|$: \\ 
+         \quad \(\displaystyle
+         t^1_{j+1}= 
+            \begin{cases}
+                t^1_j + 1 \cdot p_i & \text{if } s_i = A\\
+                t^1_j - 1 \cdot p_i & \text{if } s_i = U\\
+                t^1_j & \text{if } s_i = \_\\
+            \end{cases}
+         \) \\
+         \quad \(\displaystyle
+         t^2_{k+1}= 
+            \begin{cases}
+                t^2_k + 1 \cdot p_i & \text{if } s_i = G\\
+                t^2_k -1 \cdot p_i & \text{if } s_i = C\\
+            \end{cases}
+         \) \\
+         \quad if ($s_i = G$) or ($s_i = C$): \\
+         \quad \quad \quad increment $k$ by 1 \\
+         \quad else: \\
+         \quad \quad \quad increment $j$ by 1 \\
+         return $T^1$, $T^2$ 
+         % \textcolor{teal}{// Only consist of assigned $t^1_j$, $t^2_k$}
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T^1 = 0, -1, -2, -3, -2, -3$ \\
+         $T^2 = 0, -1, -2, -1, 0$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T^1 = 0.000, -0.807, -1.722, $ \\
+         $-2.703, -1.704, -2.703$ \\ 
+         $T^2 = 0.000, -0.843, -1.650, $ \\
+         $-0.857, 0.143$ \\ 
+         } \\
+         \hline
+         6 & 
+         % Name
+         \makecell{Cumulative grouped \\ fixed-length \\ channel mapping} &
+         % Numeric representation
+         \makecell[l]{
+         $t^1_1 = 0, t^2_1 = 0$ \\
+         for $i = 1$ to $|S|$: \\ 
+         \quad \(\displaystyle
+         t^1_{i+1}= 
+            \begin{cases}
+                t^1_i + 1 \cdot p_i & \text{if } s_i = A\\
+                t^1_i - 1 \cdot p_i & \text{if } s_i = U\\
+                t^1_i & \text{otherwise } \\
+            \end{cases}
+         \) \\
+         \quad \(\displaystyle
+         t^2_{i+1}= 
+            \begin{cases}
+                t^2_i + 1 \cdot p_i & \text{if } s_i = G\\
+                t^2_i -1 \cdot p_i & \text{if } s_i = C\\
+                t^2_i & \text{otherwise } \\
+            \end{cases}
+         \) \\
+         return $T^1, T^2$ \textcolor{teal}{// $|T^1| = |T^2| = |S| + 1$}
+         } &
+         % Example
+         \makecell{
+         Without base-pair probability sequence: \\
+         $T^1 = 0, 0, 0, 0, -1, -1, -2, -3, -3, -2, -3$ \\
+         $T^2 = 0, -1, -1, -2, -2, -1, -1, -1, 0, 0, 0$ \\
+         \\
+         With base-pair probability sequence: \\
+         $T^1 = 0.000, 0.000, 0.000, 0.000, $ \\
+         $-0.807, -0.807, -1.722, -2.703,$ \\ 
+         $-2.703, -1.704, -2.703$ \\
+         $T^2 = 0.000, -0.843, -0.843, -1.650, $ \\
+         $-1.650, -0.857, -0.857, -0.857,$ \\ 
+         $0.143, 0.143, 0.143$ \\
+         } \\
+         \hline
+    \end{tabular}}
+    \caption{Time series encoding. 
+    % The ending index in indexing is exclusive.
+    $P$ is the corresponding base-pair probability sequence of $S$. $p_i = 1$ if we encode $S$ without incorporating base-pair probability sequence.}
+    \label{tab:ts_encoding}
+\end{table*}
