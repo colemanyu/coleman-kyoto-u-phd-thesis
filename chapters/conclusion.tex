@@ -1,1 +1,61 @@
-\chapter{Conclusion}
+\chapter{Conclusion and Future Directions} \label{ch:conclusion} 
+
+In this thesis, we contribute to time series analysis by addressing two aspects, with applications in bioinformatics.
+The first is to frame the prediction of biological sequence problems as time series classification tasks.
+The second addresses a fundamental limitation in existing time series distance measures.
+
+% First study
+In the first study, we investigate the prediction of human Dicer cleavage sites. This task is important for the biogenesis of microRNAs (miRNAs).
+Accurate prediction of Dicer cleavage sites is crucial for elucidating mechanisms of post-transcriptional gene regulation. 
+%
+Computationally, this task is a classification problem.
+First, we curate the dataset based on existing studies. 
+The resulting datasets are 14-strings. Then, they are transformed into time series. We employ ROCKET-based classifiers for the classification.
+%
+The main contributions are summarized as follows.
+We are the first to frame this problem as a multivariate time series classification problem.
+%
+We introduced nine encoding methods for the transformation.
+%
+In the transformation, to our surprise, we are the first to use the base-pair probabilities derived from the predicted secondary structure.
+%
+We employ state-of-the-art time-series classifiers, namely ROCKET-based classifiers. They use random convolutional kernels to generate the summary statistics and then use a simple ridge classifier to generate the final results. Because of the simplicity of the transformation method and the classifiers we adopted, our framework, namely MTSCCleave, is fast.
+%
+It achieved predictive performance comparable to or even better than deep learning-based state-of-the-art methods. Furthermore, MTSCCleave demonstrated substantial computational efficiency, with speedups ranging from 3.7X to 28.8X relative to existing methods.
+%
+We carried out perturbation-based experiments to identify the subsequence that are important for the classification. We found that regions near the center of the pre-miRNA secondary structure are most critical for Dicer cleavage site determination. It aligns with the existing study.
+%
+Future work for this study is as follows.
+We make use of the predicted secondary structure information to construct the complementary strand and the base pair probability sequence for the input strand. However, there is more than one predicted secondary structure for the given RNA sequence.
+One future work is to make use of all potential secondary structures, each with its own pair probability sequence, and encode this data into a multivariate time series with more channels.
+%
+Another area for future work is to use interpretable time series classifiers, such as those based on time series shapelets. By doing this, we can study which subsequence is critical for the definition of the classes, namely ``5p cleav'', ``5p non-cleav'', ``3p leav'', and ``3p non-cleav'' because shapelets serve as the subsequence that has the most discriminating power between classes.
+
+% Second study
+The second study develops a new distance measure framework, namely PSD. It aims to release a fundamental assumption that the prior studies have overlooked.
+There is only one scaling rate throughout the entire time series.
+However, there are much data that exhibits multiple rates.
+%
+For example, human motion or music performance.
+They consist of phases. Each phase has its own expression rate.
+%
+Existing distance measures cannot account for such variations.
+For example, DTW is designed for handling local distortions.
+US assumes that there is only one scaling factor in the whole series.
+%
+To address this, we introduced the Piecewise Scaling Distance (PSD) framework, the first of its kind to account for multiple scaling factors.
+Recall that PSD is agnostic to the base measure we used. We can use any existing distance measure as the base measure. 
+We studied the two instantiations of it.
+They are PSED (using Euclidean Distance as the beas measure) and PSDTW (using DTW as the base measure).
+We provided an exact dynamic programming solution to compute PSD and three general ways to speed it up.
+In particular, we proposed a constrained version of it that limits the search space based on allowed segment lengths derived from scaling factor bounds. Besides, we use parallel computing and early abandoning to further accelerate it.
+For PSDTW, due to its quadratic complexity, we can further speed it up using lower-bounding techniques.
+%
+Experiments show that PSD, and in particular PSED, perform best when the query contains multi-rate distortions, compared with ED, DTW and the other five DTW-based methods.
+
+Future works on it are as follows.
+Currently, the number of segments $P$ is given by users. It is preferable to develop a heuristic or algorithmic approach to automatically determine $P$. A simple heuristic is to test a range of possible $P$.
+Besides, while we have successfully applied a lower bound on PSDTW and accelerated it, the computational overhead of calculating a lower bound on PSED outweighs the pruning benefit and makes the computation slower eventually.
+Developing a specialized lower bound for PSED could further improve its running time.
+In addition, some existing works on speeding up DTW such as ``incremental DTW'' can reuse the accumulated cost matrix $D$.
+However, it is challenging to apply a similar method to USDTW and PSDTW due to time series interpolation.

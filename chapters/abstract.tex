@@ -1,18 +1,37 @@
-Time series data are ubiquitous across scientific disciplines, necessitating robust computational techniques for analysis and retrieval. 
-This thesis addresses two critical challenges in the domain of time series data mining with applications in bioinformatics: 
-the development of more expressive distance measures, with the usage of similarity search, and the novel application of time series classification to solve complex biological problems.
+Time series data are ubiquitous across many different fields.
+Much of the data are inherently time series data.
+Additionally, some data, such as strings, images, and object shapes, that are not originally time series data, can be transformed into time series.
+Many data mining tasks, such as classification, clustering, and motif finding, have been defined for time series data.
+Hence, by developing appropriate transformation methods, we can apply a plethora of well-established time series methods to our problems.
 
-In the first part, we address the limitations of existing similarity measures.
-Similarity search is a core subroutine in tasks such as classification and motif finding.
-While Dynamic Time Warping (DTW) and Uniform Scaling (US) are prevailing measures for handling local distortions and global scaling, respectively, and some studies have demonstrated that combining both DTW and US is necessary to obtain meaningful results, the current approaches are limited to applying a single scaling factor to the entire sequence before applying DTW. 
-We argue that since distinct phases of a process often evolve at different speeds, a single scaling factor is insufficient. 
-We introduce the first distance measure that achieves invariance to multiple scaling factors. We also provide lower bounding techniques to facilitate efficient computation of the proposed distance measure. This method better reflects the similarity between time series with multiple phases and provides a clearer understanding of the data.
+This thesis contributes two aspects in time series data mining and bioinformatics.
+%
+They are a novel application of time series classification to solve complex biological problems by transforming biological data into time series and developing a more expressive distance measure framework that removes certain underlying assumptions.
 
-In the second part, we demonstrate the applied power of time series analysis within the field of bioinformatics. 
-Bioinformatics operates at the intersection of Biology, Biotechnology, and Informatics. 
-In this work, we formulate a specific Biology problem, which is predicting Human Dicer Cleavage sites in microRNA biogenesis, into a machine learning framework. Due to the current limitations of Biotechnology, we are constrained to utilizing 1-D RNA sequence inputs rather than fully 2-D data; the latter is more expensive to obtain. 
+In the first part, we demonstrate the utility of time series analysis in bioinformatics by studying the problem of predicting Human Dicer Cleavage Sites. 
+Recall that bioinformatics operates at the intersection of \textbf{biology}, \textbf{biotechnology}, and \textbf{informatics}. 
+In this work, we formulate a specific \textbf{biology} problem, which is predicting Human Dicer Cleavage sites in microRNA biogenesis, into a machine learning framework. 
+In particular, a multivariate time series classification problem, which is the \textbf{informatics} part.
+Due to current limitations in \textbf{biotechnology}, we are constrained to using 1-D RNA sequence inputs rather than 2-D or 3-D data, because these are more expensive to obtain. 
 We propose MTSCCleav, a method that encodes RNA sequences and the probabilities of base pairs in predicted secondary structures into time series data. 
+To the best of our knowledge, we are the first to make use of the probabilities of base pairs in this kind of classification task on RNA data.
 By doing this, we frame the problem of predicting Human Dicer Cleavage sites into a Multivariate Time Series Classification (MTSC) problem.
-Unlike existing approaches that rely on opaque deep neural networks or complex feature engineering, our approach is simple and computationally efficient. Experiments demonstrate that MTSCCleav achieves comparable accuracy to state-of-the-art methods while delivering a 3.7X to 28.8X speedup. Furthermore, our perturbation experiments reveal that regions near the center of pre-miRNAs are essential for cleavage site prediction. 
+Existing approaches rely on opaque deep neural networks or complex feature engineering. 
+They are slow, and the feature engineering is over-designed.
+In contrast, our approach is simple, intuitive, and computationally efficient.
+The proposed transformation methods allow us to use any well-established time series tools to analyze this biological problem.
+Experiments demonstrate that MTSCCleav achieves comparable and even better accuracy to state-of-the-art methods while delivering a 3.7X to 28.8X speedup. 
+Furthermore, our perturbation experiments reveal that regions near the center of pre-miRNAs are essential for cleavage-site prediction, consistent with the existing literature. 
 
-Collectively, this thesis advances the fields of time series data mining and bioinformatics by proposing a new, more expressive distance measure and demonstrating the use of time series analysis to address fundamental biological questions.
+In the second part, we address the limitations of existing similarity measures.
+Similarity search is a core subroutine in time series data mining tasks.
+For example, recent studies show that a simple 1-NN classifier with an appropriate distance measure can outperform many advanced, complicated methods.
+While Dynamic Time Warping (DTW) and Uniform Scaling (US) are prevailing measures for handling local distortions and global scaling, respectively, and some studies have demonstrated that combining both DTW and US is necessary to obtain meaningful results.
+%
+Current approaches apply a single scaling factor to the entire sequence. 
+We argue that since distinct phases of a process often evolve at different speeds, a single scaling factor is insufficient. 
+We introduce the first distance measure framework, namely PSD, that achieves invariance to multiple scaling factors. We also provide speed-up techniques to enable efficient computation of the PSD. 
+%
+Experiments show that PSD better reflects the similarity between time series with multiple phases, and that the identified phases (segmentation) provide a clearer understanding of the data.
+
+Collectively, this thesis advances the fields of time series data mining and bioinformatics by demonstrating the use of time series analysis to address fundamental biological questions and proposing a new, more expressive distance measure framework.

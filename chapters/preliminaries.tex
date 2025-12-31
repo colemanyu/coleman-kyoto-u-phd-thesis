@@ -1,1 +1,165 @@
-\chapter{Preliminaries}
+\chapter{Preliminaries} \label{ch:preliminaries}
+
+In this chapter, we provide background on time series, with a focus on distance measures and classification, particularly the ridge classifier, which is used in the ROCKET-based classifiers for time series classification. 
+The remaining preliminary knowledge will be provided in the corresponding chapters.
+Section~\ref{sec:dist} gives an overview of the existing distance measures used in the evaluation in Chapter~\ref{ch:ksfdtw}.
+Section~\ref{sec:classification} reviews the additional knowledge about the classifiers used in Chapter~\ref{ch:mtsccleav}.
+We start with the definition of a time series.
+
+\section{Distance measures} \label{sec:dist}
+
+A general form of a time series $T$ is an ordered pair of $n$ real-valued variables, $T = (b_1, c_1), (b_2, c_2), \dots, (b_n, c_n)$, where $b_i$ is the behavioral attribute and $c_i$ is the contextual attribute, where $1 \leq i \leq n$. 
+$c_i$ refers to the time stamp at which the measurement $b_i$ is taken.
+Since the measurements are always taken in a uniform manner, $t_i$ is simply incrementing from $1$ to $n$ uniformly.
+Hence, we can represent a time series more concisely as $T = t_1, t_2, \dots, t_n$, where $t_i = b_i$.
+
+We may be interested not only in the entire time series but also in a segment of it, called a subsequence.
+A subsequence $T(i:j)$ of a time series $T$ is a shorter time series, which is a contiguous subset of time points in $T$, that starts from position $i$ and ends at position $j$.
+Formally, $T(i:j) = t_i, t_{i+1}, \dots, t_j$, where $1 \leq i \leq j \leq n$.
+We call $T(1:m)$ as the prefix of length $m$ of $T$, $m$-prefix in short.
+
+To quantify the similarity between two time series, we need to define a distance measure, also known as a similarity measure, between them.
+Many distance measures have been proposed in the literature.
+Among them, the most established measures are undoubtedly Euclidean Distance (ED) and Dynamic Time Warping (DTW).
+They are representatives of the two board classes of distance measures, namely ``lock-step'' and ``elastic''.
+
+\subsection{Euclidean Distance (ED)}
+
+ED is a lock-step distance measure. 
+Given two time series $Q$ and $C$ with the same length $n$, it compares the time point $q_i$ of $Q$ with the time point $c_i$ of $C$ at the same time (index). 
+Note that, traditionally, lockstep distance measures require the two time series to have the same length because of the one-to-one alignment.
+However, in the setting of query by content, where it is always the case that $|Q| < |C|$, we can still apply a lock-step distance measure by either comparing $Q$ with $C(1:|Q|)$ or padding $Q$ using its last element to lengthen it to the same length of $C$.
+The general form of ED is the Minkowski distance.
+It is the $L_p$-norm of the difference between the two time series $X$ and $Y$.
+\begin{equation} 
+    \operatorname{D}(X, Y) = \left( \sum_{i=1}^n |x_i-y_i|^p \right)^{\frac{1}{p}}
+\end{equation}
+When $p = 2$, it corresponds to the Euclidean distance.
+When $p = 1$, it corresponds to the Manhattan distance.
+When $p = \infty$, it corresponds to the Chebyshev distance.
+In our studies, we focus on the Euclidean distance.
+Other lock-step distance measures include Pearson correlation distance. 
+It accounts for the linear association between the two time series using the Pearson correlation coefficient.
+
+\subsection{Dynamic Time Warping (DTW)}
+
+Dynamic Time Warping is an elastic measure~\cite{sakoe1978dynamic}.
+In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching.
+The one-to-many point matching allows the elastic distance measures to warp in the time axis (i.e., temporally) such that it can handle the local temporal distortions.
+While it will be detailed in Chapter~\ref{ch:ksfdtw}, it is briefly explained here.
+In short, it minimizes the cumulative distance between two time series, subject to constraints, by finding an optimal warping path $W^*$ in a cost matrix, where $W$ is the set of all possible paths and $W^*$ is the optimal one.
+The constraints typically are (1) Boundary conditions, (2) Continuity, and (3) Monotonicity.
+Note that we can reduce pathological warping and accelerate computation by introducing a warping window. 
+DTW with a warping window constraint is called constrained DTW (cDTW).
+Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
+In the study, we focus on the Sakoe-Chiba band.
+
+\subsection{Derivative Dynamic Time Warping (DDTW)}
+
+The Derivative Dynamic Time Warping (DDTW) is a variant of DTW~\cite{keogh2001derivative}.
+Instead of comparing original raw values, it compares two time series using their first-order derivatives, but with an approximation.
+In DTW, a point on a rising trend may be mapped to a point on a falling trend. 
+It goes against our intuition.
+It can be solved by comparing their first-order derivatives, which encodes the slope information.
+The derivative $T'$ of a time series $T$ is computed approximately as follows.
+\begin{equation} 
+    t'_i = \frac{(t_i-t_{i-1})+\frac{t_{i+1}-t_{i-1}}{2}}{2}
+\end{equation}
+This estimate is simply the average of ``the slope of the line through $t_i$ and $t_{i-1}$ (i.e., its left neighbor)'' and ``the slope of the line through $t_{i-1}$ (i.e., its left neighbor) and $t_{i+1}$ (i.e., its right neighbor)''.
+The $1/2$ term in the second item of the numerator comes from the fact that the separation in time of the $t_{i-1}$ and $t_{i+1}$ is $2$.
+Note that the estimate is not defined for the first and last elements of the time series in the above equation. 
+In these boundary cases, we use the estimates of the second and penultimate (i.e., the second-to-last thing) as the estimates for the first and last elements, respectively.
+
+\subsection{Weighted Dynamic Time Warping (WDTW)}
+The Weighted Dynamic Time Warping (WDTW) is a variant of DTW~\cite{jeong2011weighted}. 
+It is a penalty-based DTW designed to prevent pathological paths.
+Recall that a warping window (e.g, Sakoe-Chiba band) is enforced on the cost matrix of DTW, such that some paths are excluded.
+Only the paths that reside entirely in the warping window are feasible.
+This constraint may be too strict.
+WDTW uses a softer way for the same purpose.
+Instead of using a window to forbid the alignment of $x_i$ and $y_j$ that are far away in time.
+WDTW weights the cost of such alignment by multiplying it by a modified logistic weight function (MLWF) $\omega(k)$, defined as follows.
+\begin{equation} 
+    \omega(k) = \frac{\omega_{\max}}{1 + \exp{(-g\cdot(k-m_c))}}
+\end{equation}
+Where:
+\begin{itemize}
+  \item $k = |i - j|$. It is the phase difference (i.e., distance on the time axis from the diagonal. The diagonal refers to the line where $i = j$.)
+  \item $\omega_{\max}$ is the desired upper bound for the weight parameter, which is suggested to be set to $1$.
+  \item $m_c$ is the midpoint of a sequence. $m_c = m/2$.
+  \item $g$ is a constant that controls the level of penalization. It controls the curvature (slope) of the function.
+\end{itemize}
+Intuitively, if $x_i$ and $y_j$ are far apart temporally, it will have a larger weight to discourage their alignment and vice versa.
+
+\subsection{Weighted Derivative Dynamic Time Warping (WDDTW)}
+
+\cite{jeong2011weighted} also proposed the weighted version of DDTW. 
+In brief, a weight is applied to the local cost function when computing DTW on the first derivative.
+
+\subsection{Shape Dynamic Time Warping (shapeDTW)}
+The Shape Dynamic Time Warping (shapeDTW) is a variant of DTW~\cite{zhao2018shapedtw}.
+The main modification to the original DTW is the way the local distance between points is computed.
+Recall that DTW compares single scalar points.
+shapeDTW compares local descriptors.
+The local descriptors are constructed using a sliding window on the original series, such that for each point $x$, a $L$-subsequence with $x$ as the center is extracted to compute the higher-level feature of $x$. $L$ is the user-given length of the subsequence to consider. By default, it is set to 15.
+There are several ways to construct such a descriptor.
+For example, a raw subsequence (i.e., a set of neighbor points surrounding the point of interest), Piecewise aggregate approximation (PAA)~\cite{keogh2001dimensionality, yi2000fast}, slope, derivative, HOG-1D~\cite{zhao2016decomposing}.
+
+Then, the distance between descriptors is calculated rather than between raw values.
+When a raw subsequence is chosen to construct the local descriptors, a common metric used for comparing two local descriptors is the Euclidean distance.
+In the evaluation, a raw subsequence is chosen to construct the local descriptors.
+
+\subsection{Amercing Dynamic Time Warping (ADTW)}
+The Amercing Dynamic Time Warping (WDTW) is a variant of DTW~\cite{herrmann2023amercing}.
+It is also designed to constrain the amount of warping, as in cDTW and WDTW.
+While cDTW imposes a hard window and WDTW uses multiplicative weights (i.e, MLWF), ADTW introduces an additive penalty for non-diagonal alignment.
+The word ``Amercing'' means ``fining''.
+The non-diagonal alignments are required to pay the fines.
+Unlike WDTW, which uses a multiplicative weight based on the position of the alignment, ADTW applies an additive penalty $\omega$ based on the action of warping.
+The non-diagonal alignments are penalized.
+Formally, the recursive relation for ADTW is defined as:
+
+\begin{equation}
+\begin{split}
+    D(i, j) &= \operatorname{d}(q_i, c_j) \\
+    &\quad + \min \begin{cases}
+        D(i-1, j-1), \\
+        D(i-1, j) + \omega, \\
+        D(i, j-1) + \omega
+    \end{cases}
+\end{split}
+\end{equation}
+ADTW penalizes the last two alignment actions.
+$\omega$ is a user-given hyperparameter.
+It should be a non-negative scalar constant.
+In practice, it is defined through cross-validation, which determines the optimal $\omega$ by training on a subset of data or heuristic search, which searches values in a user-given range.
+
+To note, ADTW generalizes ED and DTW.
+If $\omega = 0$, no need to pay the fine for the non-diagonal alignment, which reduces to DTW.
+If $\omega \rightarrow \infty$, the non-diagonal alignment becomes prohibitive, and it reduces to ED.
+
+\section{Classification} \label{sec:classification}
+
+In Chapter~\ref{ch:mtsccleav}, we use ROCKET (RandOm Convolutional KErnel Transform) and its variants, including MiniRocket, MultiRocket, and Hydra, as the time series classifiers on the time series resulting from our encoding methods.
+Technically, they are not classifiers in their own right but rather feature extractors. These features are also called summary statistics. 
+They are high-dimensional feature vectors that capture the characteristics of the original time series.
+The summary statistics are then fed to the classifiers to output the final classification results.
+
+\subsection{Ridge classifier}
+
+The classifier that is usually chosen to work with ROCKET and its variants is a ridge classifier. The main advantage of it is speed. ROCKET and its variants generate a large number of features.
+
+A ridge classifier is a wrapper that uses a ridge regression model as a routine to perform classification. It first maps the categorical labels of targets into continuous numbers, does the regression, and finally thresholds the numerical results from the regressor to obtain the classification result.
+
+Given a training dataset $D = \{(x_i, y_i)\}_{i=1}^n$ with $n$ instances, where $x_i \in \mathbb{R}^P$ is the feature vector with $P$ dimensions and $y_i \in \{+1, -1\}$ is its label, it minimize the following optimization function.
+
+\begin{equation}
+min_{w} \left( \sum_{i=1}^n (x_i^T w - y_i)^2 + \lambda \|w\|_2^2 \right)
+\end{equation}
+Where $\|w\|_2^2 = \sum_{j=1}^p w_j^2$ is the $L_2$ norm of the weight vector and $\lambda > 0$ control the penalty.
+We explain the equation in brief. There are two terms inside the bracket. The first term is simply the sum of the residual, same as the one in the least squares method. The second term is called the $L_2$ penalty and is used to introduce bias in the fit to avoid overfitting. Hence, $\lambda$ serves as a regularization hyperparameter between the trade-off between bias and variance.
+
+Since the above optimization function in a ridge classifier has a closed-form solution, it can be solved using linear algebra rather than iterative optimization, as in logistic regression.
+Besides, the generated features by the random kernels in ROCKET and its variants are highly correlated. Ridge regularization, also known as the $L_2$ norm, can handle this case.
+Ridge regression shrinks regression coefficients toward zero by adding an L2 penalty.
+It reduces model complexity and helps with multicollinearity.

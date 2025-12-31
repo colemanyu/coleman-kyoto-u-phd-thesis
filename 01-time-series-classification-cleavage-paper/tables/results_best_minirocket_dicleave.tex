@@ -1,6 +1,6 @@
 \begin{table*}[htbp]
 \centering
-% \resizebox{\columnwidth}{!}{
+\resizebox{\columnwidth}{!}{
 \begin{tabular}{llcccccc}
 \toprule
 Dataset & Methods & Acc & Sp & Sn & F1 & MCC & Time (s) \\
@@ -18,7 +18,7 @@ multi-class & enc 9 + ROCKET  & \textcolor{red}{\textbf{0.863}} & \textcolor{red
               & DiCleave & 0.820 & 0.895 & 0.804 & 0.815 & 0.710  & 131.151 \\
 \bottomrule
 \end{tabular}
-% }
+}
     \caption{Comparative analysis between MTSCCleav with the best combination of the encoding method and classifier, with the SOTA, DiCleave, on the three datasets. 
     The best results of using MiniROCKET have also been shown to compare the computational efficiency.
     The best results are highlighted in \textcolor{red}{\textbf{bold}}.

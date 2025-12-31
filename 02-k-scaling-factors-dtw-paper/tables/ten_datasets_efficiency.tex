@@ -28,6 +28,7 @@
 \centering
 \caption{The number of distance calls and runtime on PSED\_vanilla and PSED\_parallel\_bsf of the ten datasets}
 % Note: The column specification has 7 columns
+\resizebox{1.0\columnwidth}{!}{
 \begin{tabular}{l c c c c c c}
 \toprule
 \multirow{2}{*}{Name} & \multirow{2}{*}{Size} & \multirow{2}{*}{Length} & PSED\_vanilla & PSED\_parallel\_bsf & \multirow{2}{*}{\% distance calls pruned} & \multirow{2}{*}{Speed Up} \\
@@ -46,6 +47,6 @@ GunPoint & 50 & 150 & 159 & 3 & 89.42\% & 53.00X \\
 Adiac & 390 & 175 & 23550 & 123 & 96.71\% & 191.46X \\
 Epilepsy & 137 & 206 & 13131 & 336 & 39.88\% & 39.08X \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \label{tab:ten_datasets_efficiency}
 \end{table*}
