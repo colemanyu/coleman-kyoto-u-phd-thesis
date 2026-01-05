@@ -1,0 +1,97 @@
+\section{Introduction} \label{sec:introduction}
+
+Humans have made predictions since ancient times.
+In ancient societies, making an accurate prediction was crucial to ensure the success of planting and harvesting.
+There was a need to predict weather dynamics, such as rainfall and temperature.
+For example, plant during the season with sufficient rainfall and appropriate temperatures.
+Our ancestors used divination tools such as turtle shells, wooden blocks (also known as Moon blocks), or bones to make predictions.
+But the accuracy of those predictions was not guaranteed.
+More advanced acts may involve astronomy. They focused on predicting celestial events, such as eclipses, for religious and agricultural purposes.
+Even in modern societies, prediction is still essential.
+% \cite[1 INTRODUCTION]{lai2018modeling}
+Predicting traffic-jam patterns only a few hours ahead can save time by enabling the selection of an alternative route.
+A wealth could be created by forecasting stock market trends.
+Predicting the future, also known as time series forecasting, is crucial for us.
+
+With advances in hardware technologies, we collect enormous amounts of data from diverse sources, such as smart sensors~\cite{plageras2018efficient} and social media platforms, continuously.
+These data are time series.
+A time series is an ordered sequence of measures, represented in real-valued numbers, at discrete timestamps.
+The timestamps are at equal intervals~\cite{chatfield2003analysis}.
+These vast data collections have created the era of Big Data, which provides datasets for developing and deploying reliable, robust, data-driven forecasting techniques to discover patterns and extract valuable information~\cite{al-jarrah2015efficient}.
+Applications can be found in the financial sector, such as predicting business cycles and stock market movements~\cite{li2024deep, lai2018modeling, sapankevych2009time, chen2023long} and the medical field, such as the status of critical patients according to their vital signs~\cite{torres2021deep, dasilva2021deepsigns} and the propagation of diseases such as influenza~\cite{chen2023long, wu2020deep} and COVID-19~\cite{torres2021deep, martinez-alvarez2020coronavirus}. 
+
+There are many methods that have been developed for these tasks.
+Traditional methods include rolling averages, vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
+Because of their statistical properties, they have long been the standard.
+The shortcomings of ARIMA and its variants include their high computational cost~\cite{lai2018modeling}. 
+In contrast, VAR is arguably the most widely used method, particularly in multivariate time series analysis, owing to its simplicity.
+However, most of these traditional approaches have certain limitations.
+For example, ARIMA performs well only if the underlying stochastic process of the time series indeed follows an ARIMA model.
+% https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
+% https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
+% It cannot capture nonlinear dependence.
+In short, these parametric models perform well if the data meet their specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means the mean and variance of the time series remain consistent throughout time.
+It motivates us to develop machine learning methods, particularly deep learning methods, to address this problem. 
+Many deep learning models have been proposed, including RNN-based model, CNN-based model, GNN-based model, Transformer-based model, and compound model that incorporates different base models mentioned before~\cite{chen2023long}.
+For example, RNNs are good at capturing long-term dependencies while CNNs are good at capturing short-term dependencies. 
+A good way to improve performance is to compound the base models.
+For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term local dependency patterns and long-term patterns.
+Using the occupancy rate of a freeway as an example~\cite{lai2018modeling}, the former one refers to the morning peaks against evening peaks, while the latter one refers to the workday and weekend patterns.
+Clearly, a good forecaster needs to capture both kinds of recurring patterns.
+However, deep learning models tend to be overly complex and incur high computational costs compared to traditional techniques.
+
+Deep learning methods achieve superior performance in many application domains and types of data.  
+A recent study~\cite{middlehurst2024bake} shows that, in time-series classification, nearest-neighbor classifiers with appropriate distance measures, such as Dynamic Time Warping (DTW), despite their simplicity, perform well and are therefore commonly used as benchmarks.
+In addition,  a recent study demonstrates that a well-known machine learning baseline, Gradient Boosting Regression Tree (GBRT), such as XGBoost, with an appropriate data engineering of the input and output, can achieve competitive or even superior performance than the deep learning method.
+In detail, they transform the time series forecasting task into a window-based regression problem.
+For each training window, the lag values are concatenated with external features, and then flattened to form one input instance for a multi-output regression GBRT model.
+It provides a more efficient but still accurate way of doing time series forecasting.
+
+In addition, the non-parametric, instance-based method, known as $k$-nearest neighbors, has shown to be a promising method for classification and regression~\cite{martinez2019methodology}.
+It is considered a lazy learner because the training steps involve only memorizing all the instances verbatim; no higher-level concepts have been learned.
+In classification, when a new instance to be classified, k-NN finds its k nearest neighbors in the training set with respect to some distance measure, and returns their majority labels.
+In regression or forecasting, the forecaster uses lagged values as explanatory variables.
+These lagged values form a query.
+We find the previous similar patterns to the query and use their subsequent patterns to predict the future behavior of the query.
+The intuition is that history repeats itself.
+The historical subsequences that are similar to the current state can provide us with a hint about the future. 
+These subsequences are similar, and so are their subsequent subsequences (i.e., their future).
+
+Based on these findings, this study proposes a hybrid method that uses each window's (k) nearest neighbors' information in the past as its covariates.
+The information includes the similarity of the window and the (k) nearest neighbors and their subsequent points.
+The similarities can act as a confidence of using the (k) nearest neighbors.
+The fundamental difference between this study and the previous approaches is that they directly use the subsequent points for the prediction, in contrast, we utilize the nearest neighbor's information as covariates.
+It may sound expensive to find the nearest neighbor in the past for each window.
+We leverage a data primitive namely Matrix Profile.
+It is a fast tool that can compute the meta time series that annotates the original time series.
+The meta time series provides us with the distance between each window and its nearest neighbor in the past, their location, and so we can also retrieve the subsequent points of them.
+
+
+
+
+
+
+%%%
+
+
+
+% Need to analyze them, learn from them
+
+% Forecasting task, briefly introduce what it is
+
+% Introduce some common method, the old methods
+
+% then Deep learning
+
+% But they are not good sometimes
+% In time series classification , 1-NN performs well.
+
+% What we are doing? Using XGBoost as the main forcaster
+
+% But its liminiation is the short forcasting window
+% In literature, there are study about k-NN to do forcasting. They use the result directly
+
+% But we would like to find a 1-NN for each window, with the point being at the end.
+% Using information about subsequence point and the distance, which serve as the weight
+
+% We propse a hybrid method that merge this two so XGBoost forecaster can still capture long history

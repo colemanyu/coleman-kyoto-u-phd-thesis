@@ -43,6 +43,9 @@
 
 % Coleman: Custom libraries
 % ___________________________________________________
+% Lines
+% \usepackage[switch]{lineno}
+
 % Japanese
 \usepackage{CJKutf8}
 
@@ -179,7 +182,7 @@
 \usepackage{hyperref} % Load this after xurl
 % ===============================
 % ___________________________________________________
-\title{Time Series Analysis with Applications in Bioinformatics \\ \begin{CJK*}{UTF8}{ipxm}時系列分析と生命情報学への応用\end{CJK*}}
+\title{Time Series Searching, Forecasting, and Classification with Applications in Bioinformatics \\ \begin{CJK*}{UTF8}{ipxm}時系列の探索・予測・分類とその生命情報学への応用\end{CJK*}}
 \author{Coleman Yu \\ \begin{CJK*}{UTF8}{ipxm}余\hspace{1em}浩旻\end{CJK*}}
 \date{}
 
@@ -197,63 +200,79 @@
 
 
 \begin{document}
+% Coleman: Line
+% \linenumbers
 
-\doublespacing
+% Coleman: Spacing
+% \doublespacing
+\onehalfspacing
+% \singlespacing
 
-\maketitle
+% \maketitle
 
-\begin{abstract}
-\subfile{chapters/abstract}
-\end{abstract}
-\newpage
+% \begin{abstract}
+% \subfile{chapters/abstract}
+% \end{abstract}
+% \newpage
 
-\setcounter{page}{3}
-\subfile{chapters/acknowledgements} % Revised
-\newpage
+% \setcounter{page}{3}
+% \subfile{chapters/acknowledgements} % Revised
+% \newpage
 
-\setcounter{page}{4}
-\subfile{chapters/publications} % Revised
+% \setcounter{page}{4}
+% \subfile{chapters/publications} % Revised
 
-\tableofcontents
-\listoffigures
-\listoftables
+% \tableofcontents
+% \listoffigures
+% \listoftables
 
 % \newpage
 
-\subfile{chapters/introduction}
+% \subfile{chapters/introduction}
 
-\subfile{chapters/preliminaries} % Revised
+% \subfile{chapters/preliminaries} % Revised
 
-\chapter{MTSCCleav: a Multivariate Time Series Classification (MTSC)-based Method for Predicting Human Dicer Cleavage Sites} \label{ch:mtsccleav}
-\subfile{\firstpaper/sections/00-abstract}
-\subfile{\firstpaper/sections/01-background}
-\subfile{\firstpaper/sections/02-methods}
-\subfile{\firstpaper/sections/03-results}
-\subfile{\firstpaper/sections/04-discussion}
-\subfile{\firstpaper/sections/05-conclusions}
+% \chapter{MTSCCleav: a Multivariate Time Series Classification (MTSC)-based Method for Predicting Human Dicer Cleavage Sites} \label{ch:mtsccleav}
+% \subfile{\firstpaper/sections/00-abstract}
+% \subfile{\firstpaper/sections/01-background}
+% \subfile{\firstpaper/sections/02-methods}
+% \subfile{\firstpaper/sections/03-results}
+% \subfile{\firstpaper/sections/04-discussion}
+% \subfile{\firstpaper/sections/05-conclusions}
 
-\chapter{Scaling with Multiple Scaling Factors in Time Series Searching} \label{ch:ksfdtw}
-\subfile{\secondpaper/sections/00-abstract}
-\subfile{\secondpaper/sections/01-introduction}
-\subfile{\secondpaper/sections/02-related-work}
-\subfile{\secondpaper/sections/03-preliminaries}
-\subfile{\secondpaper/sections/04-method}
-\subfile{\secondpaper/sections/05-experiment}
-\subfile{\secondpaper/sections/06-conclusion}
+% \chapter{Scaling with Multiple Scaling Factors in Time Series Searching} \label{ch:ksfdtw}
+% \subfile{\secondpaper/sections/00-abstract}
+% \subfile{\secondpaper/sections/01-introduction}
+% \subfile{\secondpaper/sections/02-related-work}
+% \subfile{\secondpaper/sections/03-preliminaries}
+% \subfile{\secondpaper/sections/04-method}
+% \subfile{\secondpaper/sections/05-experiment}
+% \subfile{\secondpaper/sections/06-conclusion}
 
 \chapter{Leveraging Motifs for Time Series Forecasting
 with Matrix Profile} \label{ch:mpmf}
 % abstract
-% introduction
-% related-work
-% preliminaries
-\subfile{\thirdpaper/sections/method}
-% experiments
-% discussion
-% Conclusion and Future Work
+% \subfile{\secondpaper/sections/00-abstract}
+\subfile{\thirdpaper/sections/01-introduction}
+\subfile{\thirdpaper/sections/02-related-work}
+\subfile{\thirdpaper/sections/03-preliminaries}
+\subfile{\thirdpaper/sections/04-method}
+\subfile{\thirdpaper/sections/05-experiments}
+\subfile{\thirdpaper/sections/06-conclusion}
 
+% Figures
+% time series forecasting problem
+% Reconﬁguration of a single window of input instances.
+% Motif example
 
-\subfile{chapters/conclusion} % Revised
+% Tables
+% Dataset Statistics
+% Without covariates with top-1 motif information
+% With covariates with top-1 motif information
+% Without covariates with top-k motif information
+% With covariates with top-k motif information
+
+% \subfile{chapters/conclusion} % Revised
 
 % \appendix
 % \chapter{Additional Material}
