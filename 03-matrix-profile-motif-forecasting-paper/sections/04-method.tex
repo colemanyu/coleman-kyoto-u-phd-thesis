@@ -1,120 +1,66 @@
 \section{Method} \label{sec:method}
-%%%
-In this section, we first formulate the time series forecasting problem and then discuss how to leverage motifs to improve the performance of the Gradient Boosting Regression Tree (GBRT), our forecaster, in the following part.
-In that part, we present how the GBRT can be used in this problem, followed by the generation of motifs by a time series primitive, namely Matrix Profile.
 
-To begin with, we define the data type of interest, time series.
+In this section, we first formulate the time series forecasting problem, followed by the evaluation method.
+We then explain how to use a Gradient Boosting Regression Tree (GBRT) for forecasting.
+Subsequently, we discuss how to leverage the nearest neighbors' information of each subsequence to improve GBRT's performance.
+Finally, we discuss how to compute those nearest neighbors using the Matrix Profile.
+
+To begin, we define the data type of interest: time series.
 \begin{definition}[Time series]
+    \label{def:ts}
     A \textit{time series} $T = t_1, t_2, \dots, t_n$ is a sequence of real-valued numbers with length = $n$.
 \end{definition}
-In the above definition, $T$ is a univariate time series because each entry is a scalar number. If each entry is a vector consisted of scalar numbers with length $> 1$, $T$ is a multivarate time series.
-A multivariate time series can be represented in a sequence of vectors. It can also be represented in a vector of univariate time series. In the later case, we call each univariate time series a channel of the multivariate time series $T$, denoted as $T^c$, where $1 \leq c \leq C$ and $C$ is the number of channels.
-In a dataset, we may have more than one time series, we use $T_i$ to denote a time series in a dataset with $N$ time series, where $1 \leq i \leq N$.
+In Definition~\ref{def:ts}, $T$ is a univariate time series where each entry is a scalar number. 
+If each entry is a vector consisting of scalar numbers with size $> 1$, $T$ is a multivariate time series.
+%
+A multivariate time series can be regarded as a sequence of vectors. It can also be represented as a vector of univariate time series, where each univariate time series is referred to as a channel.
+%
+In a dataset with more than one time series, we use $T_i$ to denote a time series in a dataset with $N$ time series, where $1 \leq i \leq N$.
 
 The local properties of $T$ can be analyzed through its subsequences.
 
 \begin{definition}[Subsequence]
     A \textit{subsequence} $T_{i, m} = t_i, t_{i+1}, \dots, t_{i+m-1} = t_{i:i+m-1}$ of a $T$ is a sequence that consists of a continuous subset of the entries from $T$ of length $m$ starting from $i$.
 \end{definition}
-A sequence with length $= m$ is also known as $m$-sequence.
 
 \subsection{Problem Formulation}
-Time series forecasting is a task of predicating $\tau$-future values of a target $y$ at current time $t$.
-We have all the information from the start of the monitoring until time $t$.
-This study focuses on the case where there is only one target variable~\cite{torres2021deep}.
-$\tau$ is the number of steps we want to predict in the future.
-The simplest case is one-step-ahead forecasting, where $\tau = 1$.
-In other words, we would like to predict one following point only.
-The predicted value is $\hat{y}_{t+1}$ where the actual value is $y_{t+1}$.
-Certainly, it is better to predict beyond just the following point $t+1$ , to predict at multiple points in the future. It generalize the task to multi-horizon forecasting,
-The one-step-ahead forecasting and multi-horizon (multi-steps) forecasting are encoded in Equation~\ref{eq:forecasting}.
-When $\tau = 1$, it is one-step-ahead forecasting.
-When $\tau > 1$, it is multi-steps-ahead forecasting, which is also called multi-horizon forecasting.
+Time series forecasting is the task of predicting $h$-future values $y_{t+1}, y_{t+2}, \dots, y_{t+h}$ of a target $Y$ at the current time point $t$.
+% ~\cite{torres2021deep}
+In this study, there is only one target variable $Y$.
+$h$ is the number of steps we want to predict in the future.
+The simplest case is one-step-ahead forecasting, where $h = 1$.
+The predicted value is denoted as $\hat{y}_{t+1}$ where the actual value is $y_{t+1}$.
+It is preferable to predict multiple points in the future. 
+It is called multi-horizon (multi-step) forecasting, where $h > 1$.
+The task of forecasting is encoded in Equation~\ref{eq:forecasting}.
 \begin{equation} 
     \label{eq:forecasting}
-    \hat{y}_{t+\tau} = f(y_{t-k+1:t}, x_{t-k+1:t}, u_{t-k+1:t+\tau}, \tau)
+    \hat{y}_{t+\tau} = f(y_{t-w+1:t}, x_{t-w+1:t}, u_{t-w+1:t+\tau}, \tau)
 \end{equation}
 where
 \begin{itemize}
-  \item $\hat{y}_{t+\tau}$ is a prediction of the target value at $t+\tau$, where $\tau \in \{ 1, 2, \dots, \tau_{max}\}$ is a discrete forecast horizon.
-  \item $y_{t-k+1:t}$ are the actual values consisting of the current value $y_t$ and the lag values before it. $y_{t-i}$ is called the lag of $i$.
-  \item $x_t$ are inputs that can only be known historically. $x_{t+1}$ is not known at current time $t$.
-  \item $u_t$ are kwown inputs for all time. For example, the data includes information such as the day of the week or month~\cite{lim2021timeseries}. Even at the current time $t$, $u_{t+i}$ where $1 \leq i \leq \infty$ are known.
+  \item $\hat{y}_{t+\tau}$ is a prediction of the target value at $t+\tau$, where $\tau \in \{ 1, 2, \dots, h\}$.
+  \item $y_{t-w+1:t}$ are the actual values consisting of the current value $y_t$ and the lag values before it. 
+  $y_{t-i}$ is called the lag of $i$ or $i$-lag.
+  \item $x_t$ are inputs that can only be known historically at time $t$. $x_{t+1}$ is not known at $t$.
+  \item $u_t$ are kwown inputs for all time. For example, the date information such as the day of the week or month~\cite{lim2021timeseries}. 
+  Even at $t$, $u_{t+i}$ where $1 \leq i \leq \infty$ are known.
 \end{itemize}
 $x_t$ and $u_t$ are called covariates of $y_t$.
-The input of Equation~\ref{eq:forecasting} is over a look-back window $k$.
+The input of Equation~\ref{eq:forecasting} is a look-back window $w$.
+
 We explain the task of forecasting in terms of Equation~\ref{eq:forecasting}.
-The forecasting process estimates the value of $y(t+\tau)$, denoted by $\hat{y}(t+\tau)$ with the aim to minimize the error function, typically represented as a function of $y_{t+\tau} - \hat{y}_{t+\tau}$ for each $\tau$.
-We explain the usage of covariates used in forecasting.
-It is obvious that date information is useful when the target variable depends on when it is measured.
-For example, if the target variable is the consumption rate of electricity, then there is a clear pattern with respect to the month because there is higher electricity consumption for the usage of air-conditioners and heaters in the winter and summer.
-$x_t$ can tell us more information related to the state of $y_t$.
+The forecasting process estimates the value of $y_{t+\tau}$, denoted by $\hat{y}_{t+\tau}$ with the aim to minimize the error function, typically represented as a function of $y_{t+\tau} - \hat{y}_{t+\tau}$ for each $\tau$.
+%
+It is obvious that date information is useful when the target variable depends on when the measurement is taken.
+For example, if the target variable is the electricity consumption rate, there is a clear pattern by month: consumption is higher during the winter and summer months, when air conditioners and heaters are used.
+$x_t$ provides additional information about the state of $y_t$.
 For example, if the target variable is the body temperature, and 
-$x_t$ tells us the severity of the sore throat, we may guess the body temperature will raise tomorrow because of the fever.
+$x_t$ tells us the severity of the sore throat, we may guess the body temperature will raise tomorrow.
 
-\subsection{Gradient Boosting Regression Tree (GBRT)}
-Gradient boosting~\cite{friedman2001greedy} is a boosting algorithm that ensembles a group of weak learners (decision trees) to make predictions.
-It adds the learners sequentially to an ensemble, each one connecting its predecessor.
-It constructs the weak learners in a way that each of them strategically corrects the mistakes made by the previous models by fitting the new learner to the residual errors made by the previous one~\cite{serrano2021grokking, geron2025handson}.
-It can be used in classification and regression.
-In this study, we focus on its use in regression.
-Hence, it is also called ``Gradient Boosting Regression Tree (GBRT)''.
-Some popular optimized implementations of gradient boosting are XGBoost~\cite{chen2016xgboost}, CatBoost~\cite{dorogush2017catboost}, and LightGBM~\cite{ke2017lightgbm}.
-In this study, we employ XGBoost.
+\subsection{Evaluation Method}
+In this part, we explain how to evaluate the performance
 
-In order to apply GBRT into time series forecasting problem,
-we need to cast the input into an appropriate format to feed into GBRT..
-The casting approach is similar to successful time-series forecasting models, which reconfigure the time series into windowed inputs and train a GBRT on these windowed inputs~\cite{elsayed2021we}.
-We present the reconfiguration, as shown in Figure~\ref{fig:flattening}.
-For each entry of the target variable $y_i$, we retrieve its $u_i$, such as the day information from the calendar.
-Hence, for each $y_i$, it is now associated with $x_i$ and $u_i$.
-To simplify the notation, we absorb $u_i$ into $x_i$ and it is called as covariates of $y$.
-The 2D windows, as shown on the left hand side in Figure~\ref{fig:flattening}, with size $w \times M$, where $M$ is the total number of covariates, is flattened into a 1D array on the right hand side with length $w + M$.
-To note, as suggested in the literature~\cite{elsayed2021we}, on the covariates of the last time-point $i$ are kept and appended to the final result.
-By the casting, we obtain the input-output pairs for training.
-In details, the input is $y_{i-w+1}, y_{i-w+2}, \dots, y_i, x_i^1, x_i^2, \dots, x_i^M$ where the red part refer to the current target value $y_i$ and its lag values, and the blue part refers to the covariates of $y_i$.
-The corresponding output is $y_{i+1}, y_{i+2}, \dots, y_{i+h}$, with length = $h$.
-In other words, we predicte the $h$-horzon from the $w$-look back window (i.e, $w+M$-flattened input).
-With this input-output formulation, the forecasting problem becomes a multi-output regression problem.
-Standard XGBoost cannot return a sequence of predicting value, but only a single number (i.e., single-target setting). 
-To note, a multi-output regression problem (i.e., with multi targets) is simply a group of single-targets regression problem.
-Hence, XGBoost internally simply treat the prediction of h-steps into h individual problems.
-Hence, the final output is returned by h regressors instead of a single model.
-One may argue that the h regressors operate individually and hence the temporal relationship in the output sequence is lost.
-However, as the individual regressors are train on the input, the prediction would still preserve the temporal relationship.
-
-
-
-
-\subsection{Matrix Profile}
-
-\begin{definition}[Distance profile]
-    A \textit{distance profile} $D_i = d_{i, 1}, d_{i, 2}, \dots, d_{i, n-m+1}$ of a $T$ is a vector of the Euclidean distances between a given subsequence $T_{i, m}$ and each subsequences in $T$, where $d_{i, j}$ is the distance between $T_{i, m}$ and $T_{j, m}$, $1 \leq i, j \leq n-m+1$.
-\end{definition}
-The distances are measured between z-normalized time series.
-
-
-\begin{definition}[Matrix profile]
-    A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $\\$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
-\end{definition}
-
-\begin{definition}[Matrix profile index]
-    A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
-\end{definition}
-
-\begin{definition}[Left distance profile]
-    A \textit{left distance profile} $D_i^L = d_{i, 1}, d_{i, 2}, \dots,\allowbreak d_{i, i - \ceil{m/4} -1}$ of $T$ is a vector of Euclidean distances between a given subsequence $T_{i, m}$ and each subsequence that appears before $T_{i, m}$.
-    To note, $i - \ceil{m/4} - 1$ is the index location of the last eligible subsequence before $T_{i, m}$ because of the exclusion zone.
-\end{definition}
-
-\begin{definition}[Left matrix profile]
-    A \textit{left matrix profile} $P^L = \min(D_1^L), \min(D_2^L), \allowbreak  \dots, \min(D_{n-m+1}^L)$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$ before it.
-\end{definition}
-
-\begin{definition}[Left matrix profile index]
-    A \textit{left matrix profile index} $I^L = I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$ is a vector of integers, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
-\end{definition}
-\subsection{Evaluation Metrics}
 % \cite{li2024deep}, \cite{lai2018modeling}
 % https://robjhyndman.com/hyndsight/wape.html
 
@@ -150,6 +96,71 @@ where the weights are given by
     w_i = \frac{|y_i|}{\sum_{i=1}^n |y_i|}
 \end{equation}
 For all of them, a lower value is better.
+
+\subsection{Gradient Boosting Regression Tree (GBRT)}
+Gradient boosting~\cite{friedman2001greedy} is a boosting algorithm that ensembles a group of weak learners (usually decision trees) to make predictions.
+It sequentially adds learners to an ensemble, with each learner connecting its predecessor.
+It constructs weak learners in a way that each learner strategically corrects the predecessor's mistakes by fitting the new learner to the residual errors made by the predecessor~\cite{serrano2021grokking, geron2025handson}.
+It can be used in classification and regression.
+In this study, we focus on its use in regression.
+For the usage in regression, the model is called ``Gradient Boosting Regression Tree (GBRT)''.
+Some popular optimized implementations of gradient boosting are XGBoost~\cite{chen2016xgboost}, CatBoost~\cite{dorogush2017catboost}, and LightGBM~\cite{ke2017lightgbm}.
+In this study, we use XGBoost.
+
+In order to apply GBRT into time series forecasting problem,
+we need to cast the input into an appropriate format to input into GBRT.
+The casting approach is similar to successful time-series forecasting models, which reconfigure the time series into windowed inputs~\cite{elsayed2021we}.
+%
+Figure~\ref{fig:flattening} presents the reconfiguration.
+For each entry of the target variable $y_i$, we retrieve its $u_i$, such as the day information from the calendar.
+Hence, for each $y_i$, it is associated with $x_i$ and $u_i$.
+To simplify the notation, we absorb $u_i$ into $x_i$, and it is called the covariates of $y_i$.
+The 2D window, as shown on the left-hand side in Figure~\ref{fig:flattening}, with size $w \times M$, where $M$ is the total number of covariates, is flattened into a 1D array on the right-hand side with length $w + M$.
+To note, as suggested in the literature~\cite{elsayed2021we}, only the covariates of the last time-point $i$ are kept and appended to the final vector.
+By reconfiguration, we obtain the predictor-response pairs for training.
+In detail, the predictor is $\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, \mathbf{y_i}}, \textcolor{tab:blue}{x_i^1, x_i^2, \dots, x_i^M}$ where the \textcolor{tab:red}{red} part refers to the current target value $\textcolor{tab:red}{\mathbf{y_i}}$ and its lag values, and the \textcolor{tab:blue}{blue} part refers to the covariates of $\textcolor{tab:red}{\mathbf{y_i}}$.
+%
+The corresponding output is $y_{i+1}, y_{i+2}, \dots, y_{i+h}$, with length = $h$.
+We predict the $h$-horzon from the $w$-look back window (i.e, $w+M$-flattened predictor).
+With this predictor-response formulation, the forecasting problem becomes a multi-output regression problem.
+Standard XGBoost cannot return a sequence of predicted values; it only returns a single number~\cite{elsayed2021we}. 
+To note, a multi-output regression problem is simply a group of single-output regression problems.
+In other words, XGBoost internally simply treats the prediction of $h$-steps as $h$ individual problems.
+Hence, the final output is produced by the $h$ regressors rather than by a single model.
+One may argue that the $h$ regressors operate individually and hence the temporal relationship in the output sequence is lost.
+However, as the individual regressors are trained on the same flattened input, the prediction would still preserve the temporal relationship~\cite{elsayed2021we}.
+
+
+
+\subsection{Matrix Profile}
+
+\begin{definition}[Distance profile]
+    A \textit{distance profile} $D_i = d_{i, 1}, d_{i, 2}, \dots, d_{i, n-m+1}$ of a $T$ is a vector of the Euclidean distances between a given subsequence $T_{i, m}$ and each subsequences in $T$, where $d_{i, j}$ is the distance between $T_{i, m}$ and $T_{j, m}$, $1 \leq i, j \leq n-m+1$.
+\end{definition}
+The distances are measured between z-normalized time series.
+
+
+\begin{definition}[Matrix profile]
+    A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $\\$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
+\end{definition}
+
+\begin{definition}[Matrix profile index]
+    A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
+\end{definition}
+
+\begin{definition}[Left distance profile]
+    A \textit{left distance profile} $D_i^L = d_{i, 1}, d_{i, 2}, \dots,\allowbreak d_{i, i - \ceil{m/4} -1}$ of $T$ is a vector of Euclidean distances between a given subsequence $T_{i, m}$ and each subsequence that appears before $T_{i, m}$.
+    To note, $i - \ceil{m/4} - 1$ is the index location of the last eligible subsequence before $T_{i, m}$ because of the exclusion zone.
+\end{definition}
+
+\begin{definition}[Left matrix profile]
+    A \textit{left matrix profile} $P^L = \min(D_1^L), \min(D_2^L), \allowbreak  \dots, \min(D_{n-m+1}^L)$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$ before it.
+\end{definition}
+
+\begin{definition}[Left matrix profile index]
+    A \textit{left matrix profile index} $I^L = I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$ is a vector of integers, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
+\end{definition}
+
 
 
 

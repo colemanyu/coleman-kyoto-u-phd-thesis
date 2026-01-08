@@ -4,11 +4,7 @@
 	\begin{algorithmic}[1]		
 		\For{$i \gets 1$ \textbf{to} $n-m+1$}
         \For{$j \gets 1$ \textbf{to} $n-m+1$}
-        \State $\mathrm{dist} \gets 0$
-        \For{$k \gets 0$ \textbf{to} $m-1$}
-        \State $\mathrm{dist} \gets \mathrm{dist} + (t_{i+k} - t_{j+k})^2$
-        \EndFor
-        \State $\mathrm{dist} \gets \sqrt{\mathrm{dist}}$
+        \State Compute the z-normalized Euclidean distance between $t_{i, m}$ annd $t_{j, m}$.
         \EndFor
         \EndFor
 	\end{algorithmic}

@@ -84,7 +84,7 @@ The distance is the z-normalized Euclidean distance.
 It may seem computationally expensive to perform this annotation at first glance.
 %
 Algorithm~\ref{alg:mp-brute-force} shows the brute force approach to compute the matrix profile.
-The three for loops indicate that the computational complexity is $\mathcal{O}(n^2m)$.
+The two for-loops and the computation of z-normalized Euclidean distance, which takes $\mathcal{O}(m)$, indicate that the computational complexity is $\mathcal{O}(n^2m)$.
 The space complexity is $\mathcal{O}(n^2)$ because of the pairwise distance of each subsequence with the other subsequence.
 %
 However, the matrix profile can be computed in $\mathcal{O}(n^2)$ using an exact method, namely STOMP~\cite{yeh2016matrix} or its community-open-sourced version, STUMP~\cite{law2019stumpy}.

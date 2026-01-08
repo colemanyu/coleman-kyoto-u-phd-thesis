@@ -1,13 +1,8 @@
 # Coleman's PhD Thesis
 ## Pending Tasks of mpmf
-- [] Definition of time series forecasting
-    - single step vs multi step
-    - lag feature
 - [] Define Evaluation
     - Rolling
     - Teacher forcing
-- [] GBRT
-    - XGBoost
 - [] Matrix Profile
     - How to compute them
     - For the subsequence's definition, mention it is by the end point instead of the starting point
