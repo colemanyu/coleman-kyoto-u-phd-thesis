@@ -1,2 +1,23 @@
 \section{Related Work} \label{sec:related-work}
-%%%
+
+Many methods have been developed for time series forecasting.
+Traditional methods include rolling averages (RA), vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
+Because of their rigorous statistical properties, they have long been the standard.
+The shortcomings of ARIMA and its variants include their high computational cost~\cite{lai2018modeling}. 
+In contrast, VAR is arguably the most widely used method, particularly in multivariate time series analysis, owing to its simplicity.
+However, most of these traditional approaches have certain limitations.
+%
+% https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
+% https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
+They perform well when the data meet specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means that the mean and variance of the time series remain constant over time.
+% For example, ARIMA performs well only if the underlying stochastic process of the time series satisfies the assumptions of ARIMA.
+%
+It motivates the community to develop machine learning methods, particularly deep learning methods for time series forecasting. 
+Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
+The compound models are promising.
+For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
+A good way to improve performance is to compound them.
+For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
+Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the ``short-term'' patterns refer to the morning peaks against evening peaks, while the ``long-term'' patterns refer to the workday patterns against weekend patterns.
+Clearly, a good forecaster needs to capture and distinguish both kinds of patterns.
+Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs compared to traditional techniques.

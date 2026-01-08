@@ -23,28 +23,6 @@ The vast data collections have created the era of ``Big Data'', which provides a
 %
 Applications can be found in the financial sector, such as predicting business cycles and stock market movements~\cite{li2024deep, lai2018modeling, sapankevych2009time, chen2023long} and the medical field, such as the status of critical patients according to their vital signs~\cite{torres2021deep, dasilva2021deepsigns} and the propagation of diseases such as influenza~\cite{chen2023long, wu2020deep} and COVID-19~\cite{torres2021deep, martinez-alvarez2020coronavirus}. 
 
-Many methods have been developed for time series forecasting.
-Traditional methods include rolling averages (RA), vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
-Because of their rigorous statistical properties, they have long been the standard.
-The shortcomings of ARIMA and its variants include their high computational cost~\cite{lai2018modeling}. 
-In contrast, VAR is arguably the most widely used method, particularly in multivariate time series analysis, owing to its simplicity.
-However, most of these traditional approaches have certain limitations.
-%
-% https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
-% https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
-They perform well when the data meet specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means that the mean and variance of the time series remain constant over time.
-% For example, ARIMA performs well only if the underlying stochastic process of the time series satisfies the assumptions of ARIMA.
-%
-It motivates the community to develop machine learning methods, particularly deep learning methods for time series forecasting. 
-Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
-The compound models are promising.
-For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
-A good way to improve performance is to compound them.
-For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
-Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the ``short-term'' patterns refer to the morning peaks against evening peaks, while the ``long-term'' patterns refer to the workday patterns against weekend patterns.
-Clearly, a good forecaster needs to capture and distinguish both kinds of patterns.
-Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs compared to traditional techniques.
-
 \input{../figures/flattening}
 A recent study~\cite{middlehurst2024bake} shows that, in time series classification, a non-parametric, instance-based method, namely nearest-neighbor classifiers (1-NN) and its generalized form $k$-NN, with appropriate distance measures, such as Dynamic Time Warping (DTW), despite their simplicity, perform well and are therefore commonly used as benchmarks.
 In detail, when a new instance is to be classified, $k$-NN finds its $k$ nearest neighbors in the training set and returns their majority label among them.
@@ -52,8 +30,8 @@ $k$-NN is considered a lazy learner because the training steps involve only memo
 %
 In addition, in time series forecasting, a recent study demonstrates that a well-known machine learning baseline, Gradient Boosting Regression Tree (GBRT), such as XGBoost, equipped with an appropriate data engineering of the data, can achieve competitive or even superior performance than the deep learning method.
 In detail, they transform the time series forecasting task into a window-based regression problem, as shown in Figure~\ref{fig:flattening}.
-For each training window of length $w$ with the last time point $y_i$, $y_i$ and its lagged values $y_{i-1}, y_{i-2}, \dots, y_{i-w+1}$ are concatenated with covariates $x_i^1, x_i^2, \dots, x_i^M$ to form a \textit{predictor} for a multi-output GBRT. This transformation is called flattening.
-The corresponding response is the following $h$ points of $y_i$.
+For each training window of length $w$ with the last time point \textcolor{tab:red}{$\mathbf{y_i}$}, and its lagged values \textcolor{tab:red}{$y_{i-1}, y_{i-2}, \dots, y_{i-w+1}$} are concatenated with covariates \textcolor{tab:blue}{$x_i^1, x_i^2, \dots, x_i^M$} to form a \textit{predictor} for a multi-output GBRT. This transformation is called flattening.
+The corresponding response is the following $h$ points of \textcolor{tab:red}{$\mathbf{y_i}$}.
 It provides a simple, more efficient yet accurate method for time series forecasting.
 
 \input{../figures/visualize-matrix-profile}
@@ -98,6 +76,7 @@ In this study, we make the following contributions:
 \end{itemize}
 
 The rest of this paper is organized as follows.
+Section~\ref{sec:related-work} presents the related-work.
 In Section~\ref{sec:method}, we introduce the necessary background knowledge, then introduce our method.
 Section~\ref{sec:experiments} contains an empirical evaluation.
 Finally, we conclude this paper and provide future work in Section~\ref{sec:conclusion}.
