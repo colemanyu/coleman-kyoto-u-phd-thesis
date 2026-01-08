@@ -1,6 +1,6 @@
 # Coleman's PhD Thesis
 ## Pending Tasks of mpmf
-- [] Matrix Profile
+- Matrix Profile
     - How to compute them
     - For the subsequence's definition, mention it is by the end point instead of the starting point
     - Exclusion zone
@@ -8,8 +8,8 @@
         - $h$ subsequence points
         - distance between the query and the nearest neighbor
         - the location (i.e., idx)
-- [] Update progress to Akutsu and Raymond
-- [] Experiments
+- Update progress to Akutsu and Raymond
+- Experiments
     -  Debug of top-1 motif, add distance directly and add as a denominator, normalize, trend
     - Refract the top-k method: Use the top-1 method for k time instead of using a for-loop for each index
         - How to merge different inmeridate subsequence    
