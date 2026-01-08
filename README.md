@@ -1,6 +1,6 @@
 # Coleman's PhD Thesis
 ## Pending Tasks of mpmf
-- [] Future Work
+- Introduction
 - [] Definition of time series forecasting
     - single step vs multi step
     - lag feature
@@ -35,6 +35,7 @@
 - [] Abstract
 
 ## Checklist of the while thesis
+---
 - [] Capital/lower case letters in Section titles
 are not consistently used.
 - [] For Abstract, Introduction, Conclusion etc, change the contributions into three instead of two.

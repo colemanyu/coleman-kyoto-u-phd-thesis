@@ -1,21 +1,22 @@
 \section{Conclusion and Future work} \label{sec:conclusion}
 \subsection{Conclusion}
 \subsection{Future Work}
-\noindent\RuninHead{Leverage nearest neighbors' location information}It would be beneficial to retrieve the nearest neighbors for each subsequence in a specific range, rather than the whole range.
-Real-world applications often require the information of short-term and long-term repeating patterns for making accurate predictions~\cite {lai2018modeling}.
-Notably, the matrix profile also provides the locations of the nearest neighbors. Using this location information, we can retrieve the nearest neighbors of a specified range to find those ``short-term'' and ``long-term'' patterns.
+\noindent\RuninHead{Leveraging nearest neighbors' location information}It would be beneficial to retrieve the nearest neighbors for each subsequence in a specific range with respect to it.
+Real-world applications often require the separation of information of short-term and long-term repeating patterns for making accurate predictions~\cite {lai2018modeling}.
+Notably, the matrix profile also provides the locations of the nearest neighbors from the matrix profile index. Using this location (index) information, we can retrieve the nearest neighbors of each subsequence in a specified range with respect to it to find those ``short-term'' and ``long-term'' patterns.
 
-\noindent\RuninHead{Extend to multidimensional case}This study focuses on univariate time series forecasting, where there is a single target. It only requires us to find one-dimensional nearest neighbors.
+\noindent\RuninHead{Extend to multidimensional case}This study focuses on univariate time series forecasting, where there is a single target and no exogenous inputs. It only requires us to find one-dimensional nearest neighbors.
 When there are multiple targets or a single target with multiple exogenous inputs, we need to identify multidimensional nearest neighbors~\cite{yeh2017matrixa} and leverage their information for forecasting.
 
-\noindent\RuninHead{Top-$k$ motifs}We can use motifs instead of neighbors to receive more stable immediate subsequences for each window.
+\noindent\RuninHead{Top-$k$ motifs}We can use motifs instead of neighbors to receive more stable ``future'' information for each window.
 Recall that a time series motif is a repeated pattern that consists of at least two occurrences.
-A motif can be considered as a family of patterns, while a nearest neighbor is a pattern.
-Some of the nearest neighbors may belong to the same motif.
-A nearest neighbor is a historical sample that may contain noise, whereas a motif captures the ideal behavior.
+A motif can be considered as a family of nearest neighbors
+A nearest neighbor is a historical occurrence that instantiates this motif.
+The motif captures the ideal behavior.
+By finding the occurrences of a motif and considering their immediate subsequences, we can make a more confident guess about this motif.
 %
 We outline the approach for finding members of a motif~\footnote{The idea has been mentioned in \url{https://www.cs.ucr.edu/~eamonn/TimeSeriesMotifs/}.}
-Given a subsequence $A$ in a time series $T$, we denote the left-hand side of $A$ as $T_L$.
+Given a subsequence $A$ in a time series $T$, we denote the left-hand side of $A$ in $T$ as $T_L$.
 We find $A$'s nearest neighbor in $T_L$, denoted as $B$.
 They are the two members of a motif $M$.
 We want to identify other subsequences in $T_L$ that belong to $M$. 
@@ -24,16 +25,22 @@ The center $M_C$ of $M$ is defined as the average of $A$ and $B$.
 Then, we compute the distance profile between $M_C$ and $T_L$.
 Any part of the distance profile that is smarter than $\theta$ points to a member of $M$ in $T_L$.
 These members can then be added to $M$.
-Given a set of immediate subsequences of members of $M$, we can compute a more stable immediate subsequence associated with $M$ by excluding the outliers among them or using the average value of them to cancel the noise.
+%
 After identifying all the members of $M$ and excluding these members in the next consideration, we can find the next left nearest neighbor of $A$ in $T_L$, and repeat the same process for finding the next motif.
+%
+Given a set of immediate subsequences of members (occurrences) of $M$, we can compute a more stable immediate subsequence (future) associated with $M$ by excluding the outliers among them or using the ensemble value, such as the mean or median of them, to cancel the noise.
 
 \noindent\RuninHead{Identify outliers of immediate subsequences} When we have a set of immediate subsequences, we can determine whether an immediate subsequence is an outlier or not by comparing it with others.
-If it is an outlier, it would not be used as the covariates.
+%
+% https://stumpy.readthedocs.io/en/latest/Tutorial_Shapelet_Discovery.html
 We provide a heuristic to identify an outlier as follows.
 Recall that the length of a nearest neighbor and its immediate subsequence is $m$ and $h$, respectively.
 We concatenate all nearest neighbors into a single long time series $T'$.
 To establish a clear boundary, we append a NaN value after each of them.
 It ensures that all matrix profile computations do not consider subsequences that span multiple neighbors.
-Then, we compute a distance profile of $T'$ to compute the nearest neighbor distance $d_i$ of each neighbor $i$.
-The expected nearest neighbor distance of a sequence $S_i$ consisted of a neighbor $i$ with length $m$ and its immediate subsequence $h$ among the others would be $d_i \times (m+l)/m$.
-If the nearest neighbor distance of $S_i$ is greater than $r' \times (d_i \times (m+l)/m$), where $r'$ is a user-given value, the immediate subsequence in $S_i$ is considered as an outlier.
+Then, we compute a distance profile of $T'$ to find the nearest neighbor distance $d_i$ of each neighbor $i$.
+%
+Let $S_i$ be the sequence consisting of neighbor $i$ of length $m$ and its immediate subsequence of length $h$.
+The expected nearest neighbor distance of $S_i$ (found within the set of all extended sequences) should be proportional to the increase in length: $d_i \times \frac{m+h}{m}$.
+%
+If the actual nearest neighbor distance of $S_i$ is greater than $r' \times (d_i \times (m+h)/m$) among the others, where $r'$ is a user-given value, the immediate subsequence in $S_i$ is considered as an outlier.
