@@ -1,6 +1,5 @@
 # Coleman's PhD Thesis
 ## Pending Tasks of mpmf
-- Introduction
 - [] Definition of time series forecasting
     - single step vs multi step
     - lag feature
