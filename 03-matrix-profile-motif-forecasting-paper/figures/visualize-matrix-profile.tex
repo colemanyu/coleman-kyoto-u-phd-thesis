@@ -1,12 +1,13 @@
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=1.0\columnwidth]{figures/visualize_matrix_profile.pptx.pdf}}
-\caption{The left (right) matrix profile and the matrix profile of a time series. The matrix profile shows the distances between each $m$-subsequence and its nearest neighbor.
-The left (right) matrix profile shows the same information but is limited to its left (right) nearest neighbor.
-For a particular $m$-subsequence shown by the right gray box, its nearest neighbor is the left gray box, as shown in the left matrix profile and the matrix profile.
-The first (last) point in each box is denoted by a red circle (triangle).
-$l$ denotes the length of the subsequent subsequence of the nearest neighbor.
-Intuitively, this subsequence should be similar to the subsequent (i.e., future) subsequence of the right gray box.
-To note, the left (right) matrix profile starts (ends) at a later (earlier) index because the corresponding nearest neighbors with length $m$ do not exist.
+\caption{The \textcolor{tab:green}{left} (\textcolor{tab:blue}{right}) matrix profile and the \textcolor{tab:red}{matrix profile} of a time series. The \textcolor{tab:red}{matrix profile} shows the distances between each $m$-subsequence and its nearest neighbor, where $m$ is a user-given value.
+The \textcolor{tab:green}{left} (\textcolor{tab:blue}{right}) matrix profile shows the same information but is limited to its left (right) nearest neighbor.
+For a particular $m$-subsequence shown by the right gray box, its nearest neighbor is the left gray box, as indicated by the dashed line in the \textcolor{tab:green}{left matrix profile} and the \textcolor{tab:red}{matrix profile}.
+Similarly, the nearest neighbor of the left gray box is the right gray box, as indicated by the dashed line in the \textcolor{tab:blue}{right matrix profile} and the \textcolor{tab:red}{matrix profile}.
+The first (last) point in each box is denoted by a \textcolor{tab:red}{red} circle (triangle).
+$h$ denotes the length of the immediate subsequence of the nearest neighbor.
+Intuitively, this subsequence should be similar to the immediate subsequence (i.e., future) of the right gray box.
+To note, the \textcolor{tab:green}{left} (\textcolor{tab:blue}{right}) matrix profile starts (ends) at a later (earlier) index because the corresponding nearest neighbor with length $m$ does not exist.
 }
 \label{fig:visualize-matrix-profile}
 \end{figure}

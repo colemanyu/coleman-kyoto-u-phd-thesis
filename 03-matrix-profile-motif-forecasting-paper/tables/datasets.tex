@@ -1,0 +1,27 @@
+\begin{table}[htbp]
+\centering
+\caption{Dataset Statistics. 
+$N$ is the number of time series in the dataset, while $n$ is the length of each time series. 
+``rate'' refers to the measuring rate.
+$w$ is the size of the look-back window.
+$h$ is the size of the forecasting window, also known as the forecasting horizon.
+$T_{\mathrm{train}}$ is the training subsequence of $T$.
+$T_{\mathrm{test}}$ is the test subsequence of $T$.
+To note, $|T_{\mathrm{train}}| + |T_{\mathrm{test}}| = n$.
+}
+\label{tab:dataset_statistics}
+% \resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Data}} & \multicolumn{5}{c}{\textbf{Forecasting Task}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-9}
+\textbf{Dataset} & $N$ & $n$ & rate & $w, h$ & $|T_{\mathrm{train}}|$ & $|T_{\mathrm{test}}|$ \\
+\midrule
+Electricity~\cite{sen2019think} & 70 & 26,136 & hourly & 24 & 25,968 & 168 \\
+Traffic~\cite{sen2019think} & 90 & 10,560 & hourly & 24 & 10,392 & 168 \\
+PeMSD7(M)~\cite{sen2019think} & 228 & 12,672 & /5 mins & 9 & 11,232 & 1,440 \\
+Exchange-Rate~\cite{lai2018modeling} & 8 & 7,536 & daily & 24 & 6,048 & 1,488 \\
+\bottomrule
+\end{tabular}
+% }
+\end{table}

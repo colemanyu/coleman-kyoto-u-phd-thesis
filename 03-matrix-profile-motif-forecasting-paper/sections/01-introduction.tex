@@ -2,75 +2,101 @@
 
 Humans have made predictions since ancient times.
 % Ancient times
-In ancient societies, making an accurate prediction was crucial to ensure the success of subsistence activities such as hunting, planting, and harvesting.
+In ancient societies, accurate predictions were important to the success of subsistence activities such as hunting, planting, and harvesting.
 There was a need to predict weather dynamics, such as rainfall and temperature.
-For example, plant during the season with sufficient rainfall and appropriate temperatures.
-Our ancestors used divination tools such as turtle shells, wooden blocks (Moon blocks), or bones to make predictions.
-But the accuracy of those predictions was not guaranteed.
-More advanced predictions may involve astronomy. They focused on predicting celestial events, such as eclipses, for religious and agricultural purposes.
+For example, it is crucial to plant during the period with sufficient rainfall and appropriate temperatures.
+Our ancestors used divination tools such as turtle shells, wooden blocks (moon blocks), or bones to make predictions.
+Without doubt, the accuracy was not guaranteed.
+In the past, more advanced predictions have involved astronomy. They focused on predicting celestial events, such as eclipses, for religious and agricultural purposes.
 % Modern times
-% \cite[1 INTRODUCTION]{lai2018modeling}
 Even in modern societies, prediction is still essential.
-Predicting traffic-jam patterns only a few hours ahead can save time by enabling the selection of an alternative route.
+Predicting traffic-jam patterns only a few hours ahead can save time by enabling the selection of an alternative route~\cite{lai2018modeling}.
 A wealth could be created by forecasting stock market trends.
-Predicting the future, also known as time series forecasting, is crucial for us.
+Predicting the future, also known as time series forecasting, is crucial.
 
 With advances in hardware technologies, we collect enormous amounts of data from diverse sources, such as smart sensors~\cite{plageras2018efficient} and social media platforms, continuously, in the form of time series data.
+%
 A time series is an ordered sequence of measures, represented in real-valued numbers, at discrete equal-interval timestamps~\cite{chatfield2003analysis}.
+%
 These vast data collections have created the era of Big Data, which provides a wealth of datasets for developing and deploying reliable, robust, data-driven forecasting techniques to discover patterns and extract valuable information from the past data~\cite{al-jarrah2015efficient}.
+%
 Applications can be found in the financial sector, such as predicting business cycles and stock market movements~\cite{li2024deep, lai2018modeling, sapankevych2009time, chen2023long} and the medical field, such as the status of critical patients according to their vital signs~\cite{torres2021deep, dasilva2021deepsigns} and the propagation of diseases such as influenza~\cite{chen2023long, wu2020deep} and COVID-19~\cite{torres2021deep, martinez-alvarez2020coronavirus}. 
 
-Many methods have been developed for time series forecasting to handle these tasks.
-Traditional methods include rolling averages, vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
-Because of their statistical properties, they have long been the standard.
+Many methods have been developed for time series forecasting.
+Traditional methods include rolling averages (RA), vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
+Because of their rigorous statistical properties, they have long been the standard.
 The shortcomings of ARIMA and its variants include their high computational cost~\cite{lai2018modeling}. 
 In contrast, VAR is arguably the most widely used method, particularly in multivariate time series analysis, owing to its simplicity.
 However, most of these traditional approaches have certain limitations.
 %
 % https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
 % https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
-% It cannot capture nonlinear dependence.
-They perform well if the data meet their specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means the mean and variance of the time series remain consistent throughout time.
-For example, ARIMA performs well only if the underlying stochastic process of the time series follows ARIMA.
+They perform well when the data meet specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means that the mean and variance of the time series remain constant over time.
+For example, ARIMA performs well only if the underlying stochastic process of the time series satisfies the assumptions of ARIMA.
 %
-It motivates the community to develop machine learning methods, particularly deep learning methods, to address this problem. 
+It motivates the community to develop machine learning methods, particularly deep learning methods for time series forecasting. 
 Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
-The compound models are promising trends.
-For example, RNNs are well-suited to capturing long-term dependencies, whereas CNNs are well-suited to capturing short-term dependencies. 
-A good way to improve performance is to compound the base models.
-LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term local dependency patterns and long-term patterns.
-Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the former one refers to the morning peaks against evening peaks, while the latter one refers to the workday and weekend patterns.
+The compound models are promising.
+For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
+A good way to improve performance is to compound them.
+For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
+Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the former one refers to the morning peaks against evening peaks, while the latter one refers to the workday patterns against weekend patterns.
 Clearly, a good forecaster needs to capture both kinds of recurring patterns.
-Despite the superior performance deep learning methods have achieved, they tend to be overly complex and incur high computational costs compared to traditional techniques.
+Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs compared to traditional techniques.
 
 \input{../figures/flattening}
-A recent study~\cite{middlehurst2024bake} shows that, in time-series classification, nearest-neighbor classifiers (1-NN) and $k$-NN with appropriate distance measures, such as Dynamic Time Warping (DTW), despite their simplicity, perform well and are therefore commonly used as benchmarks.
-In detail, when a new instance is to be classified, k-NN finds its k nearest neighbors in the training set and returns their majority labels.
-It is considered a lazy learner because the training steps involve only memorizing all the instances verbatim; no higher-level concepts have been learned.
-In addition,  in time series forecasting, a recent study demonstrates that a well-known machine learning baseline, Gradient Boosting Regression Tree (GBRT), such as XGBoost, equipped with an appropriate data engineering of the input and output, can achieve competitive or even superior performance than the deep learning method.
+A recent study~\cite{middlehurst2024bake} shows that, in time series classification, a non-parametric, instance-based method, namely nearest-neighbor classifiers (1-NN) and its generalized form $k$-NN, with appropriate distance measures, such as Dynamic Time Warping (DTW), despite their simplicity, perform well and are therefore commonly used as benchmarks.
+In detail, when a new instance is to be classified, $k$-NN finds its $k$ nearest neighbors in the training set and returns their majority label among them.
+$k$-NN is considered a lazy learner because the training steps involve only memorizing all the instances verbatim; no higher-level concepts have been learned.
+%
+In addition, in time series forecasting, a recent study demonstrates that a well-known machine learning baseline, Gradient Boosting Regression Tree (GBRT), such as XGBoost, equipped with an appropriate data engineering of the data, can achieve competitive or even superior performance than the deep learning method.
 In detail, they transform the time series forecasting task into a window-based regression problem, as shown in Figure~\ref{fig:flattening}.
-For each training window, the target variable's lag values are concatenated with external features and then flattened to form a single input instance for a multi-output regression GBRT model.
-It provides a more efficient yet accurate method for time series forecasting.
+For each training window of length $w$ with the last time point $y_i$, $y_i$ and its lagged values $y_{i-1}, y_{i-2}, \dots, y_{i-w+1}$ are concatenated with covariates $x_i^1, x_i^2, \dots, x_i^M$ to form a \textit{predictor} for a multi-output GBRT. This transformation is called flattening.
+The corresponding response is the following $h$ points of $y_i$.
+It provides a simple, more efficient yet accurate method for time series forecasting.
 
 \input{../figures/visualize-matrix-profile}
-In addition, the non-parametric, instance-based method, known as $k$-nearest neighbors, has shown to be a promising method for classification and regression~\cite{martinez2019methodology}.
-The forecaster uses lagged values as explanatory variables.
-These lagged values form a query $Q$.
-We identify the previous similar patterns to $Q$ and use their subsequent patterns to predict the future behavior of $Q$.
+In addition, $k$-NN has also shown to be a promising method for time series forecasting~\cite{martinez2019methodology}.
+The $k$-NN uses the lagged values of the last time point to form a query $Q$.
+It identifies the $k$ previous similar subsequences to $Q$ and uses their immediate subsequences to predict the immediate subsequence of $Q$.
 The intuition is that history repeats itself.
-The historical subsequences that are similar to the current state (represented by $Q$) can provide us with a hint about the future. 
-These subsequences are similar, and so are their subsequent subsequences (i.e., their future).
-This notion has been depicted in Figure~\ref{fig:visualize-matrix-profile}. Observe that the immediate subsequence after the right gray box is similar to that of the left gray box.
+The previous (historical) subsequences that are similar to $Q$ can provide a hint about the future of $Q$. 
+They are similar, and so are their immediate subsequences.
+%
+Figure~\ref{fig:visualize-matrix-profile} depicts this idea. Observe that the immediate subsequence of the right gray box is similar to that of the left gray box.
 The left gray box is the nearest neighbor of the right gray in the ``past''.
 
-Based on these findings, this study proposes a hybrid method that uses each window's nearest neighbors' information in the past to create new covariates.
-The information includes the similarity between the window and its nearest neighbors, as well as the subsequent points of them.
-The similarities can be regarded as a measure of confidence in using the information from the corresponding nearest neighbor.
-The fundamental difference between this study and the previous approaches~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast} is that they directly use the subsequent points for the prediction, in contrast, we utilize the nearest neighbor's information of each subsequence as covariates.
-This difference can be explained by Figure~\ref{fig:visualize-matrix-profile}.
-In the previous approaches, they simply use the information of the nearest neighbors of the last look-back window (i.e., the right gray box in the figure).
-In contrast, we use the information of the nearest neighbors of \textit{ALL} of the look-back window.
-It may sound expensive for this computation.
-We leverage a data primitive, namely Matrix Profile~\cite{yeh2016matrix, zhu2017matrix}.
-It is a fast tool that computes meta time series that annotate the original time series, showing the nearest-neighbor information for each subsequence, including the similarity with its nearest neighbor and the location of the nearest neighbor.
-Note that, given the location information, we can also retrieve their subsequent points, as shown in Figure~\ref{fig:visualize-matrix-profile}.
+\input{03-matrix-profile-motif-forecasting-paper/algorithms/mp-brute-force}
+Based on these findings, this study proposes a method to improve the performance of existing forecasters by leveraging information from the nearest neighbors of each subsequence in the target variable.
+For each time point $y_i$ of the target variable, a window of length $w$ is constructed with $y_i$ as the last point, then we retrieve the window's historical nearest neighbors and use their information to create new covariates for the window.
+The information includes the similarities between the window and its nearest neighbors, as well as the immediate subsequences of them.
+The similarity can be interpreted as a measure of confidence or weight in using the information from the corresponding nearest neighbor.
+The intuition is that, if the similarity of the window and a neighbor is high, then the future (i.e., immediate subsequence) of the neighbor should also be similar to the future of the window. 
+%
+The fundamental difference between this study and previous approaches~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast} is that they directly use the subsequent points for prediction, whereas we use the nearest neighbor information for each subsequence as covariates.
+We explain this subtle difference by Figure~\ref{fig:visualize-matrix-profile}.
+In previous approaches, they simply use the information of the nearest neighbors of the last look-back window, which consisted of the last time point and its lagged values (i.e., the right gray box), for prediction.
+In contrast, we use the information of the nearest neighbors of \textbf{all} of the windows.
+
+We use the Matrix Profile~\cite{yeh2016matrix, zhu2017matrix}, a data primitive, to annotate the nearest neighbor for each $m$-subsequence of a time series $T$ of length $n$.
+The distance is the z-normalized Euclidean distance.
+It may sound expensive to compute this annotation.
+%
+Algorithm~\ref{alg:mp-brute-force} shows the brute force approach to compute the matrix profile.
+The three for loops indicate that the computational complexity is $\mathcal{O}(n^2m)$.
+The space complexity is $\mathcal{O}(n^2)$ because of the pairwise distance of each subsequence with the other subsequence.
+%
+However, the matrix profile can be computed in $\mathcal{O}(n^2)$ using an exact method, namely STOMP~\cite{yeh2016matrix} or its community-open-sourced version, STUMP~\cite{law2019stumpy}.
+Besides, the running time can be further sped up by parallelization for a single machine with multiple computation units, such as CPUs or GPUs.
+The tool also allows us to compute the left matrix profile to find the left nearest neighbor of each window.
+To note, the matrix profile annotates a time series with information about the nearest neighbor of each subsequence, including the similarity with its nearest neighbor and its location, as shown in Figure~\ref{fig:visualize-matrix-profile}.
+
+In this study, we make the following contributions:
+\begin{itemize}
+  \item We are the first to propose leveraging the matrix profile to create meaningful covariates that improve forecaster performance. 
+\end{itemize}
+
+The rest of this paper is organized as follows.
+In Section~\ref{sec:method}, we introduce the necessary background knowledge, then introduce our method.
+Section~\ref{sec:experiments} contains an empirical evaluation.
+Finally, we conclude this paper and provide future work in Section~\ref{sec:conclusion}.

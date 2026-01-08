@@ -1,0 +1,15 @@
+\begin{algorithm}[t]
+	\caption{The brute force approach to compute Matrix Profile}
+	\label{alg:mp-brute-force}
+	\begin{algorithmic}[1]		
+		\For{$i \gets 1$ \textbf{to} $n-m+1$}
+        \For{$j \gets 1$ \textbf{to} $n-m+1$}
+        \State $\mathrm{dist} \gets 0$
+        \For{$k \gets 0$ \textbf{to} $m-1$}
+        \State $\mathrm{dist} \gets \mathrm{dist} + (t_{i+k} - t_{j+k})^2$
+        \EndFor
+        \State $\mathrm{dist} \gets \sqrt{\mathrm{dist}}$
+        \EndFor
+        \EndFor
+	\end{algorithmic}
+\end{algorithm}

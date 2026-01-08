@@ -2,8 +2,10 @@
 
 \documentclass[twoside,openright,12pt]{report}
 \usepackage[utf8]{inputenc}
-\usepackage{geometry}
-\geometry{a4paper}
+% Coleman: Fix margins
+% \usepackage{geometry}
+% \geometry{a4paper}
+\usepackage[a4paper, margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{setspace}
@@ -43,8 +45,26 @@
 
 % Coleman: Custom libraries
 % ___________________________________________________
+% Define the "Tableau" colors (Matplotlib defaults)
+% \definecolor{tab:red}{HTML}{D62728}
+% \definecolor{tab:blue}{HTML}{1F77B4}
+% \definecolor{tab:green}{HTML}{2CA02C}
+% \definecolor{tab:orange}{HTML}{FF7F0E}
+% \definecolor{tab:purple}{HTML}{9467BD}
+% \definecolor{tab:brown}{HTML}{8C564B}
+\definecolor{tab:blue}{HTML}{1F77B4}
+\definecolor{tab:orange}{HTML}{FF7F0E}
+\definecolor{tab:green}{HTML}{2CA02C}
+\definecolor{tab:red}{HTML}{D62728}
+\definecolor{tab:purple}{HTML}{9467BD}
+\definecolor{tab:brown}{HTML}{8C564B}
+\definecolor{tab:pink}{HTML}{E377C2}
+\definecolor{tab:gray}{HTML}{7F7F7F}
+\definecolor{tab:olive}{HTML}{BCBD22}
+\definecolor{tab:cyan}{HTML}{17BECF}
+
 % Lines
-% \usepackage[switch]{lineno}
+\usepackage[switch]{lineno}
 
 % Japanese
 \usepackage{CJKutf8}
@@ -201,8 +221,8 @@
 
 
 \begin{document}
-% Coleman: Line
-% \linenumbers
+% Coleman: Lines
+\linenumbers
 
 % Coleman: Spacing
 % \doublespacing
@@ -252,20 +272,15 @@
 
 \chapter{Leveraging Motifs for Time Series Forecasting
 with Matrix Profile} \label{ch:mpmf}
-% abstract
 % \subfile{\secondpaper/sections/00-abstract}
 \subfile{\thirdpaper/sections/01-introduction}
 % \subfile{\thirdpaper/sections/02-related-work}
 % \subfile{\thirdpaper/sections/03-preliminaries}
-% \subfile{\thirdpaper/sections/04-method}
-% \subfile{\thirdpaper/sections/05-experiments}
-% \subfile{\thirdpaper/sections/06-conclusion}
-
-% Figures
-% time series forecasting problem
+\subfile{\thirdpaper/sections/04-method}
+\subfile{\thirdpaper/sections/05-experiments}
+\subfile{\thirdpaper/sections/06-conclusion}
 
 % Tables
-% Dataset Statistics
 % Without covariates with top-1 motif information
 % With covariates with top-1 motif information
 % Without covariates with top-k motif information
