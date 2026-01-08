@@ -31,7 +31,7 @@ The ROCKET-based classifiers require all channels in the multivariate time serie
 We applied padding to the shorter channels using the constant value 100, which does not appear in the original time series. 
 It ensures the padding does not introduce ambiguity or interfere with the semantic meaning of the encoded nucleotide signals.
 
-\subsection{Channel ablation study}
+\subsection{Channel Ablation Study}
 We utilized three types of data as the input features for each instance.
 They are (1) the RNA sequence, which consists of the primary strand and its complementary strand, (2) the secondary structure information, and (3) the base-pair probability sequence.
 To input the data into our time series-based classifiers, we converted them into multivariate time series.
@@ -94,7 +94,7 @@ From Figure~\ref{fig:channel_ablation_cd}, we can see that including time series
 Incorporating the base-pair probability sequence in the time series encoding of the complementary strand can also improve the classifier, but to a minor degree compared to serving as a standalone channel. 
 In our downstream analysis, we adopted the combination of RNA sequence time series, secondary structure time series, and base-pair probability time series as our multivariate time series input, with 4 to 6 channels, depending on the encoding used.
 
-\subsection{Predictive performance}
+\subsection{Predictive Performance}
 The experiment was conducted on three datasets: the 5p arm, the 3p arm, and the multi-class datasets.
 Recall that we have nine encoding methods and five ROCKET-based classifiers.
 It results in 45 combinations of encoding methods and classifiers.
@@ -173,7 +173,7 @@ Note that for the 3p arm and the multi-class datasets, the combination of ``Cumu
 
 To summarize Table~\ref{tab:results}, we plot the CD diagrams for finding the best classifier, as shown in Figure~\ref{fig:best_model_cd}, and the best encoding method, as shown in Figure~\ref{fig:best_encoding_cd}.
 
-\subsection{Running time analysis}
+\subsection{Running Time Analysis}
 To compare the computational efficiency of MTSCCleav and DiCleave, we conducted a comparative analysis of their running times.
 For DiCleave, we employed the code from its supporting website\footnote{\\\href{https://github.com/MGuard0303/DiCleave}{https://github.com/MGuard0303/DiCleave} (Accessed on: 2025-07-13).}, without any modifications.
 All experiments were conducted on the same machine (a personal laptop equipped with an Apple M1 Pro chip and 16 GB of memory) and using the same splits of the training and test datasets under 5-fold cross-validation to ensure fairness.
@@ -192,7 +192,7 @@ In the case of the multi-class dataset, even the performance of MiniROCKET is be
 DiCleave is a deep learning-based method that requires substantial time for model inference, while MTSCleav leverages efficient ROCKET-based classifiers.
 This significant reduction in runtime makes MTSCCleav more suitable for large-scale data and real-time applications.
 
-\subsection{Subsequence importance}
+\subsection{Subsequence Importance}
 To evaluate the sensitivity of MTSCCleav to subsequences of the input, we conducted a perturbation experiment to evaluate the importance of subsequences based on masking windows.
 The goal of this experiment is to identify which subsequences of the entire time series are critical for classification.
 We examine how various modifications to the original input impact model performance.

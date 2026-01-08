@@ -38,7 +38,7 @@ This formed our dataset.
 
 
 
-\subsubsection{Argument the dataset with Secondary Structure information}
+\subsubsection{Augment the Dataset with Secondary Structure Information}
 % We aim to utilize domain knowledge about pre-miRNA sequences to enhance the accuracy of our classifier. 
 We leveraged the predicted secondary structure of these sequences to enhance the accuracy of the classification. 
 Recall that a specific three-dimensional (3D) structure is required for DNA, RNA, and protein to perform functions~\cite{zvelebil2008understanding}.
@@ -61,7 +61,7 @@ Equipped with the matrix, we can construct the base-pair probability sequence of
 The predicted secondary structure and the base-pair probability sequence of our running example are shown in Table~\ref{tab:hsa-let-7a-1}.
 % For the unpaired nucleotide, its base-pair probability is 0.  
 
-\subsubsection{Extract cleavage patterns}
+\subsubsection{Extract Cleavage Patterns}
 The locations of the two mature miRNAs on the whole sequence indicate the probable locations of the two cleavage sites. 
 The 5p cleavage site must be beyond and near the ending location of the 5p mature miRNA. 
 % For example, the ending position of the 5p mature miRNA for ``hsa-let-7a-1'' is 27. So, the 5p cleavage site would be one of the bonds beyond the 27\textsuperscript{th} nucleotide. 
@@ -140,7 +140,7 @@ We present nine encoding methods. The relationship among them is shown in Figure
 
 \input{../figures/encodings_relationship}
 
-\subsubsection{Single value versus Cumulative}
+\subsubsection{Single Value versus Cumulative}
 % https://www.reddit.com/r/grammar/comments/bfuqx4/what_is_the_correct_wording_for_one_of_if_not_the/
 One of the simple, if not the simplest, encoding is to map the letters into numbers.
 % without considering any domain knowledge.
@@ -190,7 +190,7 @@ With the assigned value to each nucleotide defined in single-value mapping, we c
 It captures the aggregated signal by accumulating past events, allowing us to focus on the trend~\cite{zhang1994curves, berger2004visualization}.
 We named this method as ``Cumulative mapping'', shown in row 4 of Table~\ref{tab:ts_encoding}.
 
-\subsubsection{Grouped variable-length channel versus Grouped local-length channel}
+\subsubsection{Grouped Variable-Length Channel versus Grouped Local-Length Channel}
 We can transform the input strand into a multivariate time series with two channels using grouped binary encoding, where nucleotides are grouped into ($A$, $U$) and ($G$, $C$). 
 It releases our third assumption that $A$ ($U$) has a larger absolute value than $G$ ($C$).
 We proposed two variations. 
@@ -203,7 +203,7 @@ Two variations extended from single value mapping are shown in rows 2 and 3, whi
 % Methods 2, 4, and 5 are lossy.
 % It does not guarantee that lossless transformation performs better than lossy transformation for the downstream analysis because lossy transformation may provide better generalization.
 
-\subsubsection{Global cumulative versus Local Cumulative}
+\subsubsection{Global Cumulative versus Local Cumulative}
 In cumulative mapping and its variations, we can choose where to start the accumulation.
 For a given subsequence $S'$ of the whole sequence $S$, accumulation can start from the beginning of $S$ even if only $S'$ is used downstream.
 It can also begin just at the start of the $S'$.
@@ -223,7 +223,7 @@ This ``Global cumulative'' concept can be applied to every cumulative-based meth
 % We refer to the first approach as ``Global Cumulative'' and the latter as ``Local Cumulative'' or simply "Cumulative".
 % After Z-normalization, these two time series will have similar trends but not the same trends as they have different means and variances.
 
-\subsubsection{Incorporating base-pair probabilities}
+\subsubsection{Incorporating Base-Pair Probabilities}
 We can incorporate the base-pair probabilities $P$ in the encoding by
 thinking of it as the weight or confidence $p_i$ in the value assignment of each nucleotide $s_i$.
 It is implemented by multiplying the base-pair probability $p_i$ of the nucleotide $s_i$ with the assigned value of the kind of nucleotide of $s_i$ during encoding, as shown in Table~\ref{tab:ts_encoding}.
@@ -238,10 +238,10 @@ It is implemented by multiplying the base-pair probability $p_i$ of the nucleoti
 % The unpaired base will have very small probabilities in any base pair.
 % In our formulation, we deemed these small probabilities as $0$ to emphasize that these bases are deemed to be unpaired in the resulting predicted secondary structure. 
 
-\subsubsection{Transforming the secondary structure into time series}
+\subsubsection{Transforming the Secondary Structure into a Time Series}
 We can transform the secondary structure in the dot-bracket notation into a time series by ``Single value mapping'', where ``('' maps to 1, ``.'' maps to 0, and ``)'' maps to -1.
 
-\subsection{Time series classification}
+\subsection{Time Series Classification}
 In univariate time series classification, an instance in the dataset consists of a time series $x = x_1, x_2, ..., x_m$ with $m$ observations and a discrete class label $y$, which takes $c$ possible values~\cite{bagnall2017great, ruiz2021great}.
 If $c = 2$, we refer to binary classification.
 If $c > 2$, we refer to multi-class classification.
@@ -253,7 +253,7 @@ Each sequence is called a channel.
 There are many classifiers defined for time series data, including distance-based, feature-based, interval-based, shapelet-based, dictionary-based, convolution-based, and deep learning-based classifiers. Additionally, two or more of the above approaches can be combined, resulting in hybrid approaches~\cite{middlehurst2024bake, ruiz2021great, bagnall2017great}.
 We employed convolution-based classifiers due to their simplicity and accuracy.
 
-\subsubsection{Convolution-based classifiers}
+\subsubsection{Convolution-Based Classifiers}
 Convolution-based classifiers first use randomly parameterized kernels to perform convolutions on the original time series $T$.
 A kernel is referred to as parameterized because its behavior is governed by a set of parameters, which will be discussed in detail later.
 Convolution is an operation to transform $T$ to another time series $M$, where $M$ is called the activation map.
@@ -345,7 +345,7 @@ The generation of the summary features depends on:
 
 \input{../tables/rockets_comparison}
 
-\subsection{Evaluation metrics}
+\subsection{Evaluation Metrics}
 To evaluate the performance of our time series-based classification (MTSC) model, we adopted five standard classification metrics.
 They are Accuracy (Acc), Specificity (Sp), Sensitivity (Sn), F1 score (F1), and Matthews Correlation Coefficient (MCC)~\cite{matthews1975comparison}.
 \begin{align*}

@@ -25,10 +25,8 @@
 - Abstract
 
 ## Checklist of the whole thesis
-- [] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
-- [] Capital/lower case letters in Section titles
-are not consistently used.
-- [] References: Check consistency of Author names
+- [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
+---
 - For Abstract, Introduction, Conclusion etc, change the contributions into three instead of two.
 - Add figure into Chapter 2
 - Section 2.2.1: It may not be appropriate to use ED to denote Euclidean Distance because in many cases ED is used to denote the edit distance.
