@@ -1,6 +1,4 @@
-- This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).
-    - From [佐藤竜馬（さとう りょうま）'s website](https://joisino.net/).
-
+# Coleman's PhD Thesis
 ## Pending Tasks of mpmf
 - [] Future Work
 - [] Definition of time series forecasting
@@ -57,3 +55,7 @@ Author names are not consistently used.
 (For example, see [5] vs. [6].)
 - [] Such words as DNA, SVM, DTW in the paper titles should
 be given in the capital letters.
+
+## Remarks
+- This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).
+    - From [佐藤竜馬（さとう りょうま）'s website](https://joisino.net/).
