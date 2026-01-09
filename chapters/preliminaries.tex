@@ -29,8 +29,9 @@ ED is a lock-step distance measure.
 Given two time series $Q$ and $C$ with the same length $n$, it compares the time point $q_i$ of $Q$ with the time point $c_i$ of $C$ at the same time (index). 
 Note that, traditionally, lockstep distance measures require the two time series to have the same length because of the one-to-one alignment.
 However, in the setting of query by content, where it is always the case that $|Q| < |C|$, we can still apply a lock-step distance measure by either comparing $Q$ with $C(1:|Q|)$ or padding $Q$ using its last element to lengthen it to the same length of $C$.
-The general form of ED is the Minkowski distance.
-It is the $L_p$-norm of the difference between the two time series $X$ and $Y$.
+% The general form of ED is the Minkowski distance.
+Minkowski distance is a generalization of Euclidean distance.
+Minkowski distance is the $L_p$-norm of the difference between the two time series $X$ and $Y$, defined as:
 \begin{equation} 
     \operatorname{D}(X, Y) = \left( \sum_{i=1}^n |x_i-y_i|^p \right)^{\frac{1}{p}}
 \end{equation}
@@ -40,6 +41,8 @@ When $p = \infty$, it corresponds to the Chebyshev distance.
 In our studies, we focus on the Euclidean distance.
 Other lock-step distance measures include Pearson correlation distance. 
 It accounts for the linear association between the two time series using the Pearson correlation coefficient.
+To note, there is another measure called Edit Distance for strings. And Edit Distance is also sometimes abbreviated as ED in string processing or bioinformatics.
+In this study, we focus on time series analysis and use ED to denote Euclidean distance rather than edit distance.
 
 \subsection{Dynamic Time Warping (DTW)}
 

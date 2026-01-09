@@ -25,15 +25,9 @@
 - Abstract
 
 ## Checklist of the whole thesis
+- [ ] Add figures to Chapter 2 (Preliminaries)
+- [ ] For Abstract, Introduction, Conclusion, etc., change the contributions into three instead of two.
 - [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
----
-- Section 2.2.1: It may not be appropriate to use ED to denote Euclidean Distance because in many cases ED is used to denote the edit distance.
-- Furthermore Eq. (2.1) is more general than Euclidean Distance
-(it is L_p norm).
-- Such words as DNA, SVM, DTW in the paper titles should
-be given in the capital letters.
-- Add figure into Chapter 2
-- For Abstract, Introduction, Conclusion etc, change the contributions into three instead of two.
 
 ## Remarks
 - This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).
