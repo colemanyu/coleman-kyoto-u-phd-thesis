@@ -8,7 +8,6 @@
         - $h$ subsequence points
         - distance between the query and the nearest neighbor
         - the location (i.e., idx)
-- Update progress to Akutsu and Raymond
 - Experiments
     -  Debug of top-1 motif, add distance directly and add as a denominator, normalize, trend
     - Refract the top-k method: Use the top-1 method for k time instead of using a for-loop for each index
@@ -25,8 +24,6 @@
 - Abstract
 
 ## Checklist of the whole thesis
-- [ ] Add figures to Chapter 2 (Preliminaries)
-- [ ] For Abstract, Introduction, Conclusion, etc., change the contributions into three instead of two.
 - [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
 
 ## Remarks

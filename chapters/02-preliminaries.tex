@@ -24,10 +24,11 @@ Among them, the most established measures are undoubtedly Euclidean Distance (ED
 They are representatives of the two board classes of distance measures, namely ``lock-step'' and ``elastic''.
 
 \subsection{Euclidean Distance (ED)}
+\input{../figures/alignment}
 
 ED is a lock-step distance measure. 
 Given two time series $Q$ and $C$ with the same length $n$, it compares the time point $q_i$ of $Q$ with the time point $c_i$ of $C$ at the same time (index). 
-Note that, traditionally, lockstep distance measures require the two time series to have the same length because of the one-to-one alignment.
+Note that, traditionally, lockstep distance measures require the two time series to have the same length because of the one-to-one alignment, as shown in Figure~\ref{fig:alignment}.
 However, in the setting of query by content, where it is always the case that $|Q| < |C|$, we can still apply a lock-step distance measure by either comparing $Q$ with $C(1:|Q|)$ or padding $Q$ using its last element to lengthen it to the same length of $C$.
 % The general form of ED is the Minkowski distance.
 Minkowski distance is a generalization of Euclidean distance.
@@ -47,7 +48,7 @@ In this study, we focus on time series analysis and use ED to denote Euclidean d
 \subsection{Dynamic Time Warping (DTW)}
 
 Dynamic Time Warping is an elastic measure~\cite{sakoe1978dynamic}.
-In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching.
+In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching, as shown in Figure~\ref{fig:alignment}.
 The one-to-many point matching allows the elastic distance measures to warp in the time axis (i.e., temporally) such that it can handle the local temporal distortions.
 While it will be detailed in Chapter~\ref{ch:ksfdtw}, it is briefly explained here.
 In short, it minimizes the cumulative distance between two time series, subject to constraints, by finding an optimal warping path $W^*$ in a cost matrix, where $W$ is the set of all possible paths and $W^*$ is the optimal one.

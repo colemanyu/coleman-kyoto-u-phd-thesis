@@ -59,3 +59,7 @@ Besides, while we have successfully applied a lower bound on PSDTW and accelerat
 Developing a specialized lower bound for PSED could further improve its running time.
 In addition, some existing works on speeding up DTW such as ``incremental DTW'' can reuse the accumulated cost matrix $D$.
 However, it is challenging to apply a similar method to USDTW and PSDTW due to time series interpolation.
+
+The third study develops a new method to create covariates for time series data using the immediate subsequences of the left nearest neighbor of each forecasting windows.
+We have studied the effect of the length of the immediate subsequences on the forecaster.
+Future work of this study includes finding nearest neighbors in a specific range to capture the short pattern and long pattern, extending the framework to a multivariate time series forecasting task, using motif family instead of simply top-$k$ nearest neighbors, and how to handle the outliers among the immediate subsequences.

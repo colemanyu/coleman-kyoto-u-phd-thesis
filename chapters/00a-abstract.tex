@@ -36,4 +36,9 @@ We introduce the first distance measure framework, namely PSD, that achieves inv
 %
 Experiments show that PSD better reflects the similarity between time series with multiple phases, and that the identified phases (segmentation) provide a clearer understanding of the data.
 
+In the third part, we study a time series primitive, namely matrix profile, in the application of time series forecasting. For a given time series $T$ and an integer $m$, the matrix profile provides the information about (1) the location of its nearest neighbor and (2) the distance between it and the nearest neighbor of \textbf{each} $ m$-subsequence in $T$. 
+Obviously, the matrix profile also provides us the information for the $k$-nearest neighbors of each subsequence simply by running the same algorithm for $k$ times.
+In our application, we are only interested in the left nearest neighbors of each subsequence because they refer to the historical occurrences.
+We can obtain the immediate subsequences of these historical occurrences as covariates to feed into the forecaster to improve its accuracy.
+
 Collectively, this thesis advances the fields of time series data mining and bioinformatics by demonstrating the use of time series analysis to address fundamental biological questions and proposing a new, more expressive distance measure framework.

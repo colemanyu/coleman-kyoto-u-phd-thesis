@@ -27,9 +27,6 @@ Cell types often show enrichment for genes responsible for specific functions. T
 In clustering, we first need to define a measure of similarity between two objects. And what should be ignored. This is called invariance. For example, in image classification, it should be invariant with respect to the zooming effect and the rotation effect.
 In Chapter~\ref{ch:ksfdtw}, we define a new distance measure framework that achieves invaraince when two time series are in different scaling factors.
 
-
-
-
 % What is a computational problem
 % What is Bioinformatics
 % What is data mining
@@ -42,11 +39,16 @@ Because of the simplicity of the transformation method and the classifiers, our 
 Second, we propose a new distance measure framework, namely PSD, that can incorporate any existing distance measures to achieve invariance for two time series with multiple rates.
 Experiments show that our methods outperform ED, DTW and the other five DTW-based methods.
 Besides, we propose to use the segmentation result returned by PSD to improve the accuracy of other distance measures.
+Third, we propose leveraging left nearest neighbors for each forecasting window as new covariates to improve the accuracy of the underlying forecaster.
+We use a simple gradient boosting regression tree as the underlying forecaster.
+Experiment shows that this simple method can imrpove the accuracy.
 
 \section{Organization}
 In Chapter~\ref{ch:preliminaries}, we review some of the basic knowledge in biology and time series data mining, in particular, we focus on distance measures and Rocket-based classifiers.
 In Chapter~\ref{ch:mtsccleav}, we introduce our study of the problem of predicting human dicer cleavage sites. We proposed a novel approach to frame this task as a multivariate time series classification problem by introducing nine encoding methods and making use of Rocket-based classifiers.
 In Chapter~\ref{ch:ksfdtw}, we introduce a new distance measure framework, namely PSD. It releases the assumption that there is only one scaling factor existing throughout the whole time series.
+In Chapter~\ref{ch:mpmf}, we introduce how to create new covariates in time series forecasting using matrix profile.
+This method can improve the accuracy of the existing forecaster by providing useful covariates.
 In Chapter~\ref{ch:conclusion}, we give a conclusion to these two studies and provide future work on them.
 
 
