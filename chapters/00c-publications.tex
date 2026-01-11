@@ -13,8 +13,24 @@ This thesis is based on the following papers.
 \begin{itemize}
     \item \textbf{Coleman Yu} and Raymond Chi-Wing Wong, ``A Melody Composer for both Tonal and Non-Tonal Languages'', 
     the 43rd International Computer Music Conference 2017, Shanghai, China on 16-20 Oct, 2017
-    % ~\cite{yu2017melody} 
+    % ~\cite{yu2017melody}
+    \begin{itemize}
+        \item In this study, we apply a data mining method called frequent pattern mining to capture the relationships between the pitch trend in the melody and the tone trend in lyrics and use these relationships to create a new melody for the user-given lyrics. The pitch trend and the melody trend are both time series data. It motivates me to do time series analysis from a data mining perspective.
+    \end{itemize}
     \item Yi Zheng, Bogdan Enescu, Jiancang Zhuang, and \textbf{Coleman Yu}, ``Data replenishment of five moderate earthquake sequences in Japan, with semi-automatic cluster selection'',
     Earthquake Science, 34:310-322, 2021
+    \begin{itemize}
+        \item In this study, we apply a data mining method called DBSCAN, which is a clustering method, on seismicity data, to automatically select the nearest significant earthquake cluster of a given mainshock. The clustering results are then fed into a downstream replenishment method to discover missing early aftershocks, which follow relatively large or moderate earthquakes.
+    \end{itemize}
     % ~\cite{zheng2021data}
+\end{itemize}
+
+\noindent Poster presentations
+\begin{itemize}
+    \item \textbf{Coleman Yu} and Tatsuya Akutsu, ``Aligning gene expression time series with invariance to uniform scaling with multiple scaling factors'', 
+    International Workshop on Bioinformatics and Systems Biology, Boston, USA (IBSB 2018) on 16-18 July, 2018
+    \begin{itemize}
+        \item In this study, we present an idea that, for time series analysis, rather than focusing on the whole sequence analysis, it is more important to focus on the subsequences of a time series. In this poster, we use gene expression data as an example to explain. Genes are expressed over time. But the expression rate is not a constant. The varying rate would be discussed in Chapter~\ref{ch:ksfdtw}. The importance of the subsequence has been discussed in the framework of time series forecasting in Chapter~\ref{ch:mpmf}. We use a data mining primitive called Matrix Profile. Given a subsequence Q with length m, we can find the nearest neighbor (location and the similarity of it with Q) in another time series A. The underlying distance metric is z-normalized ED. If Q is an m-subsequence extracted from A, it means that we annotate each m-subsequence with its nearest neighbor information. To demonstrate that this nearest-neighbor information is useful, we use it to improve a time-series forecasting model. If information is useful covariates, the performance can be improved.
+        In addition, the usage of finding useful covariates to improve the final prediction results has also been demonstrated in Chapter~\ref{ch:mtsccleav}. In that example, we find a covariate, which is the secondary structure, associated with the probability of each base pair, for the mRNA sequence data, as shown in Figure~\ref{fig:hsa-let-7a-1_ss}.
+    \end{itemize}
 \end{itemize}
