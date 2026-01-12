@@ -51,12 +51,12 @@ Dynamic Time Warping is an elastic measure~\cite{sakoe1978dynamic}.
 In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching, as shown in Figure~\ref{fig:alignment}.
 The one-to-many point matching allows the elastic distance measures to warp in the time axis (i.e., temporally) such that it can handle the local temporal distortions.
 While it will be detailed in Chapter~\ref{ch:ksfdtw}, it is briefly explained here.
-In short, it minimizes the cumulative distance between two time series, subject to constraints, by finding an optimal warping path $W^*$ in a cost matrix, where $W$ is the set of all possible paths and $W^*$ is the optimal one.
+In short, it minimizes the cumulative distance between two time series, subject to constraints, by finding an optimal warping path $W^*$ in a cost matrix, where $W$ is the set of all possible paths.
 The constraints typically are (1) Boundary conditions, (2) Continuity, and (3) Monotonicity.
-Note that we can reduce pathological warping and accelerate computation by introducing a warping window. 
-DTW with a warping window constraint is called constrained DTW (cDTW).
-Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
-In the study, we focus on the Sakoe-Chiba band.
+% Note that we can reduce pathological warping and accelerate computation by introducing a warping window. 
+% DTW with a warping window constraint is called constrained DTW (cDTW).
+% Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
+% In the study, we focus on the Sakoe-Chiba band.
 
 \subsection{Derivative Dynamic Time Warping (DDTW)}
 

@@ -73,10 +73,12 @@ To note, the matrix profile annotates a time series with information about the n
 In this study, we make the following contributions:
 \begin{itemize}
   \item We are the first to propose leveraging the matrix profile to create meaningful covariates that improve forecaster performance. 
+  \item We have proposed two methods namely, GBRT-NN, which uses the immediate subsequence as the covariates, and GBRT-NN-S, which also involves the similarity on top of GBRT-NN, as the covariates.
+  \item Experimental results show that our approach can improve the GBRT forecaster in most cases, with a very small cost to compute the matrix profile.
 \end{itemize}
 
 The rest of this study is organized as follows.
 Section~\ref{sec:related-work} presents the related-work.
 In Section~\ref{sec:method}, we introduce the necessary background knowledge, then introduce our method.
 Section~\ref{sec:experiments} contains an empirical evaluation.
-Finally, we conclude this paper and provide future work in Section~\ref{sec:conclusion}.
+Finally, we conclude this study and provide future work in Section~\ref{sec:conclusion}.

@@ -31,8 +31,10 @@
 - [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
 - [x] Check References
     -  The use of capital letters and lowercase letters in paper titles is not consistent.
+    -  Bold fonts should be used for such terms as DNA, program names, MicroRNA in the titles of the papers.
+- [x] "this paper" should not be used.
 - [ ] [page 38, 29] ED and DTW have already been explained in Chapter 2. These parts should be shorten, or, some explanations should be added.
-- [ ] "this paper" should not be used.
+
 
 ---
 --------------------------------
@@ -45,13 +47,6 @@ It is unclear whether you only used y (not used x, u).
 [Table 5.2, 5.3]
 It is strange that the results on Exchange-Rate for
 GBRT, GBRT-NN, GBRT-NN-S are the same in both tables.
-
-[Chapter 6]
-This chapter is missing.
-
-[Bibliography]
-Bold fonts should be used for such terms as DNA, program names, MicroRNA
-in the titles of the papers.
 
 ---
 
