@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+    \centering
+    \caption{Experimental Results with original covariates (bold represents the best result and underlined represents the second best) (* refers to the results reported from~\cite{elsayed2021we}).}
+    \label{tab:results_with_covariates}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llccccccc}
+        \toprule
+        \textbf{Dataset} & \textbf{Metric} & \textbf{DeepGlo}*~\cite{sen2019think} &  \textbf{GBRT}~\cite{elsayed2021we} & \textbf{GBRT-NN} & \textbf{GBRT-NN-S} \\
+        \midrule
+        \multirow{3}{*}{Electricity~\cite{sen2019think}} 
+        & RMSE & 141.285  & 132.6691 & \textbf{123.591} & \underline{124.215} \\
+        & WAPE & 0.094 & 0.0929 & \textbf{0.089} & \textbf{0.089} \\
+        & MAE & 53.036 & 52.0232 & \textbf{49.606} & \underline{49.739} \\
+        \midrule
+        \multirow{3}{*}{Traffic~\cite{sen2019think}} 
+        & RMSE & 0.026  & \underline{0.014} & 0.018 & \textbf{0.009} \\
+        & WAPE & 0.239 & 0.109 & \underline{0.101} & \textbf{0.062} \\
+        & MAE & 0.013 & 0.006 & \underline{0.006} & \textbf{0.003} \\
+        \midrule
+        \multirow{3}{*}{PeMSD7~\cite{sen2019think}} 
+        & RMSE & 6.490  & 5.191 & \underline{5.163} & \textbf{5.156} \\
+        & WAPE & 0.070 & \underline{0.048} & \textbf{0.048}& \textbf{0.048} \\
+        & MAE & 3.530 & 2.796 & \underline{2.779} & \textbf{2.778} \\
+        \midrule
+        \multirow{3}{*}{Exchange-Rate~\cite{lai2018modeling}} 
+        & RMSE & 0.038  & \underline{0.020} & \textbf{0.019} & \textbf{0.019} \\
+        & WAPE & 0.038 & \underline{0.016} & \textbf{0.015} & \textbf{0.015} \\
+        & MAE & \underline{0.029} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}

@@ -8,9 +8,12 @@
         - $h$ subsequence points
         - distance between the query and the nearest neighbor
         - the location (i.e., idx)
+    - Some mass background
+  - Other experiment result
+--------------------
 - Experiments
     -  Debug of top-1 motif, add distance directly and add as a denominator, normalize, trend
---------------------
+
     - Refract the top-k method: Use the top-1 method for k time instead of using a for-loop for each index
         - How to merge different inmeridate subsequence    
     - Debug of top-k motif
@@ -20,8 +23,8 @@
     - autocorrelation graph (autocorrelation curve) or feature importance
     - top-k experiments
 --------------------
-- Preliminaries
 - Conclusion
+- Preliminaries
 - Abstract
 
 ## Checklist of the whole thesis
@@ -29,6 +32,28 @@
 - [x] Check References
     -  The use of capital letters and lowercase letters in paper titles is not consistent.
 - [ ] [page 38, 29] ED and DTW have already been explained in Chapter 2. These parts should be shorten, or, some explanations should be added.
+- [ ] "this paper" should not be used.
+
+---
+--------------------------------
+[Table 5.1]
+It is strange that $w,h$ have a single value (not a pair of values).
+
+[Section 5.4]
+It is unclear whether you only used y (not used x, u).
+
+[Table 5.2, 5.3]
+It is strange that the results on Exchange-Rate for
+GBRT, GBRT-NN, GBRT-NN-S are the same in both tables.
+
+[Chapter 6]
+This chapter is missing.
+
+[Bibliography]
+Bold fonts should be used for such terms as DNA, program names, MicroRNA
+in the titles of the papers.
+
+---
 
 ## Notifications
 - The pre-defense 
@@ -49,6 +74,7 @@ by January 13.
 50 minutes.
         - Presentation slides should also be distributed to the examiners on the day of the presentation.
         - It is OK that 1 page consists of 4 slides with printed double-sided. (i.e., 1 paper can contain 8 slides.)
+        - Water for examiners. Laser Pointer.
 
 ## Remarks
 - This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).

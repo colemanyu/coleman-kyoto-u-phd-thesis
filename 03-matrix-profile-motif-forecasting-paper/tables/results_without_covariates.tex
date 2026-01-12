@@ -1,0 +1,33 @@
+\begin{table}[htbp]
+    \centering
+    \caption{Experimental Results without original covariates (bold represents the best result and underlined represents the second best) (* refers to the results reported from~\cite{elsayed2021we}) (For the GBRT-related methods, we round to the nearest 4 decimal places for better comparison, for the others, we round to the 3 decimal places).}
+    \label{tab:results_without_covariates}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llccccccc}
+        \toprule
+        \textbf{Dataset} & \textbf{Metric} & \textbf{LSTNet}*~\cite{lai2018modeling} & \textbf{TRMF}*~\cite{yu2016temporal} & \textbf{DARNN}*~\cite{qin2017dualstage} & \textbf{ARIMA}*~\cite{makridakis1997arma} & \textbf{GBRT}~\cite{elsayed2021we} & \textbf{GBRT-NN} & \textbf{GBRT-NN-S} \\
+        \midrule
+        \multirow{3}{*}{Electricity~\cite{sen2019think}} 
+        & RMSE & 1095.309 & \underline{136.400} & 404.056 & 181.210 & \textbf{136.254} & 142.035 & 138.354 \\
+        & WAPE & 0.997 & \textbf{0.095} & 0.343 & 0.310 & 0.103 & 0.101 & \underline{0.100} \\
+        & MAE & 474.845 & \textbf{53.250}& 194.449 & 154.390 & 57.929 & 56.464 & \underline{55.972} \\
+        \midrule
+        \multirow{3}{*}{Traffic~\cite{sen2019think}} 
+        & RMSE & 0.042 & 0.023 & 0.015 & 0.044  & \underline{0.012} & 0.016 & \textbf{0.008} \\
+        & WAPE & 0.102 & 0.161 & 0.132 & 0.594 & 0.108 & \underline{0.079} & \textbf{0.037} \\
+        & MAE & 0.014 & 0.009 & 0.007 & 0.032 & 0.006 & \underline{0.004} & \textbf{0.002} \\
+        \midrule
+        \multirow{3}{*}{PeMSD7~\cite{sen2019think}} 
+        & RMSE & 55.405 & 5.462 & 5.983 & 15.357 & 5.610 & \underline{5.575} & \textbf{5.557} \\
+        & WAPE & 0.981 & 0.057 & 0.060 & 0.183 & 0.051 & \underline{0.051} & \textbf{0.051} \\
+        & MAE & 53.336 & 3.329 & 3.526 & 10.304 & 2.984 & \underline{2.965} & \textbf{2.957} \\
+        \midrule
+        \multirow{3}{*}{Exchange-Rate~\cite{lai2018modeling}} 
+        & RMSE & \textbf{0.018} & \textbf{0.018} & 0.025 & 0.123 & 0.020 & \underline{0.019} & \underline{0.019} \\
+        & WAPE & 0.017 & \textbf{0.015} & 0.022 & 0.170 & \underline{0.016} & \textbf{0.015} & \textbf{0.015} \\
+        & MAE & 0.013 & \textbf{0.011} & 0.016 & 0.101 & \underline{0.012} & \underline{0.012} & \underline{0.012} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+% \underline \textbf

@@ -8,7 +8,7 @@ Notably, the matrix profile also provides the locations of the nearest neighbors
 \noindent\RuninHead{Extend to multidimensional case}This study focuses on univariate time series forecasting, where there is a single target and no exogenous inputs. It only requires us to find one-dimensional nearest neighbors.
 When there are multiple targets or a single target with multiple exogenous inputs, we need to identify multidimensional nearest neighbors~\cite{yeh2017matrixa} and leverage their information for forecasting.
 
-\noindent\RuninHead{Top-$k$ motifs}We can use motifs instead of neighbors to receive more stable ``future'' information for each window.
+\noindent\RuninHead{Top-$k$ neighbors and motifs} A simple extension is to consider the information not just from the nearest neighbor but from the $k$-nearest neighbors. Besides, we can use motifs instead of neighbors to obtain more stable ``future'' information for each window.
 Recall that a time series motif is a repeated pattern that consists of at least two occurrences.
 A motif can be considered as a family of nearest neighbors
 A nearest neighbor is a historical occurrence that instantiates this motif.

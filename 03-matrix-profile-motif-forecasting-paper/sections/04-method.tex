@@ -150,14 +150,25 @@ One may argue that the $h$ regressors operate individually and hence the tempora
 However, as the individual regressors are trained on the same flattened input, the prediction would still preserve the temporal relationship~\cite{elsayed2021we}.
 
 \subsection{Matrix Profile}
-% We would like to find 
 
+Our proposed method has a simple intuition. We would like to create covariates for each time point in the time series, as in the case of using the date information to create the covaraites.
+For example, given the timepoint date (2026-02-01, 14:38), we can deduce the minute (38), hour (14), day (1), month (2), and year (2026). Besides, by reading the calendar, the day of the week (Sunday), the day of the year (31+1=32), the week of the year (the firth week in 2026) can also be obtained.
+Given a time point $t_p$ in $T$, and a user-given $m$, we want to use the $m$-subsequence with $t_p$ as the ending point as a query $Q$, and to find its left $m$-subsequence that is the nearest neighbor of $Q$.
+Hence, the immediate subsequence of the nearest neighbor informs us of the dynamics of the immediate subsequence of $Q$.
+In Figure~\ref{fig:visualize-matrix-profile}, the red triangle in the right gray box is $t_p$ and the right gray box is $Q$. We seek its leftmost nearest neighbor, which turns out to be the left gray box.
+Note that we would like to perform this operation for each point $t_p$ in the time series $T$, $m \leq t_p \leq |T|$.
+
+We discuss how to use a data primitive called Matrix Profile~\cite{yeh2016matrix, zhu2017matrix} for this operation.
+In brief, a matrix profile $P$ is a time series that annotates an input time series $T$, storing the z-normalized Euclidean distance between each $m$-subsequence and its nearest neighbor in $T$.
+Besides, another supplementary time series, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
+To begin with, we first define the distance profile of $T$.
 
 \begin{definition}[Distance profile]
     A \textit{distance profile} $D_i = d_{i, 1}, d_{i, 2}, \dots, d_{i, n-m+1}$ of a $T$ is a vector of the Euclidean distances between a given subsequence $T_{i, m}$ and each subsequences in $T$, where $d_{i, j}$ is the distance between $T_{i, m}$ and $T_{j, m}$, $1 \leq i, j \leq n-m+1$.
 \end{definition}
 The distances are measured between z-normalized time series.
-
+Equipped with the distance profile, we know all the Euclidean distances between a given subsequence $T_{i, m}$ and each subsequences in $T$.
+From this, we define the matrix profile $P$ and its supplementary matrix profile index $I$ as follows.
 
 \begin{definition}[Matrix profile]
     A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $\\$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
@@ -167,23 +178,40 @@ The distances are measured between z-normalized time series.
     A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
 \end{definition}
 
+In this study, instead of the general matrix profile (index), we are interested in the left version of it.
+The left version of the matrix profile informs us of the information about the left nearest neighbor of any $m$-subsequences in $T$.
+It is shown in Figure~\ref{fig:visualize-matrix-profile}.
+The left matrix profile has high values in the beginning because they can only find the left neighbor, and there are few left subsequences.
+In contrast, right matrix profile has low values in the beginning because there are many right subsequences
+To note, each entry $i$ in Matrix Profile $P_i$ is simply the min of $P_i^L$ and $P_i^R$ (i.e., $P_i = \min(P_i^L, P_i^R)$).
+
 \begin{definition}[Left distance profile]
     A \textit{left distance profile} $D_i^L = d_{i, 1}, d_{i, 2}, \dots,\allowbreak d_{i, i - \ceil{m/4} -1}$ of $T$ is a vector of Euclidean distances between a given subsequence $T_{i, m}$ and each subsequence that appears before $T_{i, m}$.
     To note, $i - \ceil{m/4} - 1$ is the index location of the last eligible subsequence before $T_{i, m}$ because of the exclusion zone.
 \end{definition}
+
+We discuss the idea of an exclusion zone. For a given $m$-subsequence $Q$, the distance profile is zero at the location of $Q$ (because $Q$ must be a nearest neighbor of $Q$) and close to zero just before and after it.
+But the corresponding $m$-subsequences are trivial matches of $Q$.
+We need to define a zone, namely an exclusion zone, for this region.
+It is defined as $m/2$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $m/4$ instead~\cite{law2019stumpy}.
 
 \begin{definition}[Left matrix profile]
     A \textit{left matrix profile} $P^L = \min(D_1^L), \min(D_2^L), \allowbreak  \dots, \min(D_{n-m+1}^L)$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$ before it.
 \end{definition}
 
 \begin{definition}[Left matrix profile index]
-    A \textit{left matrix profile index} $I^L = I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$ is a vector of integers, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
+    A \textit{left matrix profile index} $I^L$ is a vector of integers $I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
 \end{definition}
 
+Note that the original indexing system in Matrix Profile uses the start point rather than the end point to define the subsequence.
+In Figure~\ref{fig:visualize-matrix-profile}, the matrix profile is shown in the original definition. 
+The gray boxes are associated with the start point.
+Hence, the red Matrix Profile starts at $t=1$ rather than $t=m$.
+To facilitate our discussion, from now on, we refer to Matrix Profile and its variants using the index defined on the end point instead of the start point.
+Formally, we use the entries of Matrix Profile at $i-m+1$ to be the matrix profile at $i$ in our indexing system.
+Visually speaking, we shift the matrix profile to the right by $m-1$.
 
+To conclude this part, given the left matrix profile (index), we can compute, for each $ m$-subsequence in $ T$, the information on its left nearest neighbor, including its similarity and location. 
+Besides, with the location (it now refers to the end point of the subsequence), we can retrieve the points after it and form the immediate subsequence with length $= h$ of the nearest neighbor.
 
-
-
-
-
-
+A natural setting for $m$ and the size of the immediate subsequence would be the $w$ and $h$ as defined in Figure~\ref{fig:flattening}, respectively.

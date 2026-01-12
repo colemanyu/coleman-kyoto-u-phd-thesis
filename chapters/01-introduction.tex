@@ -22,8 +22,7 @@ A representative of unsupervised learning is undoubtedly clustering. We aim to g
 One example is clustering cells based on their gene-expression profiles. These clusters might reveal distinct cell types. Note that we do not have the ground truth for the cluster set. 
 In bioinformatics, we typically use enrichment analysis to determine whether specific gene functions are enriched in these clusters.
 Cell types often show enrichment for genes responsible for specific functions. This set of genes defines their biological role. 
-In clustering, we first need to define a measure of similarity between two objects. And what should be ignored. This is called invariance. For example, in image classification, it should be invariant with respect to the zooming effect and the rotation effect.
-In Chapter~\ref{ch:ksfdtw}, we define a new distance measure framework that achieves invaraince when two time series are in different scaling factors.
+In clustering, we first need to define a measure of similarity between two objects and decide what details should be ignored. This is called invariance. For example, in image classification, it should be invariant to zooming and rotation.
 
 % What is a computational problem
 % What is Bioinformatics
@@ -32,17 +31,17 @@ In Chapter~\ref{ch:ksfdtw}, we define a new distance measure framework that achi
 
 \section{Contributions}
 In this study, our contributions mainly include three parts.
-In Chapter~\ref{ch:mtsccleav}, it demonstrates a machine learning approach to analyze a biology problem.
-In Chapter~\ref{ch:ksfdtw}, we solve an algorithmic problem on distance measure.
-In Chapter~\ref{ch:mpmf}, we improve a forecaster with the usage of a data mining primitive, namely Matrix Profile.
-First, we propose the usage of the base pair probability sequence from the predicted secondary structure of RNA sequence as a new information for the classification task. We apply Rocket-based classifiers to identify the human dicer cleavage sites.
+First, in chapter~\ref{ch:mtsccleav}, we demonstrate a machine learning approach to analyze a biology problem.
+We propose the usage of the base pair probability sequence from the predicted secondary structure of RNA sequence as new information for the classification task. We apply Rocket-based classifiers to identify the human dicer cleavage sites.
 Because of the simplicity of the transformation method and the classifiers, our proposed method achieves 3.7X to 28.8X speedup while achieving better or comparable results than the current state-of-the-art method.
-Second, we propose a new distance measure framework, namely PSD, that can incorporate any existing distance measures to achieve invariance for two time series with multiple rates.
+Second in Chapter~\ref{ch:ksfdtw}, we solve an algorithmic problem on distance measure.
+We propose a new distance measure framework, namely PSD, that can incorporate any existing distance measures to achieve invariance for two time series with multiple rates (i.e., different scaling factors).
 Experiments show that our methods outperform ED, DTW and the other five DTW-based methods.
 Besides, we propose to use the segmentation result returned by PSD to improve the accuracy of other distance measures.
-Third, we propose leveraging left nearest neighbors for each forecasting window as new covariates to improve the accuracy of the underlying forecaster.
+Third in Chapter~\ref{ch:mpmf}, we improve a forecaster with the usage of a data mining primitive, namely Matrix Profile.
+We propose leveraging left nearest neighbors for each forecasting window as new covariates to improve the accuracy of the underlying forecaster.
 We use a simple gradient boosting regression tree as the underlying forecaster.
-Experiment shows that this simple method can imrpove the accuracy.
+The experiment shows that this simple method can improve the accuracy.
 
 \section{Organization}
 In Chapter~\ref{ch:preliminaries}, we review some of the basic knowledge in biology and time series data mining, in particular, we focus on distance measures and Rocket-based classifiers.

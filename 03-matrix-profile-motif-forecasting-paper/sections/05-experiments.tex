@@ -1,8 +1,23 @@
 \section{Experiments} \label{sec:experiments}
+
 \input{../tables/datasets}
+The code and data are available at \url{https://github.com/colemanyu/matrix-profile-motif-forecasting}.
+In this study, we focus on univariate time series forecasting.
+There is only one single target variable $Y$.
+We predict the future of $Y$ only based on the past of it.
+The dataset used is listed in Table~\ref{tab:dataset_statistics}.
+For each time series $T$ in the dataset, it is split into two contiguous time series, namely $T_\mathrm{train} = T(1:\mathrm{split})$ and $ T_\mathrm{test} = T(\mathrm{split+1:|T|})$, where $\mathrm{split}$ defines the training-test split, which is shown in the column 6 in Table~\ref{tab:dataset_statistics}.
+To note, the $N$ time series in a dataset are considered as multiple, independent unvariate time series instead of a multivaraite time series with channels $= N $.
+The original covariates are constructed from the timestamp information.
+The settings of $w$ and $h$ are adopted from the original corresponding papers~\cite{elsayed2021we}.
+It is not necessary for them to be the same.
+
+We first report the experimental results of not using any covariates derived from the nearest neighbors.
+The experimental results are shown in Table~\ref{tab:results_without_covariates} and Table~\ref{tab:results_with_covariates}.
+
+\input{../tables/results_without_covariates}
+\input{../tables/results_with_covariates}
+
+
 %%%
-% Tables
-% Without covariates with top-1 motif information
-% With covariates with top-1 motif information
-% Without covariates with top-k motif information
-% With covariates with top-k motif information
+
