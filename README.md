@@ -1,53 +1,12 @@
 # Coleman's PhD Thesis
-## Pending Tasks of mpmf
-- Matrix Profile
-    - How to compute them
-    - For the subsequence's definition, mention it is by the end point instead of the starting point
-    - Exclusion zone
-    - Three information:
-        - $h$ subsequence points
-        - distance between the query and the nearest neighbor
-        - the location (i.e., idx)
-    - Some mass background
-  - Other experiment result
---------------------
-- Experiments
-    -  Debug of top-1 motif, add distance directly and add as a denominator, normalize, trend
-
-    - Refract the top-k method: Use the top-1 method for k time instead of using a for-loop for each index
-        - How to merge different inmeridate subsequence    
-    - Debug of top-k motif
-        - Check why there is an error when no_of_points_after = 9
-		- There are no enough points after the motif 
-    - If have time, also test the single-step dataset
-    - autocorrelation graph (autocorrelation curve) or feature importance
-    - top-k experiments
---------------------
-- Conclusion
-- Preliminaries
-- Abstract
 
 ## Checklist of the whole thesis
-- [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
-- [x] Check References
+- [] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
+- [] Check References
     -  The use of capital letters and lowercase letters in paper titles is not consistent.
     -  Bold fonts should be used for such terms as DNA, program names, MicroRNA in the titles of the papers.
-- [x] "this paper" should not be used.
-- [ ] No line numbers
-
----
---------------------------------
-[Table 5.1]
-It is strange that $w,h$ have a single value (not a pair of values).
-
-[Section 5.4]
-It is unclear whether you only used y (not used x, u).
-
-[Table 5.2, 5.3]
-It is strange that the results on Exchange-Rate for
-GBRT, GBRT-NN, GBRT-NN-S are the same in both tables.
-
----
+- [] "this paper" should not be used.
+- [] No line numbers
 
 ## Notifications
 - The pre-defense 
