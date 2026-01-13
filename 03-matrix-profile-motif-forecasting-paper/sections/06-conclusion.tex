@@ -1,5 +1,9 @@
 \section{Concluding Remarks} \label{sec:conclusion}
 
+In this study, we present a method to augment the original time series by finding nearest neighbors and using their information as covariates for each subsequence.
+The information includes the similarity and the immediate subsequences.
+Experiment shows that the augmented data allow the existing model to have a better prediction result in the task of time series forecasting in terms of three evaluation metrics, which are RMSE, WAPE, and MAE.
+
 \subsection{Future Work}
 \noindent\RuninHead{Leveraging nearest neighbors' location information}It would be beneficial to retrieve the nearest neighbors for each subsequence in a specific range with respect to it.
 Real-world applications often require the separation of information of short-term and long-term repeating patterns for making accurate predictions~\cite {lai2018modeling}.

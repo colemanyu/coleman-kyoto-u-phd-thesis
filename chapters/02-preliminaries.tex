@@ -53,6 +53,7 @@ The one-to-many point matching allows the elastic distance measures to warp in t
 While it will be detailed in Chapter~\ref{ch:ksfdtw}, it is briefly explained here.
 In short, it minimizes the cumulative distance between two time series, subject to constraints, by finding an optimal warping path $W^*$ in a cost matrix, where $W$ is the set of all possible paths.
 The constraints typically are (1) Boundary conditions, (2) Continuity, and (3) Monotonicity.
+This warping path provides feasibility for the point alignments to go beyond the 1-1 point alignment, as in the case of a lock-step distance measure,  
 % Note that we can reduce pathological warping and accelerate computation by introducing a warping window. 
 % DTW with a warping window constraint is called constrained DTW (cDTW).
 % Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
@@ -105,13 +106,13 @@ The Shape Dynamic Time Warping (shapeDTW) is a variant of DTW~\cite{zhao2018shap
 The main modification to the original DTW is the way the local distance between points is computed.
 Recall that DTW compares single scalar points.
 shapeDTW compares local descriptors.
-The local descriptors are constructed using a sliding window on the original series, such that for each point $x$, a $L$-subsequence with $x$ as the center is extracted to compute the higher-level feature of $x$. $L$ is the user-given length of the subsequence to consider. By default, it is set to 15.
+The local descriptors are constructed using a sliding window on the original series, such that for each point $x$, a $L$-subsequence with $x$ as the center is extracted to compute the higher-level feature of $x$. $L$ is the user-given length of the subsequence to consider. By default, it is set to 15 in Aeon, which is a time series library in Python.
 There are several ways to construct such a descriptor.
-For example, a raw subsequence (i.e., a set of neighbor points surrounding the point of interest), Piecewise aggregate approximation (PAA)~\cite{keogh2001dimensionality, yi2000fast}, slope, derivative, HOG-1D~\cite{zhao2016decomposing}.
+For example, a raw subsequence (i.e., a set of neighbor points surrounding the point of interest), Piecewise aggregate approximation (PAA)~\cite{keogh2001dimensionality, yi2000fast}, slope, derivative, HOG-1D~\cite{zhao2016decomposing}.descriptor.
 
 Then, the distance between descriptors is calculated rather than between raw values.
 When a raw subsequence is chosen to construct the local descriptors, a common metric used for comparing two local descriptors is the Euclidean distance.
-In the evaluation, a raw subsequence is chosen to construct the local descriptors.
+In the evaluation, a raw subsequence is chosen to construct the local descriptors, which is the default setting in Aeon.
 
 \subsection{Amercing Dynamic Time Warping (ADTW)}
 The Amercing Dynamic Time Warping (WDTW) is a variant of DTW~\cite{herrmann2023amercing}.

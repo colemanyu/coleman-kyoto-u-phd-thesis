@@ -58,8 +58,8 @@
 \definecolor{tab:olive}{HTML}{BCBD22}
 \definecolor{tab:cyan}{HTML}{17BECF}
 
-% Lines
-\usepackage[switch]{lineno}
+% Line numbers
+% \usepackage[switch]{lineno}
 
 % Japanese
 \usepackage{CJKutf8}
@@ -216,8 +216,8 @@
 
 
 \begin{document}
-% Coleman: Lines
-\linenumbers
+% Coleman: Line number
+% \linenumbers
 
 % Coleman: Spacing
 % \doublespacing
@@ -301,7 +301,9 @@ with Matrix Profile} \label{ch:mpmf}
 \subfile{chapters/06-conclusion}
 
 % ===================================================
-
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
 \bibliography{main.bib}
 
 \end{document}

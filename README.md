@@ -1,12 +1,12 @@
 # Coleman's PhD Thesis
 
 ## Checklist of the whole thesis
-- [] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
-- [] Check References
-    -  The use of capital letters and lowercase letters in paper titles is not consistent.
-    -  Bold fonts should be used for such terms as DNA, program names, MicroRNA in the titles of the papers.
-- [] "this paper" should not be used.
-- [] No line numbers
+- [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
+- [x] The term "this paper" should not be used.
+- [x] Check References
+    -  The use of capital letters and lowercase letters in paper titles should be consistent.
+    -  Bold fonts should be used for such terms as DNA, program names, and MicroRNA in the titles of the papers.
+- [x] No line numbers
 
 ## Notifications
 - The pre-defense 

@@ -1,8 +1,9 @@
 \chapter{Conclusion and Future Directions} \label{ch:conclusion} 
 
-In this thesis, we contribute to time series analysis by addressing two aspects, with applications in bioinformatics.
+In this thesis, we contribute to time series analysis by addressing three aspects, with applications in bioinformatics.
 The first is to frame the prediction of biological sequence problems as time series classification tasks.
 The second addresses a fundamental limitation in existing time series distance measures.
+The third is to augment the original data with the nearest neighbors of each subsequence. Models that are trained on the augmented data have a better result than models that are trained on the original data.
 
 % First study
 In the first study, we investigate the prediction of human Dicer cleavage sites. This task is important for the biogenesis of microRNAs (miRNAs).
@@ -32,7 +33,8 @@ One future work is to make use of all potential secondary structures, each with 
 Another area for future work is to use interpretable time series classifiers, such as those based on time series shapelets. By doing this, we can study which subsequence is critical for the definition of the classes, namely ``5p cleav'', ``5p non-cleav'', ``3p leav'', and ``3p non-cleav'' because shapelets serve as the subsequence that has the most discriminating power between classes.
 
 % Second study
-The second study develops a new distance measure framework, namely PSD. It aims to release a fundamental assumption that the prior studies have overlooked.
+The second study develops a new distance measure framework, namely PSD. 
+It aims to release a fundamental assumption that the prior studies have overlooked.
 There is only one scaling rate throughout the entire time series.
 However, there are much data that exhibits multiple rates.
 %
@@ -53,7 +55,7 @@ For PSDTW, due to its quadratic complexity, we can further speed it up using low
 %
 Experiments show that PSD, and in particular PSED, perform best when the query contains multi-rate distortions, compared with ED, DTW and the other five DTW-based methods.
 
-Future works on it are as follows.
+Future work on it is as follows.
 Currently, the number of segments $P$ is given by users. It is preferable to develop a heuristic or algorithmic approach to automatically determine $P$. A simple heuristic is to test a range of possible $P$.
 Besides, while we have successfully applied a lower bound on PSDTW and accelerated it, the computational overhead of calculating a lower bound on PSED outweighs the pruning benefit and makes the computation slower eventually.
 Developing a specialized lower bound for PSED could further improve its running time.
@@ -62,4 +64,4 @@ However, it is challenging to apply a similar method to USDTW and PSDTW due to t
 
 The third study develops a new method to create covariates for time series data using the immediate subsequences of the left nearest neighbor of each forecasting windows.
 We have studied the effect of the length of the immediate subsequences on the forecaster.
-Future work of this study includes finding nearest neighbors in a specific range to capture the short pattern and long pattern, extending the framework to a multivariate time series forecasting task, using motif family instead of simply top-$k$ nearest neighbors, and how to handle the outliers among the immediate subsequences.
+Future work of this study includes finding nearest neighbors in a specific range to capture the short pattern and long pattern, extending the framework to a multivariate time series forecasting task, using motif family instead of simply top-$k$ nearest neighbors, and handling the outliers among the immediate subsequences.

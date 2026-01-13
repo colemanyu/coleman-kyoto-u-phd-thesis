@@ -20,7 +20,7 @@ In a dataset with more than one time series, we use $T_i$ to denote a time serie
 The local properties of $T$ can be analyzed through its subsequences.
 
 \begin{definition}[Subsequence]
-    A \textit{subsequence} $T_{i, m} = t_i, t_{i+1}, \dots, t_{i+m-1} = t_{i:i+m-1}$ of a $T$ is a sequence that consists of a continuous subset of the entries from $T$ of length $m$ starting from $i$.
+    A \textit{subsequence} $T_{i, m} = T(i:i+m-1)$ of a $T$ is a sequence $ = t_i, t_{i+1}, \dots, t_{i+m-1} = t_{i:i+m-1}$ that consists of a continuous subset of the entries from $T$ of length $m$ starting from $i$.
 \end{definition}
 
 \subsection{Problem Formulation}
@@ -40,14 +40,15 @@ The task of forecasting is encoded in Equation~\ref{eq:forecasting}.
 where
 \begin{itemize}
   \item $\hat{y}_{t+\tau}$ is a prediction of the target value at $t+\tau$, where $\tau \in \{ 1, 2, \dots, h\}$.
-  \item $y_{t-w+1:t}$ are the actual values consisting of the current value $y_t$ and the lag values before it. 
+  \item $y_{t-w+1:t}$ are the actual values consisting of the current value $y_t$ and the $w-1$ lag values before it. 
   $y_{t-i}$ is called the lag of $i$ or $i$-lag.
   \item $x_t$ are inputs that can only be known historically at time $t$. $x_{t+1}$ is not known at $t$.
   \item $u_t$ are kwown inputs for all time. For example, the date information such as the day of the week or month~\cite{lim2021timeseries}. 
   Even at $t$, $u_{t+i}$ where $1 \leq i \leq \infty$ are known.
+  For example, given the timepoint date (2026-02-01, 14:38), we can deduce the minute (38), hour (14), day (1), month (2), and year (2026). Besides, by reading the calendar, the day of the week (Sunday), the day of the year (31+1=32), the week of the year (the firth week in 2026) can also be obtained.
 \end{itemize}
 $x_t$ and $u_t$ are called covariates of $y_t$.
-The input of Equation~\ref{eq:forecasting} is a look-back window $w$.
+The input of Equation~\ref{eq:forecasting}, except $\tau$, is a look-back window $w$.
 
 We explain the task of forecasting in terms of Equation~\ref{eq:forecasting}.
 The forecasting process estimates the value of $y_{t+\tau}$, denoted by $\hat{y}_{t+\tau}$ with the aim to minimize the error function, typically represented as a function of $y_{t+\tau} - \hat{y}_{t+\tau}$ for each $\tau$.
@@ -66,20 +67,21 @@ $T$ is divided into two subsequences, namely training subsequence $T_\mathrm{tra
 
 In our study, the forecaster is only allowed to train on $T_\mathrm{train}$.
 Recall that we are predicting the $h$ future values from the $w$ values just before them.
-Hence, we use a sliding window of length $w+h$ to generate the $w$-predictor-$h$-response pairs in $T_\mathrm{train}$, enabling the forecaster to train on them.
+Hence, we use a sliding window of length $w+h$ to generate the $w$-predictor-$h$-response sequence in $T_\mathrm{train}$, when the first $w$ entries form the predictor and the last $h$ form the response.
+These predictor-response pairs enable the forecaster to train on them.
 %
 % https://en.wikipedia.org/wiki/Teacher_forcing
 % https://medium.com/data-science/what-is-teacher-forcing-3da6217fed1c
 % https://milvus.io/ai-quick-reference/what-are-rolling-forecasts-in-time-series
-% https://stackoverflow.com/questions/79732731/about-test-set-of-xgboost-for-time-series-forecasting
 % Coleman's question
+% https://stackoverflow.com/questions/79732731/about-test-set-of-xgboost-for-time-series-forecasting
 % https://openforecast.org/adam/rollingOrigin.html
 During the test (evaluation) phase, we do rolling forecasts.
 We predict based on the ground truth, not results generated from the model.
 It is used to prevent the accumulation of errors.
 
-This concept is called ``Teacher forcing''~\cite{williams1989learning} because the teacher's values are ``force fed'' into the forecaster when we ``roll'' the forecaster on the $T_\mathrm{test}$~\cite{murphy2022probabilistic}.
-The intuition is that, suppose each question (except the first one) in an exam depends on the answers to the previous questions, rather than simply grading every answer in the end, a teacher would grade (evaluate) the answer once it is given by the student, and provide the correct answer to the student so he can answer the next question based on the correct answer.
+This concept is also called ``Teacher forcing'' in RNN~\cite{williams1989learning} because the teacher's values are ``force fed'' into the forecaster when we ``roll'' the forecaster on the $T_\mathrm{test}$~\cite{murphy2022probabilistic}.
+The intuition is that, suppose each question (except the first one) in an exam depends on the answers to the previous questions, rather than simply grading every answer in the end, a teacher would grade (evaluate) the answer once it is given by the student, and provide the correct answer (i.e., ground truth) to the student so he can answer the next question based on the correct answer.
 
 % \cite{li2024deep}, \cite{lai2018modeling}
 % https://robjhyndman.com/hyndsight/wape.html
@@ -134,10 +136,10 @@ Figure~\ref{fig:flattening} presents the reconfiguration.
 For each entry of the target variable $y_i$, we retrieve its $u_i$, such as the day information from the calendar.
 Hence, for each $y_i$, it is associated with $x_i$ and $u_i$.
 To simplify the notation, we absorb $u_i$ into $x_i$, and it is called the covariates of $y_i$.
-The 2D window, as shown on the left-hand side in Figure~\ref{fig:flattening}, with size $w \times M$, where $M$ is the total number of covariates, is flattened into a 1D array on the right-hand side with length $w + M$.
+The 2D window, as shown on the left-hand side in Figure~\ref{fig:flattening}, with size $w \times (1+ M$), where $M$ is the total number of covariates, is flattened into a 1D array on the right-hand side with length $w + M$.
 To note, as suggested in the literature~\cite{elsayed2021we}, only the covariates of the last time-point $i$ are kept and appended to the final vector.
 By reconfiguration, we obtain the predictor-response pairs for training.
-In detail, the predictor is $\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, \mathbf{y_i}}, \textcolor{tab:blue}{x_i^1, x_i^2, \dots, x_i^M}$ where the \textcolor{tab:red}{red} part refers to the current target value $\textcolor{tab:red}{\mathbf{y_i}}$ and its lag values, and the \textcolor{tab:blue}{blue} part refers to the covariates of $\textcolor{tab:red}{\mathbf{y_i}}$.
+In detail, the predictor is $\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, \mathbf{y_i}}, \textcolor{tab:blue}{x_i^1, x_i^2, \dots, x_i^M}$ where the \textcolor{tab:red}{red} part refers to the current target value $\textcolor{tab:red}{\mathbf{y_i}}$ and its $w-1$ lag values, and the \textcolor{tab:blue}{blue} part refers to the covariates of $\textcolor{tab:red}{\mathbf{y_i}}$.
 %
 The corresponding output is $y_{i+1}, y_{i+2}, \dots, y_{i+h}$, with length = $h$.
 We predict the $h$-horzon from the $w$-look back window (i.e, $w+M$-flattened predictor).
@@ -145,23 +147,23 @@ With this predictor-response formulation, the forecasting problem becomes a mult
 Standard XGBoost cannot return a sequence of predicted values; it only returns a single number~\cite{elsayed2021we}. 
 To note, a multi-output regression problem is simply a group of single-output regression problems.
 In other words, XGBoost internally simply treats the prediction of $h$-steps as $h$ individual problems.
-Hence, the final output is produced by the $h$ regressors rather than by a single model.
+Hence, the final output is produced by the $h$ individual regressors rather than by a single model.
 One may argue that the $h$ regressors operate individually and hence the temporal relationship in the output sequence is lost.
 However, as the individual regressors are trained on the same flattened input, the prediction would still preserve the temporal relationship~\cite{elsayed2021we}.
 
-\subsection{Matrix Profile}
+Our proposed method has a simple intuition. We would like to create new covariates for each time point in the time series, as in the case of using the date information to create the covaraites.
+Given a time point $y_i$ in $Y$, and a user-given $m$, we want to use the $m$-subsequence with $y_i$ as the ending point as a query $Q$, and to find its left $m$-subsequence that is the nearest neighbor of $Q$.
+Hence, the immediate subsequence of the nearest neighbor informs us of the dynamics of the immediate subsequence of $Q$, which is our desired forecasting window.
+In Figure~\ref{fig:visualize-matrix-profile}, the red triangle in the right gray box is $y_i$ and the right gray box is $Q$. We seek its leftmost nearest neighbor, which turns out to be the left gray box.
+Note that we would like to perform this operation for each point $y_j$ in the time series $Y$, $m \leq j \leq |Y|$.
 
-Our proposed method has a simple intuition. We would like to create covariates for each time point in the time series, as in the case of using the date information to create the covaraites.
-For example, given the timepoint date (2026-02-01, 14:38), we can deduce the minute (38), hour (14), day (1), month (2), and year (2026). Besides, by reading the calendar, the day of the week (Sunday), the day of the year (31+1=32), the week of the year (the firth week in 2026) can also be obtained.
-Given a time point $t_p$ in $T$, and a user-given $m$, we want to use the $m$-subsequence with $t_p$ as the ending point as a query $Q$, and to find its left $m$-subsequence that is the nearest neighbor of $Q$.
-Hence, the immediate subsequence of the nearest neighbor informs us of the dynamics of the immediate subsequence of $Q$.
-In Figure~\ref{fig:visualize-matrix-profile}, the red triangle in the right gray box is $t_p$ and the right gray box is $Q$. We seek its leftmost nearest neighbor, which turns out to be the left gray box.
-Note that we would like to perform this operation for each point $t_p$ in the time series $T$, $m \leq t_p \leq |T|$.
+\subsection{Matrix Profile}
 
 We discuss how to use a data primitive called Matrix Profile~\cite{yeh2016matrix, zhu2017matrix} for this operation.
 In brief, a matrix profile $P$ is a time series that annotates an input time series $T$, storing the z-normalized Euclidean distance between each $m$-subsequence and its nearest neighbor in $T$.
-Besides, another supplementary time series, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
-To begin with, we first define the distance profile of $T$.
+If ties happen, the nearest neighbor is chosen among them arbitrarily because of the parallel computation property. 
+Besides, another closed related time series of $P$, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
+To begin our detailed discussion, we define the distance profile of $T$.
 
 \begin{definition}[Distance profile]
     A \textit{distance profile} $D_i = d_{i, 1}, d_{i, 2}, \dots, d_{i, n-m+1}$ of a $T$ is a vector of the Euclidean distances between a given subsequence $T_{i, m}$ and each subsequences in $T$, where $d_{i, j}$ is the distance between $T_{i, m}$ and $T_{j, m}$, $1 \leq i, j \leq n-m+1$.
@@ -178,22 +180,25 @@ From this, we define the matrix profile $P$ and its supplementary matrix profile
     A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
 \end{definition}
 
+To retrieve a non-trivial result of the Matrix profile (index), we need to define the notion of an exclusion zone.
+For a given $m$-subsequence $Q$, the distance profile is zero at the location of $Q$ (because $Q$ must be a nearest neighbor of $Q$) and close to zero just before and after it.
+But the corresponding $m$-subsequences are trivial matches of $Q$.
+We need to define a zone, namely an exclusion zone, for this region.
+It is defined as $m/2$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $m/4$ instead~\cite{law2019stumpy}.
+
 In this study, instead of the general matrix profile (index), we are interested in the left version of it.
 The left version of the matrix profile informs us of the information about the left nearest neighbor of any $m$-subsequences in $T$.
 It is shown in Figure~\ref{fig:visualize-matrix-profile}.
-The left matrix profile has high values in the beginning because they can only find the left neighbor, and there are few left subsequences.
-In contrast, right matrix profile has low values in the beginning because there are many right subsequences
-To note, each entry $i$ in Matrix Profile $P_i$ is simply the min of $P_i^L$ and $P_i^R$ (i.e., $P_i = \min(P_i^L, P_i^R)$).
+The left matrix profile has high values at the beginning because it can only find the left neighbor, and there are few left subsequences initially.
+In contrast, the right matrix profile has low values at the beginning because there are many right subsequences there.
+To note, each entry $i$ in Matrix Profile $P_i$ is simply the minimum of $P_i^L$ and $P_i^R$ (i.e., $P_i = \min(P_i^L, P_i^R)$).
 
 \begin{definition}[Left distance profile]
     A \textit{left distance profile} $D_i^L = d_{i, 1}, d_{i, 2}, \dots,\allowbreak d_{i, i - \ceil{m/4} -1}$ of $T$ is a vector of Euclidean distances between a given subsequence $T_{i, m}$ and each subsequence that appears before $T_{i, m}$.
     To note, $i - \ceil{m/4} - 1$ is the index location of the last eligible subsequence before $T_{i, m}$ because of the exclusion zone.
 \end{definition}
 
-We discuss the idea of an exclusion zone. For a given $m$-subsequence $Q$, the distance profile is zero at the location of $Q$ (because $Q$ must be a nearest neighbor of $Q$) and close to zero just before and after it.
-But the corresponding $m$-subsequences are trivial matches of $Q$.
-We need to define a zone, namely an exclusion zone, for this region.
-It is defined as $m/2$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $m/4$ instead~\cite{law2019stumpy}.
+
 
 \begin{definition}[Left matrix profile]
     A \textit{left matrix profile} $P^L = \min(D_1^L), \min(D_2^L), \allowbreak  \dots, \min(D_{n-m+1}^L)$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$ before it.

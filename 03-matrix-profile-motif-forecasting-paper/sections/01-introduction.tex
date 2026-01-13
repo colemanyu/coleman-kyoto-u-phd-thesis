@@ -30,25 +30,28 @@ $k$-NN is considered a lazy learner because the training steps involve only memo
 %
 In addition, in time series forecasting, a recent study demonstrates that a well-known machine learning baseline, Gradient Boosting Regression Tree (GBRT), such as XGBoost, equipped with an appropriate data engineering of the data, can achieve competitive or even superior performance than the deep learning method.
 In detail, they transform the time series forecasting task into a window-based regression problem, as shown in Figure~\ref{fig:flattening}.
-For each training window of length $w$ with the last time point \textcolor{tab:red}{$\mathbf{y_i}$}, and its lagged values \textcolor{tab:red}{$y_{i-1}, y_{i-2}, \dots, y_{i-w+1}$} are concatenated with covariates \textcolor{tab:blue}{$x_i^1, x_i^2, \dots, x_i^M$} to form a \textit{predictor} for a multi-output GBRT. This transformation is called flattening.
-The corresponding response is the following $h$ points of \textcolor{tab:red}{$\mathbf{y_i}$}.
+For each training window of length $w$ with the last time point \textcolor{tab:red}{$\mathbf{y_i}$}, and its lagged values \textcolor{tab:red}{$y_{i-1}, y_{i-2}, \dots, y_{i-w+1}$} are concatenated with covariates \textcolor{tab:blue}{$x_i^1, x_i^2, \dots, x_i^M$} of \textcolor{tab:red}{$\mathbf{y_i}$} to form a \textit{predictor} for a multi-output GBRT. This transformation is called flattening.
+Note that the standard GBRT returns only a single output.
+We employ a variant, multi-output GBRT, in this study.
+The corresponding \textit{response} is the following $h$ points of \textcolor{tab:red}{$\mathbf{y_i}$}.
 It provides a simple, more efficient yet accurate method for time series forecasting.
 
 \input{../figures/visualize-matrix-profile}
 Moreover, $k$-NN has also shown to be a promising method for time series forecasting~\cite{martinez2019methodology}.
-The $k$-NN uses the lagged values of the last time point to form a query $Q$.
-It identifies the $k$ previous similar subsequences to $Q$ and uses their immediate subsequences to predict the immediate subsequence, which is the forecasting window, of $Q$.
+The $k$-NN uses the $w-1$ lagged values of the last time point to form a query $Q$ with length $w$.
+It identifies the $k$ previous similar subsequences to $Q$ and uses their immediate subsequences to predict the immediate subsequence, which is the forecasting window of length $h$, of $Q$.
 The intuition is that history repeats itself.
 The previous (historical) subsequences that are similar to $Q$ can provide a hint about the future of $Q$. 
 They are similar, and so are their immediate subsequences.
 %
 Figure~\ref{fig:visualize-matrix-profile} depicts this idea. Observe that the immediate subsequence of the right gray box is similar to that of the left gray box.
 The left gray box is the nearest neighbor of the right gray in the ``past''.
+We also refer to the left gray box as the left nearest neighbor of the right gray box.
 
 \input{03-matrix-profile-motif-forecasting-paper/algorithms/mp-brute-force}
-Based on these findings, this study proposes a method to improve the performance of existing forecasters by leveraging information from the nearest neighbors of each subsequence in the target variable.
-For each time point $y_i$ of the target variable $Y$, a window of length $w$ is constructed with $y_i$ as the last point, then we retrieve the window's historical nearest neighbors and use their information to create new covariates for the window.
-The information includes the similarities between the window and its nearest neighbors, as well as the immediate subsequences of them.
+Based on these findings, this study proposes a method to improve the performance of existing forecasters by leveraging information from the nearest neighbors of each subsequence in the target variable $Y$.
+For each time point $y_i$ of the target variable $Y$, a window of length $w$ is constructed with $y_i$ as the last point, then we retrieve the window's left nearest neighbors and use their information to create new covariates for the window.
+The information includes the similarities between the window and its nearest neighbors, as well as the immediate subsequences of those neighbors.
 The similarity can be interpreted as a measure of confidence or weight in using the information from the corresponding nearest neighbor.
 The intuition is that, if the similarity of the window and a neighbor is high, then the future (i.e., immediate subsequence) of the neighbor should also be similar to the future of the window. 
 %
@@ -57,8 +60,9 @@ We explain this subtle difference by Figure~\ref{fig:visualize-matrix-profile}.
 The previous approaches simply use the information of the nearest neighbors of the last look-back window, which consisted of the last time point and its lagged values (i.e., the right gray box), for prediction.
 In contrast, we use the information of the nearest neighbors of \textbf{all} of the windows.
 
-We use the Matrix Profile~\cite{yeh2016matrix, zhu2017matrix} to annotate the nearest neighbor for each $m$-subsequence of a time series $T$ of length $n$.
-The distance is the z-normalized Euclidean distance.
+We use the Matrix Profile~\cite{yeh2016matrix, zhu2017matrix} to annotate the left nearest neighbor for each $m$-subsequence of a time series $T$ of length $n$.
+The distance is the z-normalized Euclidean distance, which calculates the Euclidean distance between the two time series after they have been z-normalized to have a mean of zero and a standard deviation of one.
+For a time series $T$, the resulting z-normalized $T'$ would have entries $t'_i = (t_i - \mu(T))/\sigma(T)$, where $\mu(T)$ and $\sigma(T)$ are the mean and the standard deviation, of $T$ respectively.
 It may seem computationally expensive to perform this annotation at first glance.
 %
 Algorithm~\ref{alg:mp-brute-force} shows the brute force approach to compute the matrix profile.
@@ -67,7 +71,8 @@ The space complexity is $\mathcal{O}(n^2)$ because of the pairwise distance of e
 %
 However, the matrix profile can be computed in $\mathcal{O}(n^2)$ using an exact method, namely STOMP~\cite{yeh2016matrix} or its community-open-sourced version, STUMP~\cite{law2019stumpy}.
 Besides, the running time can be further sped up by parallelization for a single machine with multiple computation units, such as CPUs or GPUs.
-The tool also allows us to compute the left matrix profile to find the left nearest neighbor of each window.
+The tool also allows us to compute the matrix profile to find the nearest neighbor of each window in an efficient way.
+Recall that we are interested in the ``left'' version of the matrix profile. 
 To note, the matrix profile annotates a time series with information about the nearest neighbor of each subsequence, including the similarity with its nearest neighbor and its location, as shown in Figure~\ref{fig:visualize-matrix-profile}.
 
 In this study, we make the following contributions:

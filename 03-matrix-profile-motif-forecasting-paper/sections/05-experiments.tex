@@ -2,23 +2,34 @@
 
 \input{../tables/datasets}
 The code and data are available at \url{https://github.com/colemanyu/matrix-profile-motif-forecasting}.
+To note, for all these datasets, we do not have $x_t$. In other words, we lack auxiliary channels.
+However, each time point contains a timestamp. From it, we can infer the covariates associated with the timestamp.
+We refer to them as the original covariates.
+
 In this study, we focus on univariate time series forecasting.
 There is only one single target variable $Y$.
 We predict the future of $Y$ only based on the past of it.
 The dataset used is listed in Table~\ref{tab:dataset_statistics}.
 For each time series $T$ in the dataset, it is split into two contiguous time series, namely $T_\mathrm{train} = T(1:\mathrm{split})$ and $ T_\mathrm{test} = T(\mathrm{split+1:|T|})$, where $\mathrm{split}$ defines the training-test split, which is shown in the column 6 in Table~\ref{tab:dataset_statistics}.
 To note, the $N$ time series in a dataset are considered as multiple, independent unvariate time series instead of a multivaraite time series with channels $= N $.
-The original covariates are constructed from the timestamp information.
 The settings of $w$ and $h$ are adopted from the original corresponding papers~\cite{elsayed2021we}.
 It is not necessary for them to be the same.
+The original papers of the comparison methods use this setting.
+So, we use the same setting for fair comparison.
+
+The data used includes the target values in the form of lagged values, and its covariates.
 
 GBRT-NN refers to a model that incorporates immediate sequence information.
 GBRT-NN-S refers to a model that incorporates immediate sequence information with the similarity information.
 The experimental results are shown in Table~\ref{tab:results_without_covariates} and Table~\ref{tab:results_with_covariates}.
 
+As shown in Table~\ref{tab:results_without_covariates}, in the case of working without original covariates, our methods can improve the performance among all three metrics, except in the case of RMSE in the Electricity dataset.
+
+As shown in Table~\ref{tab:results_with_covariates}, in the case of working with original covariates, our methods can improve the performance among all three metrics, except in the case of RMSE in the Traffic dataset.
+
+We note that in the Exchange-Rate dataset, our methods perform similarly to the original method GBRT.
+We argue that this is because, in this dataset, it depends solely on the look-back window and not on any far-away historical events.
+
 \input{../tables/results_without_covariates}
 \input{../tables/results_with_covariates}
-
-
-%%%
 

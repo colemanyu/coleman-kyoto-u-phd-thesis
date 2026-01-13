@@ -8,7 +8,7 @@ Hence, by developing appropriate transformation methods, we can apply a plethora
 
 This thesis contributes three aspects in time series data mining and bioinformatics.
 %
-They are a novel application of time series classification to solve complex biological problems by transforming biological data into time series and developing a more expressive distance measure framework that removes certain underlying assumptions.
+They are a novel application of time series classification to solve complex biological problems by transforming biological data into time series, developing a more expressive distance measure framework that removes certain underlying assumptions, and using nearest neighbors as covariants to improve the performance in the task of forecasting.
 
 In the first part, we demonstrate the utility of time series analysis in bioinformatics by studying the problem of predicting Human Dicer Cleavage Sites. 
 Recall that bioinformatics operates at the intersection of biology, biotechnology, and informatics. 
@@ -40,5 +40,6 @@ In the third part, we study a time series primitive, namely matrix profile, in t
 Obviously, the matrix profile also provides us the information for the $k$-nearest neighbors of each subsequence simply by running the same algorithm for $k$ times.
 In our application, we are only interested in the left nearest neighbors of each subsequence because they refer to the historical occurrences.
 We can obtain the immediate subsequences of these historical occurrences as covariates to feed into the forecaster to improve its accuracy.
+Experiment shows that these covariates, which can be obtained through a computationally cheap data mining primitive called Matrix Profile, can improve the existing forecaster.
 
-Collectively, this thesis advances the fields of time series data mining and bioinformatics by demonstrating the use of time series analysis to address fundamental biological questions and proposing a new, more expressive distance measure framework.
+Collectively, this thesis advances the fields of time series data mining and bioinformatics by demonstrating the use of time series analysis to address fundamental biological questions, proposing a new, more expressive distance measure framework, and using augmented properties (i.e., the information related to the nearest neighbors) of subsequences to enhance the prediction.

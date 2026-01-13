@@ -7,7 +7,7 @@ It is natural for us to develop computational methods to accelerate the process 
 
 Computational tasks focus on the relationship between input and output.
 We would like to find the hidden function behind.
-To note, there are two ways to solve a problem. One is the algorithmic approach, and the other is the machine-learning approach.
+To note, there are two ways to solve a computational problem. One is the algorithmic approach, and the other is the machine-learning approach.
 
 There are two large categories of machine learning.
 They are supervised learning and unsupervised learning.
@@ -31,24 +31,28 @@ In clustering, we first need to define a measure of similarity between two objec
 
 \section{Contributions}
 In this study, our contributions mainly include three parts.
-First, in chapter~\ref{ch:mtsccleav}, we demonstrate a machine learning approach to analyze a biology problem.
-We propose the usage of the base pair probability sequence from the predicted secondary structure of RNA sequence as new information for the classification task. We apply Rocket-based classifiers to identify the human dicer cleavage sites.
+First, we demonstrate a machine learning approach to analyze a biology problem in chapter~\ref{ch:mtsccleav}.
+We propose the usage of the base pair probability sequence from the predicted secondary structure of RNA sequence as new information (i.e., covariates) for the classification task. We apply Rocket-based classifiers to identify the human dicer cleavage sites.
 Because of the simplicity of the transformation method and the classifiers, our proposed method achieves 3.7X to 28.8X speedup while achieving better or comparable results than the current state-of-the-art method.
-Second in Chapter~\ref{ch:ksfdtw}, we solve an algorithmic problem on distance measure.
+Second, we solve an algorithmic problem on distance measure in Chapter~\ref{ch:ksfdtw}.
 We propose a new distance measure framework, namely PSD, that can incorporate any existing distance measures to achieve invariance for two time series with multiple rates (i.e., different scaling factors).
-Experiments show that our methods outperform ED, DTW and the other five DTW-based methods.
-Besides, we propose to use the segmentation result returned by PSD to improve the accuracy of other distance measures.
-Third in Chapter~\ref{ch:mpmf}, we improve a forecaster with the usage of a data mining primitive, namely Matrix Profile.
+Experiments show that our methods outperform ED, DTW, and the other five DTW-based methods.
+Moreover, we propose using the segmentation result returned by PSD to improve the accuracy of other distance measures.
+Third, we improve a forecaster with the usage of a data mining primitive, namely Matrix Profile, in Chapter~\ref{ch:mpmf}.
 We propose leveraging left nearest neighbors for each forecasting window as new covariates to improve the accuracy of the underlying forecaster.
 We use a simple gradient boosting regression tree as the underlying forecaster.
-The experiment shows that this simple method can improve the accuracy.
+The experiment shows that this simple method can improve the accuracy of the forecaster.
 
 \section{Organization}
-In Chapter~\ref{ch:preliminaries}, we review some of the basic knowledge in biology and time series data mining, in particular, we focus on distance measures and Rocket-based classifiers.
+
+In Chapter~\ref{ch:preliminaries}, we review some of the basic knowledge in biology and time series data mining, in particular, we focus on distance measures and the main core underlying Rocket-based classifiers, which is the Ridge classifier.
+%
 In Chapter~\ref{ch:mtsccleav}, we introduce our study of the problem of predicting human dicer cleavage sites. We proposed a novel approach to frame this task as a multivariate time series classification problem by introducing nine encoding methods and making use of Rocket-based classifiers.
 In Chapter~\ref{ch:ksfdtw}, we introduce a new distance measure framework, namely PSD. It releases the assumption that there is only one scaling factor existing throughout the whole time series.
+%
 In Chapter~\ref{ch:mpmf}, we introduce how to create new covariates in time series forecasting using matrix profile.
 This method can improve the accuracy of the existing forecaster by providing useful covariates.
+%
 In Chapter~\ref{ch:conclusion}, we give a conclusion to these two studies and provide future work on them.
 
 
