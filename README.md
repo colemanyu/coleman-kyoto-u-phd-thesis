@@ -33,8 +33,7 @@
     -  The use of capital letters and lowercase letters in paper titles is not consistent.
     -  Bold fonts should be used for such terms as DNA, program names, MicroRNA in the titles of the papers.
 - [x] "this paper" should not be used.
-- [ ] [page 38, 29] ED and DTW have already been explained in Chapter 2. These parts should be shorten, or, some explanations should be added.
-
+- [ ] No line numbers
 
 ---
 --------------------------------
