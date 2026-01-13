@@ -1,22 +1,22 @@
 # Progress
 
-### # 1📅 [Next Date]
-- **📝 Meeting Summary** [Place Holder]
-- **✅ Previous Pending Tasks Finished** [Place Holder]
-- **⏳ Pending Tasks and Deadlines** [Place Holder]
-- **📎 Materials** [Place Holder]
-- **ℹ️ Remarks** [Place Holder]
+### # 1 :date: [Next Date]
+- **:memo: Meeting Summary** ...
+- **:white_check_mark: Previous Pending Tasks Finished** ...
+- **:hourglass_flowing_sand: Pending Tasks and Deadlines** ...
+- **:paperclip: Materials** ...
+- **:information_source: Remarks** ...
 
 <br>
 
 <details>
-<summary><strong>🗂️ Archived (Click to Expand)</strong></summary>
+<summary><strong>:card_index_dividers: Archived (Click to Expand)</strong></summary>
 
-### # 0 📅 2026-01-13 (Template)
-- **📝 Meeting Summary** [Place Holder]
-- **✅ Previous Pending Tasks Finished** [Place Holder]
-- **⏳ Pending Tasks and Deadlines** [Place Holder]
-- **📎 Materials** [Place Holder]
-- **ℹ️ Remarks** [Place Holder]
+### # 0 :date: 2026-01-13 (I am a Template)
+- **:memo: Meeting Summary** ...
+- **:white_check_mark: Previous Pending Tasks Finished** ...
+- **:hourglass_flowing_sand: Pending Tasks and Deadlines** ...
+- **:paperclip: Materials** ...
+- **:information_source: Remarks** ...
 
 </details>
