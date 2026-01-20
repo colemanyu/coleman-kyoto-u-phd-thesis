@@ -1,0 +1,4 @@
+- Duration: 50 mins
+- 1.5 to 2 minutes per slide
+- => Main deck: 25 - 35 slides (40 is a warning!)
+- 13 mins per study, about 7 - 10 slides
