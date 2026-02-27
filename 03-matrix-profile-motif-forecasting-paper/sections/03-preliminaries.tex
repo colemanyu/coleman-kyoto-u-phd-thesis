@@ -1,2 +1,149 @@
 \section{Preliminaries} \label{sec:preliminaries}
-%%%
+
+%Time Series
+To begin, we define the data type of interest: \textit{time series}.
+\begin{definition}[Time series]
+    \label{def:ts}
+    A \textit{time series} $T = t_1, t_2, \dots, t_n$ is a sequence of real-valued numbers with length = $n$.
+\end{definition}
+Since each entry $t_i$ is one-dimensional, $T$ is called a \textit{univariate} time series.
+Definition~\ref{def:ts} can be extended to define \textit{multivariate} time series by using a vector with a number of dimensions greater than one for $t_i$.
+A multivariate time series $T$ can also be viewed as a vector of univariate time series, where each univariate time series is called a \textit{channel} of $T$.
+
+% Subsequences
+The local properties of $T$ can be analyzed through its \textit{subsequences}.
+\begin{definition}[Subsequence]
+    % T(i:i+m-1)
+    A \textit{subsequence} $T_{i, m}$ of a $T$ is a sequence $t_{i:i+m-1} = t_i, t_{i+1}, \dots, t_{i+m-1}$ that consists of a continuous subset of the entries from $T$ of length $m$ starting from position $i$.
+\end{definition}
+
+% Distance measure
+The distance measure used is the z-normalized Euclidean distance, which computes the Euclidean distance between the two time series after they have been z-normalized to have a mean of zero and a standard deviation of one.
+For a time series $T$, the resulting z-normalized time series $\hat{T}$ would have entries $\hat{t}_i = (t_i - \mu(T))/\sigma(T)$, where $\mu(T)$ and $\sigma(T)$ are the mean and the standard deviation, of $T$ respectively.
+For two time series $X$ and $Y$, the z-normalized Euclidean distance $\mathrm{dist}(X, Y)$ is defined as follows:
+\begin{equation} 
+    \label{eq:ed}
+    \mathrm{dist}(X, Y) = \sqrt{\sum_{i=1}^m(\hat{x}_i - \hat{y}_i)^2}
+\end{equation}
+$\mathrm{dist}(X, Y)$ is bounded between zero and $2m$~\cite{mueen2010online}.
+
+\subsection{Matrix Profile}
+We will first introduce the definitions of Distance Profile and Matrix Profile.
+Then, we will introduce the algorithms to compute them fast.
+Finally, we will focus on a specific variation of Matrix Profile, which is Left Matrix Profile.
+It is a main primitive to identify the left nearest neighbor for each predictors.
+
+In brief, a matrix profile $P$ is a time series that annotates an input time series $T$, storing the z-normalized Euclidean distance between each $m$-subsequence and its nearest neighbor in $T$.
+
+% Distance Profile
+Given a length $m$, we can select an $m$-subsequence from $T$ as a query and compute its distances to all $m$-subsequences in $T$. The resulting ordered distance vector is a \textit{distance profile}.
+\begin{definition}[Distance profile]
+    A \textit{distance profile} $D_i = d_{i, 1}, d_{i, 2}, \dots, d_{i, n-m+1}$ of a $T$ is a vector of the distances between a given subsequence $T_{i, m}$ and each subsequences $T_{j, m}$ in $T$, where $d_{i, j}$ is the distance between $T_{i, m}$ and $T_{j, m}$, $1 \leq i, j \leq n-m+1$.
+\end{definition}
+
+% Matrix Profile
+\begin{definition}[Matrix profile]
+    A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
+\end{definition}
+
+Another closed related time series of $P$, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
+
+\begin{definition}[Matrix profile index]
+    A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
+\end{definition}
+
+To retrieve a non-trivial result of the Matrix profile, we need to define the notion of an exclusion zone.
+For a given $m$-subsequence $Q$, the distance profile is zero at the location of $Q$ (because $Q$ must be a nearest neighbor of $Q$) and close to zero just before and after it.
+But the corresponding $m$-subsequences are trivial matches of $Q$.
+We need to define a zone, namely an exclusion zone, for this region.
+It is defined as $m/2$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $m/4$ instead~\cite{law2019stumpy}.
+We use $m/4$ as the exclusion zone in this study.
+
+It may seem computationally expensive to perform Matrix Profile annotation at first glance.
+%
+\input{../algorithms/mp-brute-force}
+Algorithm~\ref{alg:mp-brute-force} shows the brute force approach to compute the matrix profile.
+The two for-loops and the computation of z-normalized Euclidean distance, which takes $\mathcal{O}(m)$, indicate that the computational complexity is $\mathcal{O}(n^2m)$.
+The space complexity is $\mathcal{O}(n^2)$ because of the pairwise distance of each subsequence with the other subsequence.
+%
+However, the matrix profile can be computed in $\mathcal{O}(n^2)$ using an exact method, namely STOMP~\cite{yeh2016matrix} or its community-open-sourced version, STUMP~\cite{law2019stumpy}.
+The main idea is using MASS~\cite{zhong2024mass} to compute the for-loop in line 2 in Algorithm~\ref{alg:mp-brute-force} and reuse the computed results of $D_{i-1}$ to compute $D_i$ across the for-loop in line 1 because $t_{i-1, m}$ and $t_{i, m}$ differ only in the first point of $t_{i-1, m}$ and the last point of $t_{i, m}$~\cite{zhu2016matrix}.
+
+\subsubsection{MASS}
+The computation of $D_i$ may seem like costing $\mathcal{O}(nm)$, as depicted in lines 2-3 in Algorithm~\ref{alg:mp-brute-force}, where line 3 takes $\mathcal{O}(m)$.
+In fact, line 3 takes $2m$ arithmetic operations because the $m$-window is scanned twice, once for z-normalization and once for distance calculation.
+However, it can be computed in just $\mathcal{O}(n\log(n))$ by an algorithm called MASS~\cite{zhong2024mass}.
+We explain the main ideas of MASS here and direct readers to \cite{zhong2024mass} for a more detailed description.
+We will start by explaining the most basic component of MASS: just-in-time normalization.
+Equation~\ref{eq:ed} can be rewritten as follows.
+\begin{equation} 
+    \label{eq:ed-2}
+    \mathrm{dist}(X, Y) = \sqrt{2m(1 - \frac{\sum_{i=1}^mx_iy_i - m\mu(x)\mu(y)}{m \sigma(X) \sigma(Y)})}
+\end{equation}
+In line 3, the same query is comparing to other subsequences throughout the loop.
+Hence, we can perform z-normalization on the query once before the for-loop in line 2.
+Let's assume $Y$ is the z-normalized query, hence $\mu(Y) = 0$ and $\sigma(Y) = 1$, and $X$ is the non-z-normalized window.
+Equation~\ref{eq:ed-2} can then be reduced as follows.
+\begin{equation} 
+    \label{eq:ed-3}
+    \mathrm{dist}(X, Y) = \sqrt{2m(1 - \frac{\sum_{i=1}^mx_iy_i}{m \sigma(X)})}
+\end{equation}
+The z-normalization scan of $X$ can be skipped in each iteration by following.
+The main idea is that $\sigma(X)$ of moving windows with size $m$ can be calculated in one linear scan before entering the for-loop in line 2.
+It has been shown that the two cumulative sum vectors are sufficient to calculate $\mu$ and $\sigma$ of any subsequence of any length at any iteration~\cite{yeh2016matrix}.
+First, the cumulative sums of $C = \sum_{i=1}^n x$ and $C^2 = \sum_{i=1}^n x^2$ are calculated.
+The sums over any window $S_i = C_{i+m} - C_i$ and ${S^2}_i = {C^2}_{i+m} - {C^2}_{i}$ can be obtained by subtracting the two cumulative sums. 
+Finally, $\sigma$ of any window can be calculated in linear time using the following equation.
+\begin{equation} 
+    \label{eq:sigma}
+    \sigma_i = \sqrt{\frac{{S^2}_i}{m} - (\frac{S_i}{m})^2}
+\end{equation}
+The overall complexity of lines 2-3 in Algorithm~\ref{alg:mp-brute-force} is still $\mathcal{O}(nm)$.
+However, since the z-normalization scan of $X$ has been skipped, each iteration now takes $m$ arithmetic operations only for calculating the dot product in the numerator of Equation~\ref{eq:ed-3}.
+
+The complexity of lines 2-3 can be further improved to $\mathcal{O}(n \log n)$ by using the fast fourier transform (FFT) to compute the dot products between the query and \textit{all} subsequences $t_{j, m}$~\cite{zhong2024mass}.
+The dot products are called sliding dot products because the windows $X$ (i.e., $t_{j, m}$) are extracted through a sliding window across $T$.
+It is faster than $\mathcal{O}(nm)$ since $m > \log n$ holds in most cases.
+One of the strengths is that the complexity $\mathcal{O}(n \log n)$ does not depend on the length $m$ of the subsequence.
+The above optimization is called MASS V1 and there are three other levels of optimization namely MASS V2, MASS V3, and MASS V4 to further reduce the running time~\cite{zhong2024mass}.
+
+\subsubsection{Running time of Matrix Profile}
+The direct usage of MASS will make Algorithm~\ref{alg:mp-brute-force} become $\mathcal{O}(n^2 \log n)$~\cite{yeh2016matrix}.
+Observe that the windows $t_{i,m}$ share most of the parts with $t_{i-1,m}$ except the first point of $t_{i,m}$ and the last point of $t_{i-1,m}$. 
+Once we have the distance profile $D_{i-1}$ for the subsequence $t_{i-1,m}$, the distance profile $D_i$ for the next subsequence $t_{i,m}$ can be computed in just $\mathcal{O}(1)$.
+Hence, it results $\mathcal{O}(n^2)$ for computing the matrix profile~\cite{zhu2016matrix}.
+
+Besides, the running time can be further sped up by parallelization for a single machine with multiple computation units, such as CPUs or GPUs~\cite{zhu2016matrix}.
+
+\subsection{Left Matirx Profile}
+In this study, instead of the general matrix profile (index), we are interested in the left version of it.
+The left version of the matrix profile informs us of the information about the left nearest neighbor of any $m$-subsequences in $T$~\cite{zhu2017matrix}.
+It is shown in Figure~\ref{fig:visualize-matrix-profile}.
+The left matrix profile has high values at the beginning because it can only find the left neighbor, and there are few left subsequences initially.
+In contrast, the right matrix profile has low values at the beginning because there are many right subsequences there.
+To note, each entry $i$ in Matrix Profile $P_i$ is simply the minimum of $P_i^L$ and $P_i^R$ (i.e., $P_i = \min(P_i^L, P_i^R)$).
+
+\begin{definition}[Left distance profile]
+    A \textit{left distance profile} $D_i^L = d_{i, 1}, d_{i, 2}, \dots,\allowbreak d_{i, i - \ceil{m/4} -1}$ of $T$ is a vector of Euclidean distances between a given subsequence $T_{i, m}$ and each subsequence that appears before $T_{i, m}$.
+    To note, $i - \ceil{m/4} - 1$ is the index location of the last eligible subsequence before $T_{i, m}$ because of the exclusion zone.
+\end{definition}
+
+\begin{definition}[Left matrix profile]
+    A \textit{left matrix profile} $P^L = \min(D_1^L), \min(D_2^L), \allowbreak  \dots, \min(D_{n-m+1}^L)$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$ before it.
+\end{definition}
+
+\begin{definition}[Left matrix profile index]
+    A \textit{left matrix profile index} $I^L$ is a vector of integers $I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
+\end{definition}
+
+The computational time of the left matrix is the same as the general matrix profile, since it is just separating the computation into two halves, one for the left and one for the right, which is not considered in this study.
+
+\subsection{Gradient boosting}
+Gradient boosting~\cite{friedman2001greedy} is a boosting algorithm that ensembles a group of weak learners (usually decision trees) to make predictions.
+It sequentially adds learners to an ensemble, with each learner connecting its predecessor.
+It constructs weak learners in a way that each learner strategically corrects the predecessor's mistakes by fitting the new learner to the residual errors made by the predecessor~\cite{serrano2021grokking, geron2025handson}.
+It can be used in classification and regression.
+In this study, we focus on its use in regression.
+For the usage in regression, the model is called ``Gradient Boosting Regression Tree (GBRT)''.
+Some popular optimized implementations of gradient boosting are XGBoost~\cite{chen2016xgboost}, CatBoost~\cite{dorogush2017catboost}, and LightGBM~\cite{ke2017lightgbm}.
+In this study, we use XGBoost.

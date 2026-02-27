@@ -1,0 +1,233 @@
+\section{Materials and Methods} \label{sec:method}
+
+% *!
+In this section, we first introduce the four datasets used in this study.
+We then formulate the time series forecasting problem and present the evaluation method, including the evaluation metrics.
+We then explain how to use a Gradient Boosting Regression Tree (GBRT) for forecasting by casting the time series into predictor-response pairs, as shown in Figure~\ref{fig:flattening}.
+Finally, we discuss how to leverage the nearest neighbor of a $m$-subsequence where the last data point is $y_i$ to derive covariates for $y_i$.
+The derived covariates can improve the performance of the GBRT forecaster.
+
+\subsection{Datasets} % *!
+
+\input{../tables/datasets}
+Four datasets are used, as listed in Table~\ref{tab:dataset_statistics}.
+The time series are univariate and consist only of target values $y_i$, where $1 \leq i \leq n$.
+Each time series $T$ is split into two contiguous time series, namely $T_\mathrm{train}$ and $T_\mathrm{test}$.
+The $N$ time series are considered as multiple, independent univariate time series instead of a multivariate time series with $N$ channels.
+
+Originally, each time point is not associated with any covariates (i.e., $M_x = M_u = 0$).
+% A time series $T$ only consists of the target values $y_i$ (i.e., $T = y_1, y_2, \dots, y_n$).
+Given a start date for the measurement of a time series $T$ and its measuring rate, we can assign the (date, time) information for each $y_i$ in $T$.
+For example, $y_2$ of a time series in \texttt{Traffic} is measured at 2012-01-01, 01:00.
+We can derive some covariates for $y_i$ based on its (date, time) information.
+For example, six covariates can be derived for $y_2$ as follows.
+They are month, day, hour, day\_of\_week, day\_of\_year, and week\_of\_year.
+The corresponding values are 1, 1 (Day 1 of the month), 1 (where the first hour is 0), 6 (Sunday, where Monday is 0), 1, and 52 (Week 1 of 2012 begins on 2012-01-01 (Monday), so it is in Week 52 of 2011).
+These derived covariates are normalized to be from $-0.5$ to $0.5$~\cite{elsayed2021we}.
+They are called known inputs $\textbf{u}_i$ because they are known even in the future (i.e., $T_\mathrm{test}$).
+\input{../tables/known_covariates}
+Table~\ref{tab:known_covariates} shows the derived known inputs for the datasets.
+
+\subsection{Problem Formulation} % *!
+% \cite{torres2021deep}
+
+Time series forecasting models predict $h$ future values $y_{t+1}, y_{t+2}, \dots, y_{t+h}$ of a target $y$ at a given time point $t$.
+$h$ is the number of steps we want to predict in the future w.r.t. $t$.
+The simplest case is one-step-ahead forecasting, where $h = 1$.
+It is preferable to predict multiple future points.
+In this case, it is called multi-horizon (i.e., multi-step) forecasting, where $h > 1$.
+For the actual value $y_i$, its predicted value is denoted as $\hat{y}_i$.
+A forecasting task is represented in Equation~\ref{eq:forecasting}~\cite{lim2021timeseries}.
+\begin{equation} 
+    \label{eq:forecasting}
+    \hat{y}_{t+\tau} = f(y_{t-w+1:t}, \bm{x}_{t-w+1:t}, \bm{u}_{t-w+1:t+\tau}, \tau)
+\end{equation}
+where
+\begin{itemize}
+    \item $\hat{y}_{t+\tau}$ is a prediction of the target value at $t+\tau$, where $\tau \in \{ 1, 2, \dots, h\}$.
+    \item $f(\cdot)$ is the prediction function learnt by the model.
+    \item $w$ is the length of a lookback window. The observations in the window are considered during forecasting.
+    \item $y_{t-w+1:t}$ are the actual target values consisting of the current value $y_t$ and the $w-1$ lag values before $y_t$. $y_{t-i}$ is called the lag of $i$ or $i$-lag.
+    \item $\bm{x}_{t-w+1:t}$ are historical inputs. $\bm{x}_t$ is not known until time $t$. $\bm{x}_i$ is a vector of length $M_x$, where $t-w+1 \leq i \leq t$.
+    \item $\bm{u}_{t-w+1:t+\tau}$ are known inputs. It is known for any $t \geq 1$. For example, date information, such as month and day. $\bm{u}_i$ is a vector of length $M_u$, where $t-w+1 \leq i \leq t+\tau$.
+\end{itemize}
+$\textbf{x}_i$ and $\textbf{u}_i$ are called covariates of $y_i$.
+
+We explain the task of forecasting using Equation~\ref{eq:forecasting}.
+The model estimates the value of $y_{t+\tau}$, denoted by $\hat{y}_{t+\tau}$, with the aim to minimize the error function, typically represented as a function of $y_{t+\tau} - \hat{y}_{t+\tau}$ for each $\tau$.
+
+It is clear that the derived time-covariates from the date information are useful for forecasting when the target variable depends on the time of measurement.
+For example, if the target is the electricity consumption rate, there is a clear monthly pattern: consumption is higher in winter and summer, when heaters and air conditioners are used.
+
+\subsection{Evaluation Method} % *!
+
+Given a dataset $D$ of $N$ time series $T_i$, where $1 \leq i \leq N$, the error made by the forecaster on $D$ is simply the summation of errors made by the forecaster on each $T_i$.
+%
+For each time series $T$, the trained model is tested on $T_\mathrm{test}$ using rolling forecasting.
+The prediction is always based on the ground truth, not on the model's prediction results.
+The model is tested for $|T_\mathrm{test}|/h$ times for each $T$.
+In detail, the model first predicts the target values $\hat{y}_{t+1:t+h}$ in one batch, where $t = |T_\mathrm{train}|$.
+The error is computed between the predicted target values $\hat{y}_{t+1:t+h}$ and the actual values $y_{t+1:t+h}$.
+For the second prediction, the input is the ground truth (i.e., $y_{t+1:t+h}$), rather than the predicted values (i.e., $\hat{y}_{t+1:t+h}$), and the output is $\hat{y}_{t+h+1:t+2h}$.
+For example, in \texttt{Traffic}, $|T_\mathrm{test}| = 168$ and $h = 24$, the model is tested for $168/24 = 7$ times for each time series.
+
+% https://en.wikipedia.org/wiki/Teacher_forcing
+% https://medium.com/data-science/what-is-teacher-forcing-3da6217fed1c
+% https://milvus.io/ai-quick-reference/what-are-rolling-forecasts-in-time-series
+% Coleman's question
+% https://stackoverflow.com/questions/79732731/about-test-set-of-xgboost-for-time-series-forecasting
+% https://openforecast.org/adam/rollingOrigin.html
+Rolling forecasting is used to prevent the accumulation of errors.
+This concept is also called ``Teacher forcing'' in RNN~\cite{williams1989learning} because the ground truth (given by the ``teacher'') is fed into the forecaster when we roll the forecaster on $T_\mathrm{test}$~\cite{murphy2022probabilistic}.
+The intuition is that, suppose each question (except the first one) in an exam depends on the answers to the previous questions, rather than simply grading every answer in the end, a teacher would grade (evaluate) the answer once it is given by the student (i.e., the forecaster), and provide the correct answer (i.e., ground truth) to the student so he can answer the next question based on the correct answer.
+
+% \cite{li2024deep}, \cite{lai2018modeling}
+% https://robjhyndman.com/hyndsight/wape.html
+To evaluate the forecaster, we used the following three evaluation metrics defined as:
+\begin{itemize}
+    \item Root Mean Square Error (RMSE)
+    \begin{equation} 
+        \label{eq:rmse}
+        \operatorname{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^n (y_i-\hat{y_i})^2}
+    \end{equation}
+    \item Mean Absolute Error (MAE)
+    \begin{equation} 
+        \label{eq:mae}
+        \operatorname{MAE} = \frac{1}{n}\sum_{i=1}^n |y_i-\hat{y_i}|
+    \end{equation}
+    \item Weighted Absolute Percentage Error (WAPE)
+    \begin{equation} 
+        \label{eq:wape}
+        \operatorname{WAPE} = \frac{\sum_{i=1}^n |y_i-\hat{y_i}|}{\sum_{i=1}^n |y_i|}
+    \end{equation}
+\end{itemize}
+where $n$ is the length of the time series, $y_i$ and $\hat{y_i}$ are the true value and predicted value, respectively.
+
+By rewriting Equation~\ref{eq:wape} to Equation~\ref{eq:wape-2}, it is more obvious that it is a weighted absolute percentage error.
+\begin{equation} 
+    \label{eq:wape-2}
+    \operatorname{WAPE} = \sum_{i=1}^n w_i \frac{|y_i - \hat{y_i}|}{|y_i|}
+\end{equation}
+where the weights are given by
+\begin{equation} 
+    w_i = \frac{|y_i|}{\sum_{i=1}^n |y_i|}
+\end{equation}
+
+RMSE and MAE are widely used metrics.
+WAPE was introduced by \cite{kolassa2007advantages}.
+RMSE is sensitive to large prediction errors because it squares the error terms $(y_i - \hat{y}_i)$ before averaging them.
+They contribute significantly to the final RMSE.
+Hence, it is more sensitive to outliers.
+%
+In contrast, MAE treats all errors linearly because of the absolute sign operator.
+Hence, it is less sensitive to outliers.
+MAE can better reflect the actual error situation than RMSE~\cite{li2024deep}.
+%
+MAE and WAPE are correlated.
+WAPE can be obtained by multiply MAE by n, followed by a division of the sum of the actual values $\sum_{i=1}^n |y_i|$.
+MAE is dependent on the scale of the data (i.e., different units used for the targets).
+WAPE provides a normalized percentage, as shown in Equation~\ref{eq:wape-2}.
+It makes WAPE independent of the scale of the data.
+%
+For all of them, a lower value is better.
+
+\subsection{Forecasting via GBRT} % *!
+
+In order to apply GBRT into time series forecasting problem,
+we need to cast the input into an appropriate format to input into GBRT.
+The casting approach is similar to the successful time series forecasting models, which reconfigure the time series into the predictor-response pairs~\cite{elsayed2021we}.
+
+Figure~\ref{fig:flattening} presents the casting.
+The window $X_i$ with size $w \times (1+ M_x + M_u$) is flattened into a 1D vector $X'_i$ with length $w + M_x + M_u$.
+To note, only the covariates of the last target value $y_i$ are kept~\cite{elsayed2021we}.
+%
+By casting, we obtain the predictor-response pairs.
+In detail, the predictor $X'_i$ is $\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, y_i}, \textcolor{tab:blue}{x_i^1, x_i^2, \dots, x_i^{M_x}} \textcolor{tab:green}{u_i^1, u_i^2, \dots, u_i^{M_u}}$.
+%
+With this predictor-response formulation, the forecasting problem becomes a multi-output regression problem.
+The corresponding response is $y_{i+1}, y_{i+2}, \dots, y_{i+h}$, with length $h$.
+As suggested in the original papers of the datasets, $w$ is chosen to equal $h$.
+
+Conventional XGBoost returns a single number instead of a sequence of numbers.
+We can treat a multi-output regression problem as a group of single-output regression problems.
+The forecasting task of predicting $h$ steps ahead is treated as $h$ individual regression problems.
+So, the final output is produced by $h$ individual regressors.
+One may argue that the $h$ regressors operate individually and hence the temporal relationship in the output sequence is lost.
+However, as the individual regressors are trained on the same flattened input $X_i'$, the prediction $Y_i$ would still preserve the temporal relationship~\cite{elsayed2021we}.
+
+We explain the above process through \texttt{Traffic} dataset, where $n = 10560$ (in which $|T_{\mathrm{train}}| = 10392$), $h = 24$, $w = h = 24$, $M_x = 0$, and $M_u = 6$.
+There are $10392-48+1 = 10345$ predictor-response pairs, which are extracted by a sliding window of size $48$ on $T_{\mathrm{train}}$.
+The size of the sliding window is the sum of the length $w$ of the window $X_i$ and the length $h$ of the output $Y_i$.
+$|X'_i| = w + M_x + M_u$.
+If the known inputs $u$ are incorporated into the forecasting, $|X'_i| = 30$.
+Otherwise, $|X'_i| = 24$.
+
+\subsection{Feature Engineering via Matrix Profile}
+
+Recall that for each $m$-subsequence $T_{i, m}$ in a time series $T$, where $m$ is user-given, we can identify its left nearest neighbor $NN^L_i$ via the left matrix profile index $P^L$ and retrieve the similarity between $T_{i, m}$ and $NN^L_i$ via the left matrix profile $I^L$.
+
+For each target value $y_i$, we construct a $w$-subsequence $Q_i$ consisting of $y_{i-w+1:i}$. By using $I^L$ with $m = w$, we can efficiently identify $NN^L_i$ for each of these $w$-subsequences.
+%
+$NN^L_i$ can reveal the historical reference of $Q_i$.
+History repeats itself.
+For example, since $Q_i$ is similar to $NN^L_i$, the immediate subsequence of $Q_i$ should be similar to that of $NN^L$, which tells the future trajectory after $y_i$. The immediate subsequence can be regarded as a guess or template for the future trajectory.
+%
+The similarity obtained via $P^L$ can be regarded as the confidence of guessing such a future trajectory based on the immediate subsequence of $Q_i$.
+%
+A time series with different raw values can have the same z-normalized representation.
+Hence, a set of historical subsequences with the exact same z-normalized representation could correspond to different raw values.
+By extracting the raw values of the nearest neighbor, we restore this lost magnitude information and allow the GBRT to learn from it.
+
+\input{../algorithms/feature_eng}
+Once the location of $NN^L_i$ is identified via the $I^L$, we extract the following information about $NN^L_i$ as in Algorithm~\ref{alg:feature_eng}. They are used as $u_i$ for $y_i$.
+
+\begin{enumerate}
+    \item $s$: It is  normalized to be from $-0.5$ to $0.5$ as in time-derived covariates.
+    \item $NN_{\text{imm}}$: The subsequence of length $l$ immediately following $NN^L_i$, where $l$ is user-given.
+    \item $NN_{\text{last}}$: The last target values of $NN^L_i$.
+    \item $NN_{\text{tar}}$: All the $m$ target values that make up $NN^L_i$ itself.
+    \item $NN_{\text{cov}}$: The known input covariates of the last point of $NN^L_i$.
+\end{enumerate}
+
+Note that the indexing systems differ between the matrix profile and the lookback window. 
+In the matrix profile, an $m$-subsequence is indexed by its starting position, as shown in Figure~\ref{fig:visualize-matrix-profile}. The gray boxes are indexed by their first points (the circles in the figures).
+The lookback windows are indexed by their last points (the triangles in the figures).
+Hence, for $Q_i$, which is a $m$-subsequences with $y_i$ as its last point, we map $i$ to the conventional starting index $k = i - m + 1$ to retrieve the correct nearest neighbor location and similarity score as in line 2 in Algorithm~\ref{alg:feature_eng}.
+
+\input{../tables/model_variants}
+\textsf{GBRT} utilizes the baseline features, including the target values and the known input time-covariates~\cite{elsayed2021we}.
+To note, we can also only consider the target values but not the time-covariates in the forecasting.
+By integrating the extracted information, we propose several variants of \textsf{GBRT} as summarized in Table~\ref{tab:model_variants}
+
+It is important to note how these new features are integrated into the GBRT model.
+The covariates as shown in Figure~\ref{fig:flattening} are scalars.
+But the extracted features $NN_{\text{imm}}$, $NN_{\text{tar}}$, and $NN_{\text{cov}}$ are vectors of length $l$, $m$, and $M_u$, respectively.
+%
+To satisfy the 1D input requirement of the GBRT model, these vectors are flattened and appended to the predictor vector during the data casting step. 
+In detail, each data point within the vector is treated as an independent scalar feature and concatenated to the predictor vector $X'_i$ directly, instead of being encapsulated in the corresponding vector $\textbf{x}_i$. 
+For example, for \textsf{GBRT-NN} is $w + M_x + l$, given $NN_{\text{imm}} = \textcolor{tab:blue}{t_{j+1}, t_{j+2}, \dots, t_{j+l}}$, it results the predictor  
+% $X'_i = y_{i-w+1}, \dots, y_i, u_i^1, \dots, u_i^{M_u}, t_{j+1}, \dots, t_{j+l}$ 
+$\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, y_i}, \textcolor{tab:green}{u_i^1, u_i^2, \dots, u_i^{M_u}}, \textcolor{tab:blue}{t_{j+1}, t_{j+2}, \dots, t_{j+l}}$
+with length $w + M_x + l$.
+Each individual points in the immediate subsequence are appended directly to the predictor vector.
+
+\subsection{Extends to k-Nearest Neighbors}
+We further extend our methodology to incorporate features from the $k$-nearest neighbors ($k$-NN) rather than just the nearest neighbor ($1$-NN) of each predictor.
+
+During the extraction process over the Left Distance Profile ($D^L_i$), instead of retaining only the lowest distance value, 
+We iteratively identify the $k$ lowest distance values as follows.
+%
+We would like to retrieve the $k$-nearest neighbors without overlapping as defined by the exclusion time.
+%
+First, we locate the index of the minimum value in $D^L_i$ to identify the first nearest neighbor. 
+Before the next iteration, we mask the exclusion zone surrounding this selected index.
+We repeat this process to identify the remaining $k-1$ minima.
+%
+Once the locations of the $k$ non-overlapping nearest neighbors are determined, we extract their respective information ($s$, $NN_{\text{imm}}$, $NN_{\text{last}}$, $NN_{\text{tar}}$, $NN_{\text{cov}}$) and flatten them into scalar features similar to what we did for the nearest neighbor case. 
+
+To denote the variants utilizing $k$-nearest neighbors, we update the name by prefixing the ``NN'' with the integer $k$ in the method name. 
+For example, when $k=2$, the \textsf{GBRT-NN} is denoted as \textsf{GBRT-2NN}.
+% \noindent\rule{\linewidth}{0.4pt}
+%%%
+%%%
+%%%

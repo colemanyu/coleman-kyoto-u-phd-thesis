@@ -1,0 +1,18 @@
+\begin{algorithm}[t] % *!
+\caption{Feature Engineering via Matrix Profile}
+\label{alg:feature_eng}
+\begin{algorithmic}[1]
+\Require Time series $y$, Time-covariate sequence $u$, Target value index $i$, Subsequence length $m$, Immediate subsequence length $l$
+\Ensure Extracted covariates for $y_i$
+\State Compute $P^L$ and $I^L$ for $y$ with subsequence length $m$
+\State $k \leftarrow i - m + 1$ \Comment{Map index $i$ to standard query start index}
+\State $idx_{\text{NN}} \leftarrow I^L[k]$ \Comment{Start index of $NN^L_i$}
+\State $j \leftarrow idx_{\text{NN}} + m - 1$ \Comment{Index of the last point of $NN^L_i$}
+\State $s \leftarrow P^L[k]$ \Comment{Similarity}
+\State $NN_{\text{imm}} \leftarrow y[j+1 : j+l]$ \Comment{Immediate subsequence following $NN_i^L$}
+\State $NN_{\text{last}} \leftarrow y[j]$ \Comment{Last target value of $NN^L_i$}
+\State $NN_{\text{tar}} \leftarrow y[idx_{\text{NN}} : j]$ \Comment{All the target values of $NN^L_i$}
+\State $NN_{\text{cov}} \leftarrow u[j]$ \Comment{Covariates at the last point of $NN^L_i$}
+\State \Return $s$, $NN_{\text{imm}}$, $NN_{\text{last}}$, $NN_{\text{tar}}$, $NN_{\text{cov}}$
+\end{algorithmic}
+\end{algorithm}

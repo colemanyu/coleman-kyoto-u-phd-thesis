@@ -1,0 +1,32 @@
+\begin{table*}[htbp] % *!
+    \centering
+    \caption{Experimental Results without known input time-covariates in the $k$-nearest neighbors case, where $k \in \{2, 3\}$.}
+    \label{tab:results_k_without_covariates}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llccccccc}
+        \toprule
+        \textbf{Dataset} & \textbf{Metric} & \textsf{GBRT-2NN-S} & \textsf{GBRT-3NN-S} & \textsf{GBRT-2NN\textsuperscript{+}-S} & \textsf{GBRT-3NN\textsuperscript{+}-S} & \textsf{GBRT-2NN\textsuperscript{++}-S} & \textsf{GBRT-3NN\textsuperscript{++}-S} \\
+        \midrule
+        \multirow{3}{*}{\texttt{Electricity}} 
+        & RMSE & 147.895 & \underline{147.706} & 148.846 & 149.191 & 148.035 & \textbf{145.004} \\ 
+        & WAPE & 0.102 & 0.101 & 0.101 & 0.101 & \underline{0.100} & \textbf{0.099} \\ 
+        & MAE & 56.313 & 56.032 & 56.126 & 56.155 & \underline{55.565} & \textbf{54.895} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{Traffic}} 
+        & RMSE & \textbf{0.008} & \underline{0.009} & \textbf{0.008} & \underline{0.009} & \textbf{0.008} & \textbf{0.008} \\ 
+        & WAPE & 0.039 & \underline{0.038} & 0.039 & 0.040 & \textbf{0.037} & \underline{0.038} \\ 
+        & MAE & \textbf{0.002} & \textbf{0.002} & \textbf{0.002} & \textbf{0.002} & \textbf{0.002} & \textbf{0.002} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{PeMSD7}} 
+        & RMSE & 5.536 & 5.529 & 5.533 & 5.527 & \underline{5.525} & \textbf{5.514} \\ 
+        & WAPE & \underline{0.051} & \underline{0.051} & \underline{0.051} & \textbf{0.050} & \textbf{0.050} & \textbf{0.050} \\ 
+        & MAE & 2.946 & 2.943 & 2.943 & 2.940 & \underline{2.939} & \textbf{2.932} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{Exchange-Rate}} 
+        & RMSE & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} \\ 
+        & WAPE & \textbf{0.016} & \textbf{0.016} & \textbf{0.016} & \textbf{0.016} & \textbf{0.016} & \textbf{0.016} \\ 
+        & MAE & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} \\ 
+        \bottomrule
+    \end{tabular}
+    }
+\end{table*}

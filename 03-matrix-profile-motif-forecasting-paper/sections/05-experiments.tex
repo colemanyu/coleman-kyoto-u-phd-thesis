@@ -1,35 +1,133 @@
 \section{Experiments} \label{sec:experiments}
 
-\input{../tables/datasets}
+% exchange rate does not depend on time covariates
+% Traffic, including s worsen the performance
+% For others, similarity helps or does not worsen
+
+This section presents experiments demonstrating the effectiveness of using nearest neighbor information to improve GBRT performance on the time series forecasting task.
+
+The experiments are conducted on a personal laptop equipped with an Apple M1 Pro chip and 16 GB of memory, using Python for implementation.
+We employ \texttt{stumpy} for the matrix profile implementation and \texttt{xgboost} for the XGBoost implementation.
 The code and data are available at \url{https://github.com/colemanyu/matrix-profile-motif-forecasting}.
-To note, for all these datasets, we do not have $x_t$. In other words, we lack auxiliary channels.
-However, each time point contains a timestamp. From it, we can infer the covariates associated with the timestamp.
-We refer to them as the original covariates.
 
-In this study, we focus on univariate time series forecasting.
-There is only one single target variable $Y$.
-We predict the future of $Y$ only based on the past of it.
-The dataset used is listed in Table~\ref{tab:dataset_statistics}.
-For each time series $T$ in the dataset, it is split into two contiguous time series, namely $T_\mathrm{train} = T(1:\mathrm{split})$ and $ T_\mathrm{test} = T(\mathrm{split+1:|T|})$, where $\mathrm{split}$ defines the training-test split, which is shown in the column 6 in Table~\ref{tab:dataset_statistics}.
-To note, the $N$ time series in a dataset are considered as multiple, independent unvariate time series instead of a multivaraite time series with channels $= N $.
-The settings of $w$ and $h$ are adopted from the original corresponding papers~\cite{elsayed2021we}.
-It is not necessary for them to be the same.
-The original papers of the comparison methods use this setting.
-So, we use the same setting for fair comparison.
-
-The data used includes the target values in the form of lagged values, and its covariates.
-
-GBRT-NN refers to a model that incorporates immediate sequence information.
-GBRT-NN-S refers to a model that incorporates immediate sequence information with the similarity information.
-The experimental results are shown in Table~\ref{tab:results_without_covariates} and Table~\ref{tab:results_with_covariates}.
-
-As shown in Table~\ref{tab:results_without_covariates}, in the case of working without original covariates, our methods can improve the performance among all three metrics, except in the case of RMSE in the Electricity dataset.
-
-As shown in Table~\ref{tab:results_with_covariates}, in the case of working with original covariates, our methods can improve the performance among all three metrics, except in the case of RMSE in the Traffic dataset.
-
-We note that in the Exchange-Rate dataset, our methods perform similarly to the original method GBRT.
-We argue that this is because, in this dataset, it depends solely on the look-back window and not on any far-away historical events.
+The evaluation is conducted on four datasets, as listed in Table~\ref{tab:dataset_statistics}.
+Three evaluation metrics are used, namely RMSE, MAE, and WAPE.
+There are two scenarios for the datasets' use case.
+\begin{itemize}
+  \item Without known input time-covariates $\textbf{u}_i$ (i.e. $M_u = 0$): The models rely solely on the target values.
+  \item With known input time-covariates $\textbf{u}_i$ (i.e. $M_u> 0 $): The models incorporate additional time-derived known input covariates $u_i$,  as listed in Table~\ref{tab:known_covariates}
+\end{itemize}
 
 \input{../tables/results_without_covariates}
 \input{../tables/results_with_covariates}
+\textsf{GBRT} is used as our baseline for both scenarios.
+The results are in Tables~\ref{tab:results_without_covariates}, 
+\ref{tab:results_with_covariates}.
+In the table of experimental results, \textbf{bold} represents the best result, and \underline{underlined} represents the second best.
+We first evaluate two primary variants, \textsf{GBRT-NN} and \textsf{GBRT-NN-S}, for initial testing.
+
+\subsection{Effect of the length l of the immediate subsequence}
+
+The effect of the length $l$ of the immediate subsequence is investigated.
+We tested for five different lengths $l \in 1, 2, \ceil{h/4}, \ceil{h/2}, h$.
+For \texttt{Exchange-Rate} with $h = 9$, $l \in \{1, 2, 6, 12, 24\}$.
+For other datasets with $h = 24$, $l \in \{1, 2, 3, 5, 9\}$.
+\input{../figures/points_trend_analysis_RMSE}
+\input{../figures/points_trend_analysis_MAE}
+The results are plotted in Figures~\ref{fig:points_trend_analysis_RMSE},~\ref{fig:points_trend_analysis_MAE}.
+Since the WAPE plot is similar to the MAE plot, only the RMSE and WAPE plots are shown here.
+
+For \texttt{Electricity} and \texttt{PeMSD7}, the performance improves for all the metrics as $l$ increases.
+For \texttt{Traffic}, the performance of \textsf{GBRT-NN-S} on RMSE improves as $l$ increases. In contrast, the performance of \textsf{GBRT-NN} on RMSE decays as $l$ increases. 
+But for MAE, both models improve as $l$ increases.
+For \texttt{Exchange-Rate}, both models achieve the best result when $l = 6$ for all the metrics.
+
+\subsection{Comparison between the two scenarios}
+
+For \texttt{Electricity} and \texttt{PeMSD7}, the models perform better when time-covariates are incorporated.
+For \texttt{Traffic}, incorporating the covariates worsens the results.
+For \texttt{Exchange-Rate}, the performances of the models are similar between the two scenarios. This indicates that this dataset is less dependent on time.
+
+\subsection{Effect of using z-normalized instead of raw values}
+
+In this part, we study the effect of using z-normalized target values of the immediate subsequences.
+By default, we use the target values directly as the features.
+We have tested using the z-normalized representation of the target values instead of the raw values in all the previous experiments.
+In detail, for each dataset, there are two scenarios, and the two models have been tested five times for five different $l$. It results in 20 combinations in the experimental setting. 
+\input{../figures/original_vs_normalize}
+The percentage change of using the z-normalized representation instead is shown in Figure~\ref{fig:original_vs_normalize}
+It shows that using the raw values of the immediate subsequence is preferable.
+
+\subsection{Effect of using pairwise difference representation instead of raw values}
+
+In this part, we study the effect of using pairwise differences, which captures the trend, as the features.
+We have tested using the pairwise difference representation of the target values instead of the raw values in all the previous experiments.
+For a given time series $T=t_1, t_2, \dots, t_n$, its pairwise differences representation $T'$ refers to $T' = t_2-t_1, t_3-t_2, \dots, t_n-t_{n-1}$.
+To note, the first entry is computed by subtracting the first entry of the immediate subsequence from the last entry of the nearest neighbor.
+Hence, the length of the pairwise difference representation is the same as the original one.
+In detail, for each dataset, there are two scenarios, and the two models have been tested five times for five different $l$. It results in 20 combinations in the experimental setting. 
+Same as the previous part, it has been tested for 20 combinations for using the pairwise difference representation instead.
+\input{../figures/raw_vs_pairwise}
+The result is plotted on Figure~\ref{fig:raw_vs_pairwise}.
+It shows that using the raw values of the immediate subsequence is preferable.
+
+\subsection{Summary of the experiments on the two primary models}
+Based on the above experiments, we present the following summary for the downstream analysis.
+\begin{enumerate}
+  \item \textbf{Variable Impact of Covariates}: The inclusion of time-covariates does not always help. It depends on the dataset.
+  \item \textbf{Lag Selection}: We set $l = 6$ for \texttt{Exchange-Rate} and $l = h$ for other datasets. 
+  \item \textbf{Data Representation}: Using raw values for the immediate subsequences. We argue that it is because raw values preserve original information.
+  \item Across 12 evaluation combinations (four datasets with three metrics), \textsf{GBRT-NN-S} demonstrated improvement in 9 cases, remained consistent in 2, and showed a performance decline in only 1 when incorporating time-covariates, while showing improvement in 10 cases, and remained consistent in 2 for not incorporating known input covariates. 
+  \item \textsf{GBRT-NN-S} performs much better than \textsf{GBRT-NN} in \texttt{Traffic} and performs similarly on the other datasets in both scenarios.
+  \item \texttt{Exchange-Rate} only has a mild improvement on our models. It indicates that this dataset is not strongly dependent on historically similar occurrences.
+\end{enumerate}
+
+\subsection{Incorporating the target values of the nearest neighbor}
+
+% Discuss more complex methods NN+ and NN++
+We have further incorporated the target values (either only the last point or all of them) of the nearest neighbor. 
+The results are in Tables~\ref{tab:results_without_covariates}, \ref{tab:results_with_covariates}.
+By incorporating these features, the models improve on \texttt{Traffic} and \texttt{PeMSD07}.
+\textsf{GBRT-NNC\textsuperscript{++}-S} performs the best for both the scenarios.
+
+For \texttt{Electricity}, \textsf{GBRT-NNC\textsuperscript{++}-S} achieves the best and the second best on WAPE in the two scenarios, respectively.
+It worsens RMSE for the case without known input-time covariates compared to the baseline while still improve RMSE for the case with known input-time covariates.
+It indicates that in the absence of time covariates, \textsf{GBRT-NNC\textsuperscript{++}-S} makes wrong predictions for some outliers.
+
+In general, these models improve average prediction performance but cannot handle certain outlier cases.
+
+As mentioned above, \texttt{Exchange-Rate} is insensitive to long-range history. It can also be noted by the small best $l$ in Figure~\ref{fig:points_trend_analysis_RMSE}, \ref{fig:points_trend_analysis_MAE}. 
+
+\subsection{Incorporating the covariates of the last point of the nearest neighbor}
+\input{../tables/results_with_covariates_nn_covariates}
+
+We also incorporate the covariates of the last point in the nearest-neighbor. The results is shown in Table~\ref{tab:results_with_covariates_nn_covariates}.
+\texttt{PeMSD7} achieves better performance in these models and reaches the best at this moment for using \textsf{GBRT-NNC\textsuperscript{++}-S}.
+It does not improve the performance for the other datasets.
+
+\subsection{Extend to the case of k-nearest neighbor}
+
+\input{../tables/results_k_without_covariates}
+\input{../tables/results_k_with_covariates}
+\input{../tables/results_k_with_covariates_nn_covariates}
+Our idea has been extended to the case for $k$-nearest neighbors.
+We have tested for $k \in 2,3$ instead of $k=1$, which has already demonstrated in the previous parts.
+The results are shown in Tables~\ref{tab:results_k_without_covariates}, \ref{tab:results_k_with_covariates}, \ref{tab:results_k_with_covariates_nn_covariates}.
+% \texttt{PeMSD7} obtain the overall best performance in \textsf{GBRT-3NNC\textsuperscript{++}-S}.
+
+\subsection{Summary of the experiment}
+
+\input{../tables/best_models}
+We outline the best model for each dataset in Table~\ref{tab:best_models}.
+%
+Note that in some datasets, no single model achieves the best performance across all three metrics.
+In this case, we report all of them.
+%
+When there are ties, we report the simpler models (i.e., ones incorporating fewer covariates).
+
+% \noindent\rule{\linewidth}{0.4pt}
+%%%
+%%%
+%%%
+
 

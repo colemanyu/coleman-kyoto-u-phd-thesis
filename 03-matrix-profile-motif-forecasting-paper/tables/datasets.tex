@@ -1,27 +1,27 @@
-\begin{table}[htbp]
+\begin{table}[tb] % *!
 \centering
 \caption{Dataset Statistics. 
-$N$ is the number of time series in the dataset, while $|T| = n$ is the length of each time series. 
-``rate'' refers to the measuring rate.
-$w$ is the size of the look-back window.
-$h$ is the size of the forecasting window, also known as the forecasting horizon.
-$T_{\mathrm{train}}$ is the training subsequence of $T$.
-$T_{\mathrm{test}}$ is the test subsequence of $T$.
+$N$: the number of time series in the dataset.
+$n$: the length of each time series $T$ in the dataset. 
+rate: measuring rate.
+start date: (date, time).
+$h$: the size of the forecasting window.
+$T_{\mathrm{train}}$ ($T_{\mathrm{test}}$): the training (test) subsequence of $T$.
 To note, $|T_{\mathrm{train}}| + |T_{\mathrm{test}}| = n$.
 }
 \label{tab:dataset_statistics}
-% \resizebox{\textwidth}{!}{
-\begin{tabular}{lrrrrrrrr}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lrrrrrrr}
 \toprule
- & \multicolumn{3}{c}{\textbf{Data}} & \multicolumn{5}{c}{\textbf{Forecasting Task}} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-9}
-\textbf{Dataset} & $N$ & $n$ & rate & $w, h$ & $|T_{\mathrm{train}}|$ & $|T_{\mathrm{test}}|$ \\
+ & \multicolumn{4}{c}{\textbf{Data}} & \multicolumn{3}{c}{\textbf{Forecasting Task}} \\
+\cmidrule(lr){2-5} \cmidrule(lr){6-8}
+\textbf{Dataset} & $N$ & $n$ & rate & start date & $h$ & $|T_{\mathrm{train}}|$ & $|T_{\mathrm{test}}|$ \\
 \midrule
-Electricity~\cite{sen2019think} & 70 & 26,136 & hourly & 24 & 25,968 & 168 \\
-Traffic~\cite{sen2019think} & 90 & 10,560 & hourly & 24 & 10,392 & 168 \\
-PeMSD7~\cite{sen2019think} & 228 & 12,672 & /5 mins & 9 & 11,232 & 1,440 \\
-Exchange-Rate~\cite{lai2018modeling} & 8 & 7,536 & daily & 24 & 6,048 & 1,488 \\
+Electricity~\cite{sen2019think} & 70 & 26,136 & hourly & 2012-01-01, 00:00 & 24 & 25,968 & 168 \\
+Traffic~\cite{sen2019think} & 90 & 10,560 & hourly & 2012-01-01, 00:00 & 24 & 10,392 & 168 \\
+PeMSD7~\cite{sen2019think} & 228 & 12,672 & /5 mins & 2012-05-01, 00:00 & 9 & 11,232 & 1,440 \\
+Exchange-Rate~\cite{lai2018modeling} & 8 & 7,536 & daily & 1990-01-01, 00:00 & 24 & 6,048 & 1,488 \\
 \bottomrule
 \end{tabular}
-% }
+}
 \end{table}

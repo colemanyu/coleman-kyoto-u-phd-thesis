@@ -1,11 +1,16 @@
 \section{Related Work} \label{sec:related-work}
 
 Many methods have been developed for time series forecasting.
+We introduce them by categories.
+
+\subsection{Traditional methods}
+
 Traditional methods include rolling averages (RA), vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
 Because of their rigorous statistical properties, they have long been the standard.
 The shortcomings of ARIMA and its variants include their high computational cost~\cite{lai2018modeling}. 
-In contrast, VAR is arguably the most widely used method, particularly in multivariate time series analysis, owing to its simplicity.
-However, most of these traditional approaches have certain limitations.
+In contrast, VAR is arguably the most widely used method in this category, particularly in multivariate time series analysis, owing to its simplicity.
+%
+However, most of these approaches have certain limitations.
 %
 % https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
 % https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
@@ -13,6 +18,9 @@ They perform well when the data meet specific statistical assumptions, such as s
 % For example, ARIMA performs well only if the underlying stochastic process of the time series satisfies the assumptions of ARIMA.
 %
 It motivates the community to develop machine learning methods, particularly deep learning methods for time series forecasting. 
+
+\subsection{Deep learning methods}
+
 Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
 The compound models are promising.
 For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
@@ -20,4 +28,35 @@ A good way to improve performance is to compound them.
 For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
 Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the ``short-term'' patterns refer to the morning peaks against evening peaks, while the ``long-term'' patterns refer to the workday patterns against weekend patterns.
 Clearly, a good forecaster needs to capture and distinguish both kinds of patterns.
-Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs compared to traditional techniques.
+Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs.
+The model proposed in this study can also be regarded as a compound model.
+
+\subsection{Nearest neighbor-based methods}
+
+$k$-NN has also shown to be a promising method for time series forecasting~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast}.
+The $k$-NN uses the $w-1$ lagged values of the last time point $i$ to form a query $Q$ with length $w$.
+It identifies the $k$ previous similar subsequences to $Q$ and uses their immediate subsequences to predict the immediate subsequence of $Q$ with length $h$, 
+The immediate subsequence of $Q$ is also called the forecasting window.
+The intuition of this method is that history repeats itself.
+They are similar, and so are their immediate subsequences.
+The previous (historical) subsequences that are similar to $Q$ can provide a hint about the future of $Q$. 
+%
+Figure~\ref{fig:visualize-matrix-profile} depicts this idea. 
+Observe that the immediate subsequence of the right gray box is similar to that of the left gray box, which is the past (left) nearest neighbor of the right gray box.
+
+The fundamental difference between this study and previous approaches~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast} is that they directly use the subsequent points for prediction, whereas we use the nearest neighbor's information for each predictor as covariates, which are used as inputs for other forecasters.
+We explain this subtle difference by Figure~\ref{fig:visualize-matrix-profile}.
+The previous approaches simply use the information of the nearest neighbors of the last lookback window, which consisted of the last time point and its lagged values (i.e., the right gray box), for prediction.
+In contrast, we use the information of the nearest neighbors of \textit{all} of the windows in the time series.
+
+\subsection{Matrix Profile-based methods}
+
+To the best of our knowledge, there are only four studies using the matrix profile in time series forecasting.
+\cite{thi2021forecast} finds the most similar historical subsequence and uses its succeeding values as the prediction, similar to the nearest neighbor-based methods mentioned above.
+\cite{cartwright2021financial} used the matrix profile to visualize the financial time series data by identifying motifs.
+\cite{liu2021novel} used matrix profile to detect structural anomalies and incorporated the anomaly information to guide an attention-based long short-term memory (LSTM) model in forecasting COVID-19 indicators.
+\cite{saha2022improving} proposed an encoding-decoding methodology to learn repeating granular trends in periodic data.
+It first identify a special kind of motif called ``time series chain''.
+The raw time series is then transformed into a level-encoded sequence based on the time series chain. The model predicts future labels instead of raw values. The predicted labels are decoded back into the original domain (i.e., raw values) using a weighted percentage change based on the historical centrality of the chain.
+
+None of these studies uses the matrix profile to find nearest neighbors and uses their information as covariates, which can be fed into any forecaster, such as GBRT~\cite{elsayed2021we} and DeepGlo~\cite{sen2019think}, that supports covariates.

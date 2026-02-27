@@ -1,0 +1,20 @@
+\begin{table}[tb] % *!
+\centering
+\caption{Derived known input time-covariates with size $M_u$ for each dataset. 
+}
+\label{tab:known_covariates}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{lrr}
+\toprule
+ % & \multicolumn{3}{c}{\textbf{Data}} & \multicolumn{3}{c}{\textbf{Forecasting Task}} \\
+% \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+\textbf{Dataset} & Derived known input time-covariates & $M_u$ \\
+\midrule
+Electricity & month, day, hour, day\_of\_week, day\_of\_year, week\_of\_year & 6 \\
+Traffic & month, day, hour, day\_of\_week, day\_of\_year, week\_of\_year & 6 \\
+PeMSD7 & month, day, hour, minute, day\_of\_week, day\_of\_year, week\_of\_year & 7 \\
+Exchange-Rate & month, day, day\_of\_week, day\_of\_year, week\_of\_year & 5 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

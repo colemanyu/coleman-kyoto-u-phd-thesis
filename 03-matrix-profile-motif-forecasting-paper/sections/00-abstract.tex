@@ -1,0 +1,25 @@
+% \cite{elsayed2021we, chen2023long}
+Time series forecasting is a crucial task used in many applications, including the financial and medical sectors.
+It is unsurprising that it has been a focus of intensive research for years and that many methods have been proposed.
+%
+Deep learning methods have proved promising for time series forecasting, especially for long sequence time series forecasting (LSTF).
+However, they tend to be complex and computationally intensive.
+%
+% GBRT
+A recent study suggests that a well-known baseline in machine learning, namely Gradient Boosting Regression Tree (GBRT), can compete with deep learning methods by appropriately data-engineering the data.
+A time series forecasting task is transformed into a window-based regression problem.
+A sliding window is used to transform the time series into predictor-response pairs.
+At time point $t$, the previous $w$ target values up to $t$ concatenated with the covariates at $t$ are flattened to form a predictor.
+The subsequent $h$ target values form a response.
+A multi-output GBRT model is trained on the predictor-response pairs.
+Given a new predictor, the corresponding response can be predicted.
+%
+The model's performance depends on the quality of the covariates.
+%
+% Contribution
+We propose using the past nearest neighbor's information, such as its immediate subsequence and similarity of the nearest neighbor, for each predictor as its covariates to improve the model's performance.
+The nearest neighbors are found using a data primitive called Matrix Profile.
+In brief, it allows us to identify the nearest neighbor for every $m$-subsequence of a time series, where $m$ is user-given.
+Our approach has also been extended to the case of $k$-nearest neighbors.
+%
+Extensive experiments show that covariates derived from the past nearest neighbors of the predictors can improve the model's performance.

@@ -1,0 +1,32 @@
+\begin{table*}[htbp] % *!
+    \centering
+    \caption{Experimental Results with known input time-covariates for models incorporating the known input time-covariates of the last point of the nearest neighbors.}
+    \label{tab:results_with_covariates_nn_covariates}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llcccccc}
+        \toprule
+        \textbf{Dataset} & \textbf{Metric} & \textsf{GBRT-NNC} & \textsf{GBRT-NNC-S} & \textsf{GBRT-NNC\textsuperscript{+}} & \textsf{GBRT-NNC\textsuperscript{+}-S} & \textsf{GBRT-NNC\textsuperscript{++}} & \textsf{GBRT-NNC\textsuperscript{++}-S} \\
+        \midrule
+        \multirow{3}{*}{\texttt{Electricity}} 
+        & RMSE & 131.486 & \textbf{125.806} & 132.076 & 129.145 & 130.269 & \underline{127.217} \\ 
+        & WAPE & \underline{0.090} & \textbf{0.089} & 0.091 & \underline{0.090} & \underline{0.090} & \underline{0.090} \\ 
+        & MAE  & 50.576 & \textbf{49.928} & 50.808 & 50.494 & 50.490 & \underline{50.240} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{Traffic}} 
+        & RMSE & 0.014 & \underline{0.010} & 0.014 & \textbf{0.009} & 0.014 & \underline{0.010} \\ 
+        & WAPE & 0.098 & 0.068 & 0.093 & \underline{0.067} & 0.085 & \textbf{0.066} \\ 
+        & MAE  & \underline{0.005} & \textbf{0.004} & \underline{0.005} & \textbf{0.004} & \underline{0.005} & \textbf{0.004} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{PeMSD7}} 
+        & RMSE & 5.145 & 5.135 & 5.141 & \underline{5.132} & 5.134 & \textbf{5.126} \\ 
+        & WAPE & \underline{0.048} & \textbf{0.047} & \textbf{0.047} & \textbf{0.047} & \textbf{0.047} & \textbf{0.047} \\ 
+        & MAE  & 2.771 & 2.764 & 2.767 & \underline{2.763} & 2.766 & \textbf{2.759} \\ 
+        \midrule
+        \multirow{3}{*}{\texttt{Exchange-Rate}} 
+        & RMSE & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} & \textbf{0.019} & \underline{0.021} & \underline{0.021} \\ 
+        & WAPE & \textbf{0.015} & \textbf{0.015} & \textbf{0.015} & \textbf{0.015} & \underline{0.016} & \underline{0.016} \\ 
+        & MAE  & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} & \textbf{0.012} \\ 
+        \bottomrule
+    \end{tabular}
+    }
+\end{table*}
