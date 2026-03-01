@@ -1,47 +1,59 @@
 \chapter*{Abstract}
 
-Time series data are ubiquitous across many different fields.
-Much of the data are inherently time series data.
-Additionally, some data, such as strings, images, and object shapes, that are not originally time series data, can be transformed into time series.
-Many data mining tasks, such as classification, clustering, and motif finding, have been defined for time series data.
-Hence, by developing appropriate transformation methods, we can apply a plethora of well-established time series methods to our problems.
-
-This thesis contributes three aspects in time series data mining and bioinformatics.
+% Time series? *!
+Time series data are ubiquitous, appearing inherently in diverse fields or as transformations of non-temporal data such as biological sequences (strings).
 %
-They are a novel application of time series classification to solve complex biological problems by transforming biological data into time series, developing a more expressive distance measure framework that removes certain underlying assumptions, and using nearest neighbors as covariants to improve the performance in the task of forecasting.
+Many data mining tasks are defined on them, such as searching (query-by-content), motif (nearest-neighbor pair) finding, transformation (feature extraction), and classification.
+%
+Given the prosperity of time series analysis, the development of robust and more flexible analytical frameworks is essential.
 
-In the first part, we demonstrate the utility of time series analysis in bioinformatics by studying the problem of predicting Human Dicer Cleavage Sites. 
-Recall that bioinformatics operates at the intersection of biology, biotechnology, and informatics. 
-In this work, we formulate a specific biology problem, which is predicting Human Dicer Cleavage sites in microRNA biogenesis, into a machine learning framework. 
-In particular, this is a multivariate time series classification problem, which is the informatics component of bioinformatics.
-Due to current limitations in biotechnology, we are constrained to using 1-D RNA sequence inputs rather than 2-D or 3-D data, because these are more expensive to obtain. 
-We propose MTSCCleav, a method that encodes RNA sequences and the probabilities of base pairs in predicted secondary structures into time series data. 
-To the best of our knowledge, we are the first to make use of the probabilities of base pairs in this kind of classification task on RNA data.
-By doing this, we frame the problem of predicting Human Dicer Cleavage sites into a Multivariate Time Series Classification (MTSC) problem.
-Existing approaches rely on opaque deep neural networks or complex feature engineering. 
-They are slow, and the feature engineering is over-designed.
-In contrast, our approach is simple, intuitive, and computationally efficient.
-The proposed transformation methods allow us to use any well-established time series tools to analyze this biological problem.
-Experiments demonstrate that MTSCCleav achieves comparable and even better accuracy to state-of-the-art methods while delivering a 3.7X to 28.8X speedup. 
-Furthermore, our perturbation experiments reveal that regions near the center of pre-miRNAs are essential for cleavage-site prediction, consistent with the existing literature. 
+% One-sentence description *!
+We first provide a one-sentence description of this thesis.
+%
+This thesis develops three model-agnostic, subsequence-centric methods to advance time series analysis—by 
+proposing efficient piecewise scaling for more flexible similarity computation, 
+generating subsequence-derived covariates to improve forecasting accuracy, 
+and encoding domain-specific biological subsequences into multivariate time series for classification—demonstrating 
+how targeted exploitation of local patterns can benefit diverse downstream tasks from bioinformatics to general time series modeling.
+%
+We then explain the three methods part by part.
 
-In the second part, we address the limitations of existing similarity measures.
-Similarity search is a core subroutine in time series data mining tasks.
-For example, recent studies show that a simple 1-NN classifier with an appropriate distance measure can outperform many advanced, complicated methods.
+% Study 1 *!
+The first part addresses the limitations of current similarity measures.
+%
+% Similarity search is a core subroutine in time series data mining tasks.
 While Dynamic Time Warping (DTW) and Uniform Scaling (US) are prevailing measures for handling local distortions and global scaling, respectively, and some studies have demonstrated that combining both DTW and US is necessary to obtain meaningful results.
+However, the current approaches fail when different phases of a process are expressed at varying speeds. They assume a single scaling factor for the entire sequence. 
 %
-Current approaches apply a single scaling factor to the entire sequence. 
-We argue that since distinct phases of a process often evolve at different speeds, a single scaling factor is insufficient. 
-We introduce the first distance measure framework, namely PSD, that achieves invariance to multiple scaling factors. We also provide speed-up techniques to enable efficient computation of the PSD. 
+We introduce Piecewise Scaling Distance (PSD), the first framework that achieves invariance to multiple local scaling factors, and incorporates efficient speed-up techniques. 
+PSD provides a more flexible, expressive, and interpretable measure of similarity, as demonstrated by its ability to segment and identify different scaling factors within the two compared time series during the computation of the similarity measure.
+
+% Study 2 *!
+The second part exploits a data mining primitive, namely Matrix Profile, to enhance time series forecasting. 
+In brief, Matrix Profile encodes the information about the nearest neighbor for each subsequence of a time series.
+We argue that historical subsequence occurrences contain predictive power. 
+By identifying the $k$-nearest neighbors of subsequences in the past using Matrix Profile, we extract historical occurrence information as covariates for a forecaster. 
+Our results demonstrate that these computationally efficient, data-driven covariates significantly improve forecasting accuracy across various domains.
+
+% Study 3 *!
+The last part demonstrates the utility of time series analysis in bioinformatics through the prediction of Human Dicer Cleavage Sites. 
 %
-Experiments show that PSD better reflects the similarity between time series with multiple phases, and that the identified phases (segmentation) provide a clearer understanding of the data.
+Current methods for RNA sequence analysis often rely on complex feature engineering or computationally expensive deep learning models. 
+We propose MTSCCleav, a method that encodes 1-D RNA sequences and base-pair probabilities in predicted secondary structures into multivariate time series.
+To the best of our knowledge, we are the first to make use of the base-pair probabilities in predicted secondary structures.
+This approach allows the application of well-established time series tools to biological problems. 
+Experiments show that MTSCCleav achieves state-of-the-art accuracy with a 3.7x to 28.8x speedup, while perturbation analysis confirms that pre-miRNA center regions are critical for cleavage-site prediction, consistent with the existing literature.
 
-In the third part, we study a time series primitive, namely matrix profile, in the application of time series forecasting. For a given time series $T$ and an integer $m$, the matrix profile provides the information about (1) the location of its nearest neighbor and (2) the distance between it and the nearest neighbor of \textbf{each} $ m$-subsequence in $T$. 
-Obviously, the matrix profile also provides us the information for the $k$-nearest neighbors of each subsequence simply by running the same algorithm for $k$ times.
-In our application, we are only interested in the left nearest neighbors of each subsequence because they refer to the historical occurrences.
-We can obtain the immediate subsequences of these historical occurrences as covariates to feed into the forecaster to improve its accuracy.
-Experiment shows that these covariates, which can be obtained through a computationally cheap data mining primitive called Matrix Profile, can improve the existing forecaster.
+% Conclusion
+Collectively, this thesis advances the field of time series analysis by demonstrating that targeted, subsequence-level insights—through piecewise scaling, covariate augmentation, and encoding—provide a unified and powerful perspective for addressing fundamental challenges from bioinformatics to general data mining.
 
-% Collectively, this thesis advances the fields of time series data mining and bioinformatics by demonstrating the use of time series analysis to address fundamental biological questions, proposing a new, more expressive distance measure framework, and using augmented properties (i.e., the information related to the nearest neighbors) of subsequences to enhance the prediction.
+% \noindent\rule{\linewidth}{0.4pt}
+%%
+%%
+%%
 
-This thesis develops three model-agnostic, subsequence-focused techniques to advance time series processing—by encoding domain-specific biological sequences into multivariate time series for classification, proposing efficient piecewise scaling for more flexible similarity computation, and generating subsequence-derived exogenous covariates to improve forecasting accuracy—demonstrating how targeted exploitation of local patterns can benefit diverse downstream tasks from bioinformatics to general time series modeling.
+
+
+
+
+

@@ -1,14 +1,16 @@
 # Coleman's PhD Thesis
 
 ## Checklist of the whole thesis
-- [x] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
-- [x] The term "this paper" should not be used.
-- [x] Check References
+
+- [] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
+- [] The term "this paper" should not be used.
+- [] Check References
     -  The use of capital letters and lowercase letters in paper titles should be consistent.
     -  Bold fonts should be used for such terms as DNA, program names, and MicroRNA in the titles of the papers.
-- [x] No line numbers
+- [] No line numbers
 
 ## Notifications
+
 - The pre-defense 
     - Date & time: January 20: 15:00-17:00
         - I should arrive at room 131 by 14:50.
@@ -30,5 +32,6 @@ by January 13.
         - Water for examiners. Laser Pointer.
 
 ## Remarks
+
 - This template is downloaded at [[2403.15757] User-Side Realization](https://arxiv.org/abs/2403.15757).
     - From [佐藤竜馬（さとう りょうま）'s website](https://joisino.net/).
