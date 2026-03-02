@@ -1,67 +1,58 @@
 \chapter{Introduction} \label{ch:introduction}
 
-\section{Background}
+Human beings generate a large amount of data nowadays.
+We are producing more new data in one single day today than in the first twenty-one centuries of AD combined.
+We are drowning in information but thirsty for knowledge.
+It is natural for us to develop computational methods to accelerate the process of ``harvesting'' knowledge from information.
 
-\section{Main Theme}
+Computational tasks typically aim to uncover the underlying functions that govern input-output relationships using either algorithmic (No ``learning'' from the data, e.g., the minimum-cost flow problem (MCFP)) or machine-learning approaches.
+%
+Machine learning is broadly categorized into supervised learning (e.g., classification) and unsupervised learning (e.g., clustering). 
+They fundamentally rely on how we define the objects to focus on the features that we are interested in and the similarity between objects.
+
+Time series data are ubiquitous across domains like finance, healthcare, and engineering. Many critical data mining tasks are defined on them, including searching (query-by-content), motif finding, and classification. Given the prosperity of time series analysis, developing robust and flexible analytical frameworks is essential.
 
 \section{One-sentence description}
 
+This thesis develops three model-agnostic, subsequence-centric methods to advance time series analysis—by 
+proposing efficient piecewise scaling for more flexible similarity computation, 
+generating subsequence-derived covariates to improve forecasting accuracy, 
+and encoding domain-specific biological subsequences into multivariate time series for classification—demonstrating 
+how targeted exploitation of local patterns can benefit diverse downstream tasks from bioinformatics to general time series modeling.
+
 \section{Contributions}
+
+Here, we review the three studies.
+
+\noindent\RuninHead{Study 1: Piecewise Similarity (Chapter~\ref{ch:ksfdtw})}
+\begin{itemize}
+  \item \textbf{Problem}: Prevailing measures like Dynamic Time Warping (DTW) and Uniform Scaling (US) assume a single, global scaling factor for the entire sequence, failing when different phases of a process are expressed at varying speeds
+  \item \textbf{Solution}: We introduce Piecewise Scaling Distance (PSD), the first framework to achieve invariance to multiple local scaling factors while incorporating efficient speed-up techniques
+  \item \textbf{Highlights}: PSD provides a more flexible and interpretable measure of similarity by automatically segmenting and identifying different scaling factors within compared series. Experiments show it outperforms traditional measures like ED and DTW.
+\end{itemize}
+
+\noindent\RuninHead{Study 2: Covariate Augmentation (Chapter~\ref{ch:mpmf})}
+\begin{itemize}
+  \item \textbf{Problem}: Standard sliding-window forecasting models are often limited by making predictions based only on observations within a narrow lookback window.
+  \item \textbf{Solution}: We leverage the Matrix Profile to identify the left (past) nearest neighbors of subsequences. Information from these historical occurrences—such as immediate subsequences and similarity scores—is extracted as new covariates for a forecaster.
+  \item \textbf{Highlights}: These data-driven covariates significantly improve forecasting accuracy across various domains by providing a "lookahead" of future trajectories based on similar historical patterns.
+\end{itemize}
+
+\noindent\RuninHead{Study 3: Encoding (Chapter~\ref{ch:mtsccleav})}
+\begin{itemize}
+  \item \textbf{Problem}: Predicting Human Dicer Cleavage Sites typically relies on complex feature engineering or computationally expensive deep learning models, which often lack generalizability.
+  \item \textbf{Solution}: We propose MTSCCleav, which frames cleavage site prediction as a multivariate time series classification problem. It encodes 1-D RNA sequences and, for the first time, base-pair probabilities from secondary structures into multivariate time series.
+  \item \textbf{Highlights}: This approach achieves state-of-the-art accuracy with a 3.7x to 28.8x speedup compared to current methods. Perturbation analysis confirms that pre-miRNA center regions are critical for prediction, aligning with existing biological literature.
+\end{itemize}
 
 \section{Organization}
 
 The remainder of this thesis is organized as follows:
 Chapter~\ref{ch:preliminaries} reviews preliminaries in time series data mining.
 In particular, we focus on (1) distance measures, (2) subsequence analysis, and (3) transformations for feature extraction.
-Chapters~\ref{ch:ksfdtw}, \ref{ch:mpmf}, and \ref{ch:mtsccleav} detail the three main studies on Piecewise Similarity, Covariate Augmentation, and Encoding, respectively. Finally, Chapter~\ref{ch:conclusion} provides conclusions and directions for future work
+Chapters~\ref{ch:ksfdtw}, \ref{ch:mpmf}, and \ref{ch:mtsccleav} detail the three main studies on Piecewise Similarity, Covariate Augmentation, and Encoding, respectively. Finally, Chapter~\ref{ch:conclusion} provides conclusions and directions for future work.
 
-\noindent\rule{\linewidth}{0.4pt}
-%%
-%%
-%%
-
-Human generates a ton of data nowadays.
-We are producing more new data in one single day today than in the first twenty-one centuries of AD combined.
-We are drowning in information but thirsty for knowledge.
-It is natural for us to develop computational methods to accelerate the process of ``harvesting'' knowledge from information.
-
-Computational tasks focus on the relationship between input and output.
-We would like to find the hidden function behind.
-To note, there are two ways to solve a computational problem. One is the algorithmic approach, and the other is the machine-learning approach.
-
-There are two large categories of machine learning.
-They are supervised learning and unsupervised learning.
-Classification may be the most intuitive form of supervised learning.
-The input is data points with labels. We learn a model from the relationship between data points and the labels. The model predicts the labels for the new data points.
-They have many applications. For example, in medical applications, it involves classifying patients as healthy or diseased, or tumors as benign or malignant.
-The term ``supervised'' means the model has access to labeled data.
-In other words, it requires labeled training examples that provide ground truth. So, the model can learn the boundary between the categories.
-Our first study focuses on a classification problem in biology.
-
-A representative of unsupervised learning is undoubtedly clustering. We aim to group data into distinct clusters. The key difference is that the data lack predefined labels. By grouping them, we aim to identify natural patterns hidden in the data.
-One example is clustering cells based on their gene-expression profiles. These clusters might reveal distinct cell types. Note that we do not have the ground truth for the cluster set. 
-In bioinformatics, we typically use enrichment analysis to determine whether specific gene functions are enriched in these clusters.
-Cell types often show enrichment for genes responsible for specific functions. This set of genes defines their biological role. 
-In clustering, we first need to define a measure of similarity between two objects and decide what details should be ignored. This is called invariance. For example, in image classification, it should be invariant to zooming and rotation.
-
-% What is a computational problem
-% What is Bioinformatics
-% What is data mining
-% Thinking in primitive 
-
-\section{Contributions}
-In this study, our contributions mainly include three parts.
-First, we demonstrate a machine learning approach to analyze a biology problem in chapter~\ref{ch:mtsccleav}.
-We propose the usage of the base pair probability sequence from the predicted secondary structure of RNA sequence as new information (i.e., covariates) for the classification task. We apply Rocket-based classifiers to identify the human dicer cleavage sites.
-Because of the simplicity of the transformation method and the classifiers, our proposed method achieves 3.7X to 28.8X speedup while achieving better or comparable results than the current state-of-the-art method.
-Second, we solve an algorithmic problem on distance measure in Chapter~\ref{ch:ksfdtw}.
-We propose a new distance measure framework, namely PSD, that can incorporate any existing distance measures to achieve invariance for two time series with multiple rates (i.e., different scaling factors).
-Experiments show that our methods outperform ED, DTW, and the other five DTW-based methods.
-Moreover, we propose using the segmentation result returned by PSD to improve the accuracy of other distance measures.
-Third, we improve a forecaster with the usage of a data mining primitive, namely Matrix Profile, in Chapter~\ref{ch:mpmf}.
-We propose leveraging left nearest neighbors for each forecasting window as new covariates to improve the accuracy of the underlying forecaster.
-We use a simple gradient boosting regression tree as the underlying forecaster.
-The experiment shows that this simple method can improve the accuracy of the forecaster.
-
-
-
+% \noindent\rule{\linewidth}{0.4pt}
+% %%
+% %%
+% %%
