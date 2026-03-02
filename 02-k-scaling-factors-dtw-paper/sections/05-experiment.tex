@@ -3,7 +3,16 @@
 We evaluate the performance of our proposed distance measure framework, PSD, via its two instantiations: PSED and PSDTW. 
 Specifically, we focus on a query retrieval task in which the query exhibits piecewise-scaled distortion, that is, distinct phases of the query exhibit different expression rates relative to the target in the candidate dataset. 
 Our objective is to verify whether PSD achieves invariance to these multiple scaling distortions, thereby allowing it to correctly retrieve the most similar candidate. 
-We detail the experimental setup in Section~\ref{sec:experimental-setup} and present the results in Section~\ref{sec:experimental-results}. The code and data are available at \url{https://github.com/colemanyu/k-scaling-factor-dtw}.
+We detail the experimental setup in Section~\ref{sec:experimental-setup} and present the results in Section~\ref{sec:experimental-results}.
+
+We outline the computation environment used for experiments.
+The programs were implemented in Python.
+The Python interpreter version is 3.12.3.
+We utilized the \texttt{aeon}~\cite{middlehurst2024aeon} library of version 1.2.0 to obtain the baseline distance measures. 
+All experiments were conducted on a workstation running Almalinux 9, equipped with an Intel Xeon Gold 6326 CPU and 256GB of RAM.
+The code and data are available at \url{https://github.com/colemanyu/k-scaling-factor-dtw}.
+The data was downloaded from \url{https://www.timeseriesclassification.com}.
+Note that an off-the-shelf personal computer is sufficient to perform an analysis using PSD.
 
 \subsection{Experimental Setup} \label{sec:experimental-setup}
 
@@ -43,9 +52,6 @@ Both the query and target sets are derived from the same source dataset. Consequ
 Table~\ref{tab:datasets_details} details the additional datasets used in this study. The column labeled ``Train/Test?'' specifies which split was employed as the source dataset.
 
 In our experiments, we set the warping window parameter $r = 0.1$, as suggested in the literature.
-The algorithms were implemented in Python.
-We utilized the \texttt{aeon}~\cite{middlehurst2024aeon} library to obtain the baseline distance measures. 
-All experiments were conducted on a workstation equipped with an Intel Xeon Gold 6326 CPU and 256GB of RAM.
 
 \subsection{Experimental Results} \label{sec:experimental-results}
 We employ Top-$k$ Accuracy (often referred to as Precision@k~\cite{tatbul2018precision}) as the primary evaluation metric. 

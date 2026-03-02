@@ -59,7 +59,7 @@
 \definecolor{tab:cyan}{HTML}{17BECF}
 
 % Line numbers
-% \usepackage[switch]{lineno}
+\usepackage[switch]{lineno}
 
 % Japanese
 \usepackage{CJKutf8}
@@ -221,7 +221,7 @@
 
 \begin{document}
 % Coleman: Line number
-% \linenumbers
+\linenumbers
 
 % Coleman: Spacing
 % \doublespacing
@@ -241,7 +241,7 @@
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Abstract}
-\subfile{chapters/00a-abstract}
+\subfile{chapters/00a-abstract} % *!
 
 \cleardoublepage
 \phantomsection
@@ -275,25 +275,26 @@
 
 \subfile{chapters/02-preliminaries}
 
-\chapter{Scaling with Multiple Scaling Factors in Time Series Searching} \label{ch:ksfdtw}
+\chapter{Scaling with Multiple Scaling Factors in Time Series Searching} \label{ch:ksfdtw} % *!
 \subfile{\secondpaper/sections/00-abstract}
 \subfile{\secondpaper/sections/01-introduction}
 \subfile{\secondpaper/sections/02-related-work}
 \subfile{\secondpaper/sections/03-preliminaries}
-\subfile{\secondpaper/sections/04-method}
+\subfile{\secondpaper/sections/04-methods}
 \subfile{\secondpaper/sections/05-experiment}
 \subfile{\secondpaper/sections/06-conclusion}
 
-\chapter{Leveraging Nearest Neighbors for Time Series Forecasting with Matrix Profile} \label{ch:mpmf}
+\chapter{Leveraging Nearest Neighbors for Time Series Forecasting with Matrix Profile} \label{ch:mpmf} % *!
 \subfile{\thirdpaper/sections/00-abstract}
 \subfile{\thirdpaper/sections/01-introduction}
 \subfile{\thirdpaper/sections/02-related-work}
 \subfile{\thirdpaper/sections/03-preliminaries}
 \subfile{\thirdpaper/sections/04-methods}
 \subfile{\thirdpaper/sections/05-experiments}
-\subfile{\thirdpaper/sections/06-conclusion}
+\subfile{\thirdpaper/sections/06-discussion}
+\subfile{\thirdpaper/sections/07-conclusion}
 
-\chapter{MTSCCleav: a Multivariate Time Series Classification (MTSC)-based Method for Predicting Human Dicer Cleavage Sites} \label{ch:mtsccleav}
+\chapter{MTSCCleav: a Multivariate Time Series Classification (MTSC)-based Method for Predicting Human Dicer Cleavage Sites} \label{ch:mtsccleav} % *!
 \subfile{\firstpaper/sections/00-abstract}
 \subfile{\firstpaper/sections/01-background}
 \subfile{\firstpaper/sections/02-methods}
@@ -301,7 +302,7 @@
 \subfile{\firstpaper/sections/04-discussion}
 \subfile{\firstpaper/sections/05-conclusion}
 
-\subfile{chapters/06-conclusion}
+\subfile{chapters/06-conclusion} % *!
 
 % ===================================================
 \cleardoublepage

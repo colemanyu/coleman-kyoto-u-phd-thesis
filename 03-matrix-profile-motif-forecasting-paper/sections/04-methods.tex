@@ -1,13 +1,13 @@
 \section{Materials and Methods} \label{sec:method}
 
-% *!
+
 In this section, we first introduce the four datasets used in this study.
 We then formulate the time series forecasting problem and present the evaluation method, including the evaluation metrics.
 We then explain how to use a Gradient Boosting Regression Tree (GBRT) for forecasting by casting the time series into predictor-response pairs, as shown in Figure~\ref{fig:flattening}.
 Finally, we discuss how to leverage the nearest neighbor of a $m$-subsequence where the last data point is $y_i$ to derive covariates for $y_i$.
 The derived covariates can improve the performance of the GBRT forecaster.
 
-\subsection{Datasets} % *!
+\subsection{Datasets} 
 
 \input{../tables/datasets}
 Four datasets are used, as listed in Table~\ref{tab:dataset_statistics}.
@@ -28,7 +28,7 @@ They are called known inputs $\textbf{u}_i$ because they are known even in the f
 \input{../tables/known_covariates}
 Table~\ref{tab:known_covariates} shows the derived known inputs for the datasets.
 
-\subsection{Problem Formulation} % *!
+\subsection{Problem Formulation} 
 % \cite{torres2021deep}
 
 Time series forecasting models predict $h$ future values $y_{t+1}, y_{t+2}, \dots, y_{t+h}$ of a target $y$ at a given time point $t$.
@@ -51,6 +51,7 @@ where
     \item $\bm{x}_{t-w+1:t}$ are historical inputs. $\bm{x}_t$ is not known until time $t$. $\bm{x}_i$ is a vector of length $M_x$, where $t-w+1 \leq i \leq t$.
     \item $\bm{u}_{t-w+1:t+\tau}$ are known inputs. It is known for any $t \geq 1$. For example, date information, such as month and day. $\bm{u}_i$ is a vector of length $M_u$, where $t-w+1 \leq i \leq t+\tau$.
 \end{itemize}
+$y_i$ is a scalar. $\textbf{x}_i$ and $\textbf{u}_i$ are vectors.
 $\textbf{x}_i$ and $\textbf{u}_i$ are called covariates of $y_i$.
 
 We explain the task of forecasting using Equation~\ref{eq:forecasting}.
@@ -59,7 +60,7 @@ The model estimates the value of $y_{t+\tau}$, denoted by $\hat{y}_{t+\tau}$, wi
 It is clear that the derived time-covariates from the date information are useful for forecasting when the target variable depends on the time of measurement.
 For example, if the target is the electricity consumption rate, there is a clear monthly pattern: consumption is higher in winter and summer, when heaters and air conditioners are used.
 
-\subsection{Evaluation Method} % *!
+\subsection{Evaluation Method} 
 
 Given a dataset $D$ of $N$ time series $T_i$, where $1 \leq i \leq N$, the error made by the forecaster on $D$ is simply the summation of errors made by the forecaster on each $T_i$.
 %
@@ -131,7 +132,7 @@ It makes WAPE independent of the scale of the data.
 %
 For all of them, a lower value is better.
 
-\subsection{Forecasting via GBRT} % *!
+\subsection{Forecasting via GBRT} 
 
 In order to apply GBRT into time series forecasting problem,
 we need to cast the input into an appropriate format to input into GBRT.
@@ -164,6 +165,8 @@ Otherwise, $|X'_i| = 24$.
 
 \subsection{Feature Engineering via Matrix Profile}
 
+We derive $\bm{x}_i$ using the information of the past nearest neighbor.
+
 Recall that for each $m$-subsequence $T_{i, m}$ in a time series $T$, where $m$ is user-given, we can identify its left nearest neighbor $NN^L_i$ via the left matrix profile index $P^L$ and retrieve the similarity between $T_{i, m}$ and $NN^L_i$ via the left matrix profile $I^L$.
 
 For each target value $y_i$, we construct a $w$-subsequence $Q_i$ consisting of $y_{i-w+1:i}$. By using $I^L$ with $m = w$, we can efficiently identify $NN^L_i$ for each of these $w$-subsequences.
@@ -179,7 +182,7 @@ Hence, a set of historical subsequences with the exact same z-normalized represe
 By extracting the raw values of the nearest neighbor, we restore this lost magnitude information and allow the GBRT to learn from it.
 
 \input{../algorithms/feature_eng}
-Once the location of $NN^L_i$ is identified via the $I^L$, we extract the following information about $NN^L_i$ as in Algorithm~\ref{alg:feature_eng}. They are used as $u_i$ for $y_i$.
+Once the location of $NN^L_i$ is identified via the $I^L$, we extract the following information about $NN^L_i$ as in Algorithm~\ref{alg:feature_eng}. They are used as $\bm{x}_i$ for $y_i$.
 
 \begin{enumerate}
     \item $s$: It is  normalized to be from $-0.5$ to $0.5$ as in time-derived covariates.
@@ -197,7 +200,9 @@ Hence, for $Q_i$, which is a $m$-subsequences with $y_i$ as its last point, we m
 \input{../tables/model_variants}
 \textsf{GBRT} utilizes the baseline features, including the target values and the known input time-covariates~\cite{elsayed2021we}.
 To note, we can also only consider the target values but not the time-covariates in the forecasting.
-By integrating the extracted information, we propose several variants of \textsf{GBRT} as summarized in Table~\ref{tab:model_variants}
+By integrating the extracted information, we propose several variants of \textsf{GBRT} as summarized in Table~\ref{tab:model_variants}.
+$M_x$ indicates the number of derived features from the nearest neighbor information.
+$M_x = \text{Number of } \checkmark - 1$.
 
 It is important to note how these new features are integrated into the GBRT model.
 The covariates as shown in Figure~\ref{fig:flattening} are scalars.
@@ -207,7 +212,7 @@ To satisfy the 1D input requirement of the GBRT model, these vectors are flatten
 In detail, each data point within the vector is treated as an independent scalar feature and concatenated to the predictor vector $X'_i$ directly, instead of being encapsulated in the corresponding vector $\textbf{x}_i$. 
 For example, for \textsf{GBRT-NN} is $w + M_x + l$, given $NN_{\text{imm}} = \textcolor{tab:blue}{t_{j+1}, t_{j+2}, \dots, t_{j+l}}$, it results the predictor  
 % $X'_i = y_{i-w+1}, \dots, y_i, u_i^1, \dots, u_i^{M_u}, t_{j+1}, \dots, t_{j+l}$ 
-$\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, y_i}, \textcolor{tab:green}{u_i^1, u_i^2, \dots, u_i^{M_u}}, \textcolor{tab:blue}{t_{j+1}, t_{j+2}, \dots, t_{j+l}}$
+$\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, y_i}, \textcolor{tab:blue}{t_{j+1}, t_{j+2}, \dots, t_{j+l}}, \textcolor{tab:green}{u_i^1, u_i^2, \dots, u_i^{M_u}}$
 with length $w + M_x + l$.
 Each individual points in the immediate subsequence are appended directly to the predictor vector.
 

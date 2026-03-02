@@ -1,0 +1,29 @@
+\section{Discussion} \label{sec:discussion}
+
+\subsection{"Lookahead" covariates help forecasting}
+
+The experimental results consistently demonstrate that leveraging nearest neighbor information significantly improves the predictive accuracy of GBRT models. 
+By identifying a historical subsequence of a nearest neighbor that is most similar to the current lookback window, the model gains access to a lookahead/template of what happened next in a similar past situation. 
+This addresses a fundamental limitation of the standard sliding-window regression approach to forecasting, in which predictions are restricted to observations within the immediate lookback window (see Figure~\ref{fig:flattening}).
+A simple model that incorporates only $NN_{\text{imm}}$ and $s$, namely \textsf{GBRT-NN-S}, always improves forecasting accuracy across all datasets, with few exceptions.
+For \texttt{PeMSD7}, incorporating information about the nearest neighbor itself (i.e., $NN_{\text{last}}$, $NN_{\text{tar}}$, and $NN_{\text{cov}}$) improves the result.  
+
+The included similarity $s$ can be treated as a confidence measure for the "Lookahead" covariates.
+$NN_{\text{last}}$, $NN_{\text{tar}}$, and $NN_{\text{cov}}$ provides more information about the similar past situation.
+
+\subsection{Raw values vs. other representations}
+
+While Matrix Profile requires z-normalization for subsequence similarity computation, using the raw values of the immediate subsequence allows the model to recover lost magnitude information.
+
+Pairwise differences are used for capturing trends.
+However, the experiments show that this representation discards essential information required by GBRT to map predictors to responses effectively.
+
+% \subsection{Date information dependency and history length}
+
+\subsection{Include k-nearest neighbors information}
+
+Expanding the feature set to include covariates derived from $k$-nearest neighbors ($k=2, 3$) can improve the performance for datasets, namely \texttt{Electricity} and \texttt{PeMSD7}. 
+It can be seen from Table~\ref{tab:best_models} that models for $k$-nearest neighbors such as \textsf{GBRT-2NN\textsuperscript{++}-S}, \textsf{GBRT-3NN\textsuperscript{++}-S} and \textsf{GBRT-3NNC\textsuperscript{++}-S} appeared as the best models.
+This suggests that the lookaheads from multiple historically similar occurrences provides a more robust predictor than a single neighbor, although it increases the dimensionality of the input vector.
+To note, in \texttt{Electricity}, the best models are \textsf{GBRT} and \textsf{GBRT-NN} for RMSE in both scenarios, respectively.
+It suggests that the above models can improve overall performance but cannot predict some outliers, resulting in large error terms $(y_i - \hat{y}_i)$, which RMSE is sensitive to.

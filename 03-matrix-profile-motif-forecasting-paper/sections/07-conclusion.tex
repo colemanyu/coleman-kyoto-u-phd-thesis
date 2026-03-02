@@ -1,8 +1,9 @@
-\section{Concluding Remarks} \label{sec:conclusion}
 % \section{Conclusion} \label{sec:conclusion}
+\section{Concluding Remarks} \label{sec:conclusion}
 
 In this study, we present a method to augment the original time series by finding nearest neighbors and using their information as covariates for each subsequence.
 The information includes the immediate subsequences, similarity, constituent points, and the covariates of the nearest neighbor.
+It addresses a fundamental limitation of the standard sliding-window regression approach to forecasting, in which predictions are restricted to observations within the immediate lookback window.
 Experiment shows that the augmented data allow the GBRT model to have a better prediction result in the task of time series forecasting in terms of three evaluation metrics, which are RMSE, WAPE, and MAE.
 
 \subsection{Future Work}

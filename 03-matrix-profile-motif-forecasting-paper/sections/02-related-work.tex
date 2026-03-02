@@ -24,7 +24,7 @@ It motivates the community to develop machine learning methods, particularly dee
 Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
 The compound models are promising.
 For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
-A good way to improve performance is to compound them.
+A good way to improve performance is to combine them.
 For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
 Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the ``short-term'' patterns refer to the morning peaks against evening peaks, while the ``long-term'' patterns refer to the workday patterns against weekend patterns.
 Clearly, a good forecaster needs to capture and distinguish both kinds of patterns.
@@ -56,7 +56,7 @@ To the best of our knowledge, there are only four studies using the matrix profi
 \cite{cartwright2021financial} used the matrix profile to visualize the financial time series data by identifying motifs.
 \cite{liu2021novel} used matrix profile to detect structural anomalies and incorporated the anomaly information to guide an attention-based long short-term memory (LSTM) model in forecasting COVID-19 indicators.
 \cite{saha2022improving} proposed an encoding-decoding methodology to learn repeating granular trends in periodic data.
-It first identify a special kind of motif called ``time series chain''.
+It first identifies a special kind of motif called ``time series chain''.
 The raw time series is then transformed into a level-encoded sequence based on the time series chain. The model predicts future labels instead of raw values. The predicted labels are decoded back into the original domain (i.e., raw values) using a weighted percentage change based on the historical centrality of the chain.
 
 None of these studies uses the matrix profile to find nearest neighbors and uses their information as covariates, which can be fed into any forecaster, such as GBRT~\cite{elsayed2021we} and DeepGlo~\cite{sen2019think}, that supports covariates.

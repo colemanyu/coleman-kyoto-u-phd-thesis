@@ -4,6 +4,8 @@
 
 - [] "Introduction ==> Background", "Conclusion ==> Concluding Remarks" to avoid overlap with Chapter titles
 - [] The term "this paper" should not be used.
+- [] Check figures, tables size.
+- [] Any text exceed margin.
 - [] Check References
     -  The use of capital letters and lowercase letters in paper titles should be consistent.
     -  Bold fonts should be used for such terms as DNA, program names, and MicroRNA in the titles of the papers.

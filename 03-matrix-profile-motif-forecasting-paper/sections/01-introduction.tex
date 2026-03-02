@@ -1,5 +1,5 @@
-\section{Background} \label{sec:introduction}
 % \section{Introduction} \label{sec:introduction} % *!
+\section{Background} \label{sec:introduction}
 
 Humans have made predictions since ancient times.
 In ancient societies, accurate predictions were important to the success of subsistence activities such as hunting, planting, and harvesting.
@@ -46,7 +46,7 @@ It provides a simple, more efficient yet accurate method for time series forecas
 
 \input{../figures/visualize-matrix-profile}
 This study proposes a method to improve the performance of the GBRT approach by leveraging information from the past nearest neighbor of each subsequence in the target variable $y$.
-For each time point $y_i$, a window $Q_i$ of length $w$ is constructed with $y_i$ as the last point, then we retrieve the window's left nearest neighbor and use its information to create new covariates for the window, as shown in Figure~\ref{fig:visualize-matrix-profile}.
+For each time point $y_i$, a window $Q_i$ of length $w$ is constructed with $y_i$ as the last point, and then we retrieve the window's left nearest neighbor and use its information to create new covariates for the window, as shown in Figure~\ref{fig:visualize-matrix-profile}.
 Only the left (past) nearest neighbor is considered to prevent data leakage.
 For the information of the left nearest neighbor $NN^L$, we are interested in its immediate subsequence of length $l$, where $l$ is user-given, the similarity between $NN^L$ and $Q_i$, $NN^L$'s target values of length $w$, and covariates of the last point of $NN^L$.
 We also extend this idea to the case of $k$-nearest neighbors.
@@ -55,7 +55,7 @@ We make the following contributions:
 \begin{itemize}
   \item We are the first to propose leveraging the matrix profile to create covariates for each predictor to improve forecaster performance. 
   It addresses one of the limitations that predictions are made only on observations within the lookback window by incorporating information about the window's past nearest neighbor.
-  The nearest neighbor provides a "look-ahead" of the future trajectory by providing a similar historical trajectory. 
+  The nearest neighbor provides a "lookahead" of the future trajectory by providing a similar historical trajectory. 
   % It allows the model to map the current state defined by the window to a horizon based on real historical patterns, rather than just the local trends within the window.
   \item We have proposed two simple methods, namely, \textsf{GBRT-NN}, which uses the immediate subsequence of the nearest neighbor with length $l$ as the covariates, and \textsf{GBRT-NN-S}, which also incorporates the similarity as a covariate.
   Furthermore, we study the effect of incorporating additional information from the nearest neighbor, such as its target values and covariates of the last point, to further extend the two simple methods. 
@@ -69,4 +69,5 @@ Section~\ref{sec:related-work} presents the related work.
 In Section~\ref{sec:preliminaries}, we cover the necessary background knowledge.
 In Section~\ref{sec:method}, we introduce our method.
 Section~\ref{sec:experiments} contains an empirical evaluation.
+We discuss the findings from the experiments in Section~\ref{sec:discussion}.
 Finally, we conclude this study and provide future work in Section~\ref{sec:conclusion}.

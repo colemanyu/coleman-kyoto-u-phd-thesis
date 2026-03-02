@@ -1,5 +1,66 @@
 \chapter{Preliminaries} \label{ch:preliminaries}
 
+
+\noindent\rule{\linewidth}{0.4pt}
+%%
+%%
+%%
+
+Time series are sequences of data points measured at discrete timestamps. 
+\begin{definition}[Time Series] 
+    \label{def:ts}
+    A time series $T = t_1, t_2, ..., t_n$ is a sequence of real-valued numbers with length = $n$.
+\end{definition}
+They are ubiquitous across domains such as finance, healthcare, meteorology, and engineering. 
+
+Sometimes, we analyze the time series through its subsequences.
+
+\begin{definition}[Subsequence] 
+    \label{def:subseq}
+    A subsequence $T(i:j)$ of a time series $T$ is a shorter time series that starts from position $i$ and ends at position $j$ with length = $j - i + 1$. Both ends are inclusive.
+    Formally, $T(i:j) = t_i, t_{i+1}, ..., t_j$, $1 \leq i \leq j \leq n$.
+\end{definition}
+
+Many problems can be defined on time series data.
+Several of them are listed below.
+\begin{itemize}
+    \item \textbf{Classification}: Assigning a predefined label/category to a time series. It will be further discussed in Chapter~\ref{ch:mtsccleav}.
+    \item \textbf{Clustering}: Grouping a set of unlabeled time series based on their similarity.
+    \item \textbf{Searching}: Given a query, retrieve the most similar time series (or top-$k$) from the dataset. This task is also called ``query-by-content''. It will be further discussed in Chapter~\ref{ch:ksfdtw}.
+    \item \textbf{Forecasting}: Given historical time series data (i.e., training set), predicting future values, which form a horizon. It will be further discussed in Chapter~\ref{ch:mpmf}.
+    \item \textbf{Segmentation}: Partitioning/Segmenting a long time series into several contiguous subsequences, which are called regimes or states. It will be further discussed in Chapter~\ref{ch:ksfdtw}.
+\end{itemize}
+
+
+
+
+
+
+In this chapter, we provide background on time series analysis.
+
+
+
+with a focus on distance measures and classification, particularly the ridge classifier, which is used in the ROCKET-based classifiers for time series classification. 
+The remaining preliminary knowledge will be provided in the corresponding chapters.
+Section~\ref{sec:dist} gives an overview of the existing distance measures used in the evaluation in Chapter~\ref{ch:ksfdtw}.
+Section~\ref{sec:classification} reviews the additional knowledge about the classifiers used in Chapter~\ref{ch:mtsccleav}.
+We start with the definition of a time series.
+
+
+
+\section{Distance measures}
+
+\subsection{Calibrating the raw sequences}
+
+\subsection{From whole sequence to subsequence}
+
+\section{Subsequence analysis}
+
+% Draw a figure for matrix profile
+
+\section{Transformation Methods}
+
+
 % Distance measures
 % Whole sequence matching
 % Mention a bit about MPDist
@@ -24,16 +85,9 @@
 % Dicer cleavage site, subsequence
 
 
-\noindent\rule{\linewidth}{0.4pt}
-%%
-%%
-%%
 
-In this chapter, we provide background on time series, with a focus on distance measures and classification, particularly the ridge classifier, which is used in the ROCKET-based classifiers for time series classification. 
-The remaining preliminary knowledge will be provided in the corresponding chapters.
-Section~\ref{sec:dist} gives an overview of the existing distance measures used in the evaluation in Chapter~\ref{ch:ksfdtw}.
-Section~\ref{sec:classification} reviews the additional knowledge about the classifiers used in Chapter~\ref{ch:mtsccleav}.
-We start with the definition of a time series.
+
+
 
 \section{Distance Measures} \label{sec:dist}
 
