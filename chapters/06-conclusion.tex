@@ -1,41 +1,45 @@
 \chapter{Conclusion and Future Directions} \label{ch:conclusion}
 
-This thesis contributes to the field of time series analysis by addressing three methodological challenges via subsequence analysis. 
+% *!
+This thesis contributes to the field of time series analysis by addressing three challenges via subsequence analysis. 
 Specifically, we explored 
-(1) the development of a new distance measure invariant to multiple local scaling factors, 
+(1) the development of a new distance measure framework that is invariant to multiple local scaling factors (i.e., piecewise distortions), 
 (2) the augmentation of forecasting models using subsequence-derived covariates, 
-and (3) the transformation of biological sequence prediction into multivariate time series classification.
+and (3) the transformation of biological sequence prediction into multivariate time series classification, where the sequence is a subsequence of the source time series.
 
 \section{Piecewise Similarity} % *!
 
-This study addressed a fundamental limitation of existing time series distance measures: the assumption of a single, global scaling rate. 
+The first study addressed a fundamental limitation of existing time series distance measures, which is the assumption of a single, global scaling rate. 
 In reality, data such as human motion or music often exhibit multiple expression rates across different phases, each with its own rate. 
 We introduced the Piecewise Scaling Distance (PSD) framework, the first to account for multiple local scaling factors.
 %
-PSD is agnostic to the underlying base measure, and we evaluated two primary instantiations: PSED (Euclidean-based) and PSDTW (DTW-based). 
-We provided an exact dynamic programming solution and introduced several acceleration techniques, including parallel computing, early abandoning, and a constrained version that limits search space based on allowable segment lengths. Experiments demonstrated that PSD, particularly PSED, outperforms traditional measures like ED and DTW when processing multi-rate distortions.
+PSD is agnostic to the underlying base distance measure, and we evaluated two primary instantiations: PSED (Euclidean-based) and PSDTW (DTW-based). 
+We provided a dynamic programming solution and introduced several acceleration techniques, including a constrained version that limits the search space based on allowable segment lengths, parallel computing, and early abandoning. Experiments demonstrated that PSD, particularly PSED, outperforms traditional measures like ED, DTW, and DTW variants when processing data with multi-rate distortions.
 
-Future research will focus on developing a heuristic or algorithmic approach to automatically determine the optimal number of segments ($P$). 
-We also aim to design a specialized lower bound for PSED to further improve its runtime and investigate methods to adapt "incremental DTW" for use with interpolated time series.
+Future research will focus on developing a heuristic or algorithmic approach to automatically determine the optimal number of segments. 
+We also aim to design a specialized lower bound for PSED to further improve its runtime and investigate methods to adapt ``incremental DTW'' for use with interpolated time series, as in our case.
 
-\section{Covariate Augmentation}
+\section{Covariate Augmentation} % *!
 
-The third study developed a novel method for time series forecasting by generating covariates from the historical nearest neighbors of each forecasting window. 
+The second study developed a novel method for time series forecasting by generating covariates from the historical nearest neighbors of each forecasting window. 
 By utilizing the Matrix Profile to identify left nearest neighbors, we extracted information, such as immediate subsequences and similarity scores, to augment the input for Gradient Boosting Regression Tree (GBRT) models, which serve as the underlying forecasters. 
-Our results showed that models trained on this augmented data significantly outperform those trained on original data.
+We have also extended the ideas for the use of $k$-nearest-neighbor information.
+Our results showed that models trained on the augmented data significantly outperform those trained on the original data.
 
-Future directions for this research include refining nearest neighbor searches to specific temporal ranges to capture distinct short-term and long-term patterns by making use of the location information of the nearest neighbors provided by the matrix profile. 
+Future directions for this research include refining nearest-neighbor searches to specific temporal ranges to capture distinct short-term and long-term patterns by leveraging the location information of the nearest neighbors provided by the matrix profile. 
 We also plan to extend the framework to multivariate forecasting tasks, utilize motif families rather than individual neighbors, and develop robust methods for handling outliers within the retrieved immediate subsequences.
 
-\section{Encoding}
+\section{Encoding} % *!
 
-In this study, we investigated the prediction of human Dicer cleavage sites, a task essential for understanding microRNA (miRNA) biogenesis and post-transcriptional gene regulation. 
-We framed this as a multivariate time series classification (MTSC) problem, curating a dataset of 14-string patterns transformed into time series using nine novel encoding methods for RNA sequences.
-Notably, we were the first to incorporate base-pair probabilities from predicted secondary structures into this encoding process.
+In the third study, we investigated the prediction of human Dicer cleavage sites.
+It is essential for understanding microRNA (miRNA) biogenesis and \\ post-transcriptional gene regulation. 
+We framed this as a multivariate time series classification (MTSC) problem and curated a dataset of 14-string patterns from a longer string, and transformed them into time series using nine novel encoding methods for RNA sequences.
+Notably, we were the first to incorporate base-pair probabilities from predicted secondary structures into the encoding process.
 %
-By employing state-of-the-art ROCKET-based classifiers, our proposed framework, MTSCCleav, achieved predictive performance comparable to or exceeding deep learning-based methods while delivering substantial computational speedups of 3.7X to 28.8X. Furthermore, perturbation-based experiments identified that regions near the center of the pre-miRNA secondary structure are most critical for cleavage site determination, aligning with existing biological literature.
+By employing state-of-the-art ROCKET-based classifiers, our proposed framework, MTSCCleav, achieved predictive performance comparable to or exceeding deep learning-based methods while delivering substantial computational speedups of 3.7X to 28.8X. Furthermore, perturbation-based experiments identified that regions near the center of the pre-miRNA secondary structure are most critical for determining cleavage sites, aligning with existing biological literature.
 
-Future work includes leveraging the full ensemble of potential secondary structures, rather than a single secondary structure prediction result, for a given RNA sequence by encoding them as higher-dimensional multivariate time series. Additionally, we propose the use of interpretable classifiers, such as those based on time series shapelets, to gain deeper insights into the specific subsequences that discriminate between cleavage and non-cleavage sites.
+Future work includes leveraging the full ensemble of potential secondary structures, rather than a single secondary structure prediction result, for a given RNA sequence by encoding them as multivariate time series with more channels. 
+Additionally, we propose the use of interpretable classifiers, such as those based on time series shapelets, to gain deeper insights into the specific subsequences that discriminate between cleavage and non-cleavage sites.
 
 \section{Final Remarks}
 

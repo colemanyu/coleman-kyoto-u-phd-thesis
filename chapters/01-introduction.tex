@@ -12,8 +12,7 @@ They fundamentally rely on how we define the objects to focus on the features th
 
 Time series data are ubiquitous across domains like finance, healthcare, and engineering. Many critical data mining tasks are defined on them, including searching (query-by-content), motif finding, and classification. Given the prosperity of time series analysis, developing robust and flexible analytical frameworks is essential.
 
-\section{One-sentence description}
-
+We first introduce the one-sentence description to set up the overall theme of this thesis.
 This thesis develops three model-agnostic, subsequence-centric methods to advance time series analysis—by 
 proposing efficient piecewise scaling for more flexible similarity computation, 
 generating subsequence-derived covariates to improve forecasting accuracy, 
@@ -24,26 +23,29 @@ how targeted exploitation of local patterns can benefit diverse downstream tasks
 
 Here, we review the three studies.
 
-\noindent\RuninHead{Study 1: Piecewise Similarity (Chapter~\ref{ch:ksfdtw})}
-\begin{itemize}
-  \item \textbf{Problem}: Prevailing measures like Dynamic Time Warping (DTW) and Uniform Scaling (US) assume a single, global scaling factor for the entire sequence, failing when different phases of a process are expressed at varying speeds
-  \item \textbf{Solution}: We introduce Piecewise Scaling Distance (PSD), the first framework to achieve invariance to multiple local scaling factors while incorporating efficient speed-up techniques
-  \item \textbf{Highlights}: PSD provides a more flexible and interpretable measure of similarity by automatically segmenting and identifying different scaling factors within compared series. Experiments show it outperforms traditional measures like ED and DTW.
-\end{itemize}
+The first study is about Piecewise Similarity.
+%
+Prevailing measures like Dynamic Time Warping (DTW) and Uniform Scaling (US) assume a single, global scaling factor for the entire sequence, failing when different phases of a process are expressed at varying speeds.
+%
+We introduce Piecewise Scaling Distance (PSD), the first framework to achieve invariance to multiple local scaling factors while incorporating efficient speed-up techniques.
+%
+PSD provides a more flexible and interpretable measure of similarity by automatically segmenting and identifying different scaling factors within compared series. Experiments show it outperforms traditional measures like ED and DTW.
 
-\noindent\RuninHead{Study 2: Covariate Augmentation (Chapter~\ref{ch:mpmf})}
-\begin{itemize}
-  \item \textbf{Problem}: Standard sliding-window forecasting models are often limited by making predictions based only on observations within a narrow lookback window.
-  \item \textbf{Solution}: We leverage the Matrix Profile to identify the left (past) nearest neighbors of subsequences. Information from these historical occurrences—such as immediate subsequences and similarity scores—is extracted as new covariates for a forecaster.
-  \item \textbf{Highlights}: These data-driven covariates significantly improve forecasting accuracy across various domains by providing a "lookahead" of future trajectories based on similar historical patterns.
-\end{itemize}
+The second study is about covariate augmentation.
+%
+Standard sliding-window forecasting models are often limited by making predictions based only on observations within a narrow lookback window.
+%
+We leverage the Matrix Profile to identify the left (past) nearest neighbors of subsequences. Information from these historical occurrences—such as immediate subsequences and similarity scores—is extracted as new covariates for a forecaster.
+%
+These data-driven covariates significantly improve forecasting accuracy across various domains by providing a "lookahead" of future trajectories based on similar historical patterns.
 
-\noindent\RuninHead{Study 3: Encoding (Chapter~\ref{ch:mtsccleav})}
-\begin{itemize}
-  \item \textbf{Problem}: Predicting Human Dicer Cleavage Sites typically relies on complex feature engineering or computationally expensive deep learning models, which often lack generalizability.
-  \item \textbf{Solution}: We propose MTSCCleav, which frames cleavage site prediction as a multivariate time series classification problem. It encodes 1-D RNA sequences and, for the first time, base-pair probabilities from secondary structures into multivariate time series.
-  \item \textbf{Highlights}: This approach achieves state-of-the-art accuracy with a 3.7x to 28.8x speedup compared to current methods. Perturbation analysis confirms that pre-miRNA center regions are critical for prediction, aligning with existing biological literature.
-\end{itemize}
+The third study is about encoding.
+%
+Predicting Human Dicer Cleavage Sites typically relies on complex feature engineering or computationally expensive deep learning models, which often lack generalizability.
+%
+We propose MTSCCleav, which frames cleavage site prediction as a multivariate time series classification problem. It encodes 1-D RNA sequences and, for the first time, base-pair probabilities from secondary structures into multivariate time series.
+%
+This approach achieves state-of-the-art accuracy with a 3.7x to 28.8x speedup compared to current methods. Perturbation analysis confirms that pre-miRNA center regions are critical for prediction, aligning with existing biological literature.
 
 \section{Organization}
 
