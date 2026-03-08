@@ -1,5 +1,5 @@
 \section{Piecewise Scaling Distance} \label{sec:methods}
-% *!
+
 The motivation stems from the limitations of US and USDTW.
 They assume that the relationship between $Q$ and $C$ is governed by only a single, global scaling factor. 
 This assumption fails when applied to multi-rate data, where different phases of the time series express at different rates.
@@ -53,11 +53,16 @@ Given two sequences $Q$ and $C$, where $Q$ is not longer than $C$ (i.e., $|Q| = 
         \label{eq:psdtw}
         \begin{split}
             & \operatorname{PSDTW}_r(Q, C, l, L, P) = \\
-            & \min_{\substack{i_1 < i_2 < \dots < i_{P+1} \\ j_1 < j_2 < \dots < j_{P+1}}} \sum_{p=1}^{P} \operatorname{DTW}_r(Q{(i_p+1:i_{p+1})}^L, \\
+            & \min_{\substack{
+            i_1 < i_2 < \dots < i_{P+1} \\ 
+            j_1 < j_2 < \dots < j_{P+1} \\
+            \frac{1}{l} \leq \frac{i_{p+1} - i_p}{j_{p+1} - j_p} \leq l
+            }} \sum_{p=1}^{P} \operatorname{DTW}_r(Q{(i_p+1:i_{p+1})}^L, \\
             & \qquad \qquad \qquad \qquad \qquad \qquad C{(j_p+1:j_{p+1})}^L)
         \end{split}
     \end{equation}
-    where $i_1 = 0$, $i_{P+1} = m$, $j_1 = 0$, $j_{P+1} = n$ and the setting of $L$ will be discussed later. Essentially, $L$ needs to be at least the longest length of all considered segments to preserve all the points by up-sampling.
+    where $i_1 = 0$, $i_{P+1} = m$, $j_1 = 0$, $j_{P+1} = n$.
+    The setting of $L$ will be discussed later. Essentially, $L$ needs to be at least the longest length of all considered segments to preserve all the points by up-sampling.
 \end{definition}
 
 We refer to Figure~\ref {fig:psdtw-intuition} to clarify Equation~\ref{eq:psdtw}.
@@ -70,25 +75,44 @@ For example, the first (second) part in $C$ is the stretched (compressed) versio
 Equation~\ref{eq:psdtw} can be formulated in a recurrence relation as follows.
 Let $D[i, j, p]$ be the minimum cost to align the first $i$ points in $Q$ (i.e, $Q(1:i)$) with the first $j$ points in $C$ (i.e., $C(1:j)$) using exactly $p$ segments:
 
+% \begin{equation}
+% \label{eq:psdtw-recurrence}
+% \begin{split}
+%     D[i, j, p] = \min_{\substack{
+%     i' < i \\ 
+%     j' < j \\
+%     \frac{1}{l} \leq \frac{i - i'}{j - j'} \leq l
+%     }} \bigg\{ & D[i', j', p - 1] \\
+%     & + \operatorname{DTW}_r(Q{(i'+1: i)}^L, C{(j'+1: j)}^L) \bigg\}
+% \end{split}
+% \end{equation}
+
 \begin{equation}
 \label{eq:psdtw-recurrence}
 \begin{split}
-    D[i, j, p] = \min_{\substack{i' < i \\ j' < j}} \bigg\{ & D[i', j', p - 1] \\
-    & + \operatorname{DTW}_r(Q{(i'+1: i)}^L, C{(j'+1: j)}^L) \bigg\}
+    D[i, j, p] &= \min_{\substack{
+    i' < i \\ 
+    j' < j \\
+    \frac{1}{l} \leq \frac{i - i'}{j - j'} \leq l
+    }} \bigg\{ D[i', j', p - 1] \\
+    &\qquad\qquad + \operatorname{DTW}_r(Q{(i'+1: i)}^L, C{(j'+1: j)}^L) \bigg\}
 \end{split}
 \end{equation}
 
-\noindent\RuninHead{Naive PSDTW} 
+% \noindent\RuninHead{Naive PSDTW} 
 
-\input{../algorithms/psdtw}
-\input{../algorithms/psdtw-recurrence}
 Our goal is $D[m,n,P]$.
 Equation~\ref{eq:psdtw-recurrence} can be solved exactly by dynamic programming (DP).
 The base case is $D[0,0,0] = 0$.
 It refers to the zero cost to align the first $0$ point (i.e., the empty prefix) of $Q$ with that of $C$.
 Other cells in $D$ are first initialized with $\infty$.
 They are calculated using a bottom-up approach via Equation~\ref{eq:psdtw-recurrence}.
-A straightforward implementation in DP is shown in Algorithm~\ref{alg:psdtw}.
+
+\subsubsection{Naive PSDTW}
+
+\input{../algorithms/psdtw}
+\input{../algorithms/psdtw-recurrence}
+For ease of explanation, we first introduce a straightforward implementation in DP that does not consider the scaling-factor bound $l$, as shown in Algorithm~\ref{alg:psdtw}.
 Line 6 is achieved by looping all the previous indices of the current $i$ and $j$ as in Algorithm~\ref{alg:psdtw-recurrence}. 
 
 We explain the lines in  Algorithm~\ref{alg:psdtw-recurrence}.
@@ -105,7 +129,7 @@ This allows the DTW deviation tolerance to scale adaptively with pieces of varyi
 
 \subsection{Speedup Techniques}
 
-\noindent\RuninHead{Length constraints of the segment} % *!
+\noindent\RuninHead{Length constraints of the segment} 
 \input{../algorithms/psdtw-constrained-initial}
 \input{../algorithms/psdtw-constrained}
 \input{../tables/algorithm_legend}
@@ -114,7 +138,7 @@ by constraining the minimum and maximum lengths of segments.
 It is similar to constrained DTW, in which we limit the search space of the warping path as in Figure~\ref{fig:dtw-matrix}.
 % The version of PSDTW that considers the segment constraint is termed constrained PSDTW (cPSDTW).
 It is shown in Algorithm~\ref{alg:psdtw-constrained}.
-The important symbols of the algorithms are listed in Table~\ref{tab:algorithm_legend}.
+The notations of the algorithms are listed in Table~\ref{tab:algorithm_legend}.
 The uncolored part shows the main logic, while the colored part shows the other speedup techniques, which will be explained later.
 
 We initialize in Algorithm~\ref{alg:psdtw-constrained-initial}.
@@ -149,7 +173,7 @@ Due to the nearest neighbor interpolation, $\operatorname{DTW}_r(X^L, Y^L)$ may 
 
 In line 35, we also save the 2-tuple ($i', j'$), which serves as the cutting points between segments, to obtain the segmentation result.
 
-\noindent\RuninHead{Parallel computing} % *!
+\noindent\RuninHead{Parallel computing} 
 We observe that the recurrence relation for the computation of $D[i, j, p]$ at $p$ depends exclusively on the results of $D$ computed at $p-1$, as shown in Equation~\ref{eq:psdtw-recurrence}.
 % There are no dependencies over indices $i'$ and $j$.
 It allows us to parallelize the loops over indices $i$ and $j$ on lines 3 and 13.
@@ -157,7 +181,7 @@ In the following experimental section, we distribute the i-loop iterations (i.e.
 There are $\left(\min(p \cdot L_{\mathrm{gmax}}^Q, m) - (p \cdot L_{\mathrm{gmin}}^Q) + 1\right)$ iterations from the i-loop.
 The parallel execution of the $i$-loop is implemented by \texttt{prange} in \texttt{Numba} in Python.
 
-\noindent\RuninHead{Early Abandoning} % *! 
+\noindent\RuninHead{Early Abandoning}  
 To accelerate the nearest neighbor search (or top-$k$ search) for a query $Q$ on a candidate set, we employ an early abandoning strategy. 
 It prunes the search branch within the PSD computation of a specific candidate $C$ as soon as the result corresponding to this search branch is determined to be suboptimal. 
 We maintain a best-so-far variable, $\mathrm{bsf}$, which represents the minimum final distance among the candidates processed with $Q$ so far. 
@@ -198,7 +222,7 @@ If the ending index has been changed, we need to add the new data points $q'_{e_
 $L_{\max}^C$ depends of $L^Q$.
 If $L_{\max}^C$ increase because $L^Q$ increase, we construct the new reach $\tilde{\mathbbm{q}}_k$ and sort it in lines 16--18.
 
-\subsection{Guided Distance} % *!
+\subsection{Guided Distance} 
 
 For faster computation, one would want to use a distance measure with linear complexity, such as ED, as the base measure for PSD.
 While PSED is effective for identifying phase-scaling changes, certain applications require capturing complex properties within those segments that ED cannot handle. 

@@ -1,6 +1,6 @@
-\begin{table*}[ht]
+\begin{table*}[ht] % *!
 \centering
-\caption{The accuracy comparison for six PSED-guided distance measures of the ten datasets}
+\caption{The accuracy comparison for six PSED-guided distance measures of the ten datasets (train split).}
 \setlength{\tabcolsep}{4pt} % (Default is 6pt.)
 \resizebox{1.0\columnwidth}{!}{
 \begin{tabular}{c|cccccccccccc}
@@ -21,7 +21,7 @@ $\overline{P@1}$ & $\overline{P@3}$ &
 $\overline{P@1}$ & $\overline{P@3}$ & 
 $\overline{P@1}$ & $\overline{P@3}$ \\
 \midrule
-SonyAIBORobotSurface1 & 0.53 & 0.64 & 0.64 & 0.76 & \textbf{0.37} & 0.53 & 0.65 & 0.76 & \textbf{0.38} & 0.53 & 0.53 & 0.65 \\
+SonyAIBORobotSurface1 & 0.95 & 1.00 & 1.00 & 1.00 & \textbf{0.65} & 0.80 & 1.00 & 1.00 & \textbf{0.75} & 0.80 & \textbf{0.95} & 1.00 \\
 ECG200 & 0.73 & 0.84 & 0.80 & 0.88 & \textbf{0.54} & 0.68 & 0.81 & 0.88 & \textbf{0.53} & 0.69 & 0.73 & 0.84 \\
 MedicalImages & 0.66 & 0.78 & 0.76 & 0.88 & 0.51 & 0.69 & 0.74 & 0.88 & 0.51 & 0.70 & 0.66 & 0.79 \\ 
 CBF & 0.90 & 1.00 & 0.93 & 1.00 & 0.73 & 0.93 & 0.93 & 0.97 & \textbf{0.70} & 0.93 & 0.90 & 1.00 \\
@@ -33,6 +33,7 @@ Adiac & \textbf{0.33} & 0.45 & 0.57 & 0.71 & \textbf{0.21} & 0.34 & 0.53 & 0.70 
 Epilepsy & 0.77 & 0.88 & \textbf{0.78} & 0.88 & 0.66 & 0.79 & 0.74 & 0.89 & 0.66 & 0.82 & 0.80 & 0.89 \\ 
 
 \bottomrule
-\end{tabular}}
+\end{tabular}
+}
 \label{tab:ten_datasets_PSED-guided_accuracy}
 \end{table*}

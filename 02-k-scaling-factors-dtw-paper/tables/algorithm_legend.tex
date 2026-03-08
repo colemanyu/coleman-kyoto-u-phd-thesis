@@ -1,12 +1,13 @@
-\begin{table}[ht]
+\begin{table}[ht] % *!
 \centering
-\caption{Notation for the algorithms}
+\caption{Notation for the algorithms.}
 \label{tab:algorithm_legend}
 \begin{tabular}{ll}
 \hline
 \textbf{Symbol} & \textbf{Description} \\ \hline
 $Q$ & Query series with length $m$ \\
 $C$ & Candidate series with length $n$ \\
+$l$ & Scaling factor bound \\
 $P$ & Number of pieces \\
 $L$ & Alignment factor \\
 $r$ & DTW constraint parameter (in a fraction) \\
@@ -17,7 +18,7 @@ $L_{\mathrm{gmin}}^Q$ ($L_{\mathrm{gmin}}^C$) & Global minimum length of a segme
 $L_{\mathrm{gmax}}^Q$ ($L_{\mathrm{gmax}}^C$) & Global maximum length of a segment in $Q$ ($C$) \\
 $L_{\mathrm{min}}^C$ & Local minimum length of a segment in $C$ \\
 $L_{\mathrm{max}}^C$ & Local maximum length of a segment in $C$ \\
-$L^Q$ ($L^C$) & Allowed length of the considered segment in $Q$ ($C$) \\
+$L^Q$ ($L^C$) & Length of the considered segment in $Q$ ($C$) \\
 $Q'$ ($C'$) & Reversed considered segment in $Q$ ($C$) \\
 \hline
 \end{tabular}

@@ -1,4 +1,4 @@
-\section{Background} \label{sec:introduction}
+\section{Introduction} \label{sec:introduction}
 
 To study the mechanism of a process, we take measurements.
 They are usually taken continuously by the sensors. 
@@ -83,7 +83,7 @@ For example, in the GunPoint dataset, the actor's actions (Gun/Point) were caref
 But in reality, several actions are monitored continuously rather than one at a time.
 Besides, the durations of the actions are similar but not identical.
 For example, in a department store, an announcement, such as today's closing time, would be repeated several times continuously, with each repetition varying slightly in duration.
-It is common for the data rate or sampling strategy to change over time~\cite{aggarwal2013data}.
+It is also common for the sampling strategy to change over time~\cite{aggarwal2013data}.
 
 %
 Existing studies mostly assume perfect segmentation. 
@@ -105,23 +105,23 @@ To the best of our knowledge, no studies exist that address multiple scaling fac
 The proposed algorithm relaxes the assumption underlying US and USDTW, namely that only a single scaling factor is used to achieve x-axis scaling invariance.
 
 \noindent\RuninHead{Problem statement} Given two time series $Q$ and $C$ and a user-given number of pieces $P$, we would like to design an algorithm that minimizes the sum of the distances of the $P$ aligned pairs of segments of $Q$ and $C$, as illustrated in Figure~\ref{fig:psdtw-intuition}. 
-Within each pair, the segments are first rescaled to the same length, and the similarity between the rescaled segments is measured using a user-chosen distance measure.
+Within each pair, the segments are first rescaled to the same length, and the similarity between the rescaled segments is measured using a user-chosen base distance measure.
 
-Note that the proposed algorithm is agnostic to the user-chosen distance measure.
-The segmentation results themselves review the phase structure of the time series.
-Moreover, they can be leveraged for downstream use: first, align the pairs; then use the other distance measure $M$ to compute the internal distance for each pair, where $M$ can handle the local distortion; and return the sum of the distances.
+Note that the proposed algorithm is agnostic to the user-chosen base distance measure.
+The segmentation results themselves review the phase structure of the time series. 
+Moreover, they can be leveraged for downstream use: first, align the pairs according to the segmentation results; then, use the other distance measure $M$ to compute the internal distance for each pair, where $M$ can achieve certain desired invariance within each pair; and return the sum of the distances.
 
 % Contributions
 Our contributions are as follows:
 \begin{itemize}
-  \item We demonstrate the necessity of piecewise scaling (PS) invariance and the first framework to achieve it. 
-  It is agnostic to the distance measure used.
+  \item We demonstrate the necessity of piecewise scaling (PS) invariance and the first framework (via dynamic programming) to achieve it. 
+  It is agnostic to the base distance measure used.
   In particular, we focus on two instantiations of PSD using ED and DTW.
   They are called PSED and PSDTW, respectively.
-  \item We design a dynamic programming method to compute PSD.
-  \item Similar to the role of local constraints in DTW, we propose a constrained version of PSD based on the allowed segment lengths to improve the efficiency and to prevent pathological results. 
+  % \item We design a dynamic programming method to compute PSD.
+  \item Similar to the local constraints in DTW, we propose a constrained version of PSD based on the allowed segment lengths to improve the efficiency and to prevent pathological results. 
   \item Two other speedup techniques have been proposed, namely parallel computing and early abandoning. 
-  Besides, we demonstrate the use of a lower bound to further speed up the computation of PSDTW by pruning the DTW computation.
+  Besides, we demonstrate the use of a lower bound to further speed up the computation of PSDTW.
   % , which has quadratic complexity.
   \item We demonstrate that the segmentation results returned by PSD can improve the accuracy of other distance measures.
 \end{itemize}
