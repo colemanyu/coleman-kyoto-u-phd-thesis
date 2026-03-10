@@ -1,23 +1,31 @@
 \chapter{Preliminaries and Related Work} \label{ch:preliminaries}
 
 In this chapter, we provide background on time series analysis.
-We first introduce the basic definitions of time series and subsequences.
-%
-Some tasks defined on time series are also introduced.
-%
+A more detailed background will be presented in the respective chapters if necessary.
+
 Since many tasks require measuring the similarity between two time series, we introduce several popular distance measures in Section~\ref{sec:dist}, which complements Chapter~\ref{ch:ksfdtw}.
+They are developed for achieving different kinds of invariances.
+Note that there is no single best distance measure that can handle all types of data.
+%
 In particular, we introduce CID and Prefix and Suffix Invariant Dynamic Time Warping ($\psi$-DTW).
 %
 CID can be regarded not as a single distance measure but as a framework for achieving complexity-invariance with respect to other distance measures used as the base measure.
 %
 $\psi$-DTW proposes the idea that we need to ignore some subsequences during comparison for better results, which highlights the situation that whole sequence comparison performs poorly.
 
-%
 Then, we introduce the analysis of time series using their subsequences in Section~\ref{sec:mp}.
-In detail, we focus on a powerful time-series data-mining primitive, namely the Matrix Profile, which complemetns Chapter~\ref{ch:mpmf}.
-%
-Finally, we introduce methods for transforming time series into tabular representations in Section~\ref{sec:transformations}, thereby enabling the use of other methods that were not originally designed for time series, which complements Chapter~\ref{ch:mpmf}.
+In detail, we focus on a powerful time-series data-mining primitive, namely the Matrix Profile, which complements Chapter~\ref{ch:mpmf}.
+Matrix profile can be considered a tool for annotating a given time series, enabling many interesting data mining tasks.
+
+Finally, we focus on time series classification (TSC) in Section~\ref{sec:tsc}.
+In particular, we introduce methods for transforming time series into tabular representations, thereby enabling the use of other methods that were not originally designed for time series, which complements Chapter~\ref{ch:mpmf}.
 A popular downstream method, namely the Ridge Classifier, would be introduced.
+Due to the prosperity of deep learning methods recently, we also provide a brief survey of deep learning methods in time series classification.
+
+We first introduce the basic definitions of time series and subsequences.
+After that, some tasks defined on time series are also introduced.
+
+\section{Basic Definitions}
 
 We begin by defining a time series.
 A general form of a time series $T$ is an ordered pair of $n$ real-valued variables, $T = (b_1, c_1), (b_2, c_2), \dots, (b_n, c_n)$, where $b_i$ is the behavioral attribute and $c_i$ is the contextual attribute, where $1 \leq i \leq n$. 
@@ -44,13 +52,22 @@ Several of them are listed below.
     \item \textbf{Classification}: Learning from a set of time series with assigned label. Assigning a predefined label/category to a new time series. It will be further discussed in Chapter~\ref{ch:mtsccleav}.
     \item \textbf{Clustering}: Grouping a set of unlabeled time series based on their similarity. In bioinformatics, this is often applied to time-course gene expression data to group genes with similar expression patterns. The resulting clusters can be biologically validated using external tools like functional enrichment analysis (e.g., Gene Ontology enrichment or GSEA), which evaluates whether the genes within a cluster are significantly associated with shared biological functions or pathways (i.e., enriched).
     \item \textbf{Searching}: Given a query, retrieve the most similar time series (or top-$k$) from the dataset. This task is also called ``query-by-content''. It will be further discussed in Chapter~\ref{ch:ksfdtw}.
-    \item \textbf{Forecasting}: Given historical time series data (i.e., training set), predicting future values (horizon). It will be further discussed in Chapter~\ref{ch:mpmf}.
     \item \textbf{Segmentation}: Partitioning/Segmenting a long time series into several contiguous subsequences, which are called regimes or states. It will be further discussed in Chapter~\ref{ch:ksfdtw}.
+    \item \textbf{Forecasting}: Given historical time series data (i.e., training set), predicting future values (horizon), which can be one-step ahead or multi-step ahead.
+    In addition, there are two main approaches, depending on whether the predicted results are used in the next round of prediction.
+    They are called ``Iterative methods'' and ``Direct methods''~\cite{lim2021timeseries}.
+    One goal is to predict a horizon $h$.
+    We can either predict the complete horizon with length $h$ in a single batch, as in ``Direct methods''.
+    Or at each iteration, we can predict a shorter horizon $h' < h$ and use the predicted results to predict the next $h'$ steps and finally predict all the $h$ steps.
+    Since predicted results are used in iterative methods, small errors at each iteration accumulate and can lead to large errors over iterations.
+    In contrast, direct methods produce the final result in a single batch (i.e., one iteration only). However, the models would be more complex.
+    It will be further discussed in Chapter~\ref{ch:mpmf}.
 \end{itemize}
 
-To quantify the similarity between two time series, we need to define a distance measure, also known as a similarity measure, between them.
-
 \section{Distance Measures} \label{sec:dist}
+To quantify the similarity between two time series, we need to define a distance measure, also known as a similarity measure, between them.
+A smaller value means that the two time series are more similar.
+%
 Most of the distance measures require whole-sequence comparisons, whereas others allow us to ignore parts of the data.
 
 Many distance measures have been proposed in the literature.
@@ -216,6 +233,7 @@ To note, if $Q$ and $C$ have the same complexity $CE(\cdot)$, the calibration fa
 Hence, CID would degenerate to the original base distance measure.
 
 There are other cases where we need to calibrate the time series during measurement, such as uniform scaling.
+It is further discussed in Chapter~\ref{ch:ksfdtw}.
 
 \subsection{Prefix and Suffix Invariant Dynamic Time Warping}
 Sometimes, we cannot consider the whole sequence; we need to ignore some data to get a meaningful result.
@@ -232,7 +250,8 @@ Given two time series $x$ and $y$ of lengths $n$ and $m$ respectively, and a use
 \end{equation}
 
 The above equation defines the base cases of DTW. The remaining part is the same as ordinary DTW.
-
+This study shows that a single time series in the dataset may not only contain the desired action. Hence, some data in the prefix or suffix should be ignored.
+We further argue that a time series may contain several actions in a row, instead of a single action in Chapter~\ref{ch:ksfdtw}.
 
 \section{Subsequence analysis using matrix profile} \label{sec:mp}
 % Draw a figure for the matrix profile
@@ -248,7 +267,7 @@ Besides, we focus on AA-join situation first.
 \end{definition}
 
 \begin{definition}[Matrix profile]
-    A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
+    A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $\\$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
 \end{definition}
 
 Another closed related time series of $P$, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
@@ -257,7 +276,7 @@ Another closed related time series of $P$, namely the Matrix Profile Index $I$, 
     A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
 \end{definition}
 
-With $P$ and $I$, we know the location and similarity of the nearest neighbor of each $m$-subsequence in $T$
+With $P$ and $I$, we know the location and similarity of the nearest neighbor of each $m$-subsequence in $T$.
 It can be computed in $\mathcal{O}(n^2)$~\cite{zhu2016matrix, zhong2024mass}.
 
 \subsection{Time series motifs}
@@ -327,7 +346,7 @@ Thus, some irrelevant subsequence can then be intentionally ignored.
 Its computation relies on using a data mining primitive, namely the Matrix Profile.
 The algorithm first extracts all subsequences from two compared series $A$ and $B$ using a sliding window of length $m$.
 Then, an ABBA similarity join $J_{ABBA}$ is created, which consists of each subsequence in $A$ with its nearest neighbor in $B$ and vice versa.
-We have another vector, namely the Join Matrix Profile $P_{ABBA}$ to store the corresponding z-normalized ED of the 2-tuples stored in  $J_{ABBA}$.
+We have another vector, namely the Join Matrix Profile $P_{ABBA}$ to store the corresponding z-normalized ED of the pairs stored in  $J_{ABBA}$.
 To note, $|P_{ABBA}| = |J_{ABBA}|$.
 The algorithm then reports the $k$\textsuperscript{th} smallest value in the sorted (ascendingly) $P_{ABBA}$ as the final result, where $k$ is suggested to be set to $5\%$ of the whole length.
 If the minimum distance in $P_{ABBA}$ is used, the distance measure is overly generous and provides no discrimination power.
@@ -338,7 +357,6 @@ To note, it does not satisfy the triangle inequality, so it is not a distance me
 
 \subsection{Shapelets}
 % Contrast
-
 
 Shapelets~\cite{ye2009time} are subsequences that are maximally representative of a class.
 They are the characteristics of a time series.
@@ -365,7 +383,10 @@ In this simple case, one class only contains a time series $A$, and the other cl
 
 % \subsection{Consensus}
 
-\section{Transformations for feature extraction} \label{sec:transformations}
+\section{Time series classification}
+\label{sec:tsc}
+
+\subsection{Transformations for feature extraction} 
 
 Here, we introduce three transformation methods, including hctsa~\cite{fulcher2017hctsa}, catch22~\cite{lubba2019catch22}, and ROCKET~\cite{dempster2020rocket} (and its variants ~\cite{dempster2021minirocket, tan2022multirocket, dempster2023hydra}).
 They fall into two categories of transformation: curated and non-curated.
@@ -374,7 +395,7 @@ The transformations of ROCKET and its variants are non-curated.
 They simply generate a large set of features quickly and rely on a downstream classifier, such as a Ridge Classifier, to learn which features are useful for classification.
 They output feature vectors that capture the characteristics of the original time series, which are eventually input to the downsteam methods, such as classifiers, for the final results.
 
-\subsection{hctsa}
+\subsubsection{hctsa}
 
 hctsa~\cite{fulcher2017hctsa} computes over 7,700 features from time series by leveraging past domain knowledge.
 Recall that we can summarize a time series by measuring its statistical values, such as the mean.
@@ -386,7 +407,7 @@ With the matrix, downstream tasks such as classification or regression can be ap
 This exhaustive approach enables researchers to identify which features are useful to the downstream tools, such as XGBoost, which can tell which features are the most discriminative by plotting the feature importance graph.
 One obvious limitation of this approach is its computational cost.
 
-\subsection{catch22}
+\subsubsection{catch22}
 
 catch22~\cite{lubba2019catch22} is a follow-up study of hctsa.
 It aims to find a small set of time-series features that exhibit strong classification performance across a given collection of time-series problems and are minimally redundant.
@@ -396,7 +417,7 @@ Note that, with much fewer features, this yields a small tabular representation 
 Hence, it can be used with more computationally expensive methods.
 As a result, it provides a good balance between speed, accuracy, and domain explainability.
 
-\subsection{ROCKET}
+\subsubsection{ROCKET}
 
 The main difference between ROCKET~\cite{dempster2020rocket} (and its variants~\cite{dempster2021minirocket, tan2022multirocket, dempster2023hydra}) and the aforementioned approaches is that the transformation is based on thousands of (random) convolutional kernels—filters with randomly assigned lengths, weights, and dilations —rather than on curated methods.
 To note, in MINIROCKET~\cite{dempster2021minirocket}, the convolutional kernels are created deterministically for faster speed.
@@ -424,10 +445,111 @@ Besides, the generated features by the random kernels in ROCKET and its variants
 Ridge regression shrinks regression coefficients toward zero by adding an L2 penalty.
 It reduces model complexity and helps with multicollinearity.
 
+\subsection{Deep learning for Time Series Classification}
+% \cite{shifaz2022scalable}
+
+Recently, deep learning has made advancements in many different aspects in data science such as computer vision.
+This thesis is not focused on deep learning methods. But for completeness, we briefly review some of the major deep learning architecture used for time series classification (TSC) here, with special focus on two recently introduced architecture, namely InceptionTime and TimesNet.
+For a comprehensive review, we direct the readers to \cite{ismailfawaz2019deepa}.
+
+One of the earlier work apply deep learning on TSC is \cite{cui2016multiscalea}. 
+They used a multi-scale convolutional neural network (MCNN), which archive similar performance to the state-of-the-art TSC classifier namely COTE, in the year of 2016.
+After that, many specific architectures, mainly based on Convolutional Neural Networks (CNNs) has been proposed.
+
+Multi Layer Perceptron (MLP), Fully Convolutional Networks (FCN) and Residual Network (ResNet) have also been proposed~\cite{wang2017time}.
+These models have a shorter training and deploying time compared to MCNN and the ensemble-based classifiers, which combines the predictions of multiple weak learners.
+
+Temporal CNN (tempCNN) has been proposed for TSC and applied in the area of remote sensing~\cite{pelletier2019temporal}.
+It is inspired by the success of the Convolution Neural Networks (CNN) for two dimensional image recognition. It adopts one dimensional CNNs.
+
+One of the advantages of deep learning methods is transfer learning~\cite{yosinski2014how}.
+The model can be pre-trained on one dataset and then continue to train on a new dataset.
+It is particularly useful when the new dataset does not have enough labeled data.
+
+\subsubsection{InceptionTime}
+
+% https://sh-tsang.medium.com/brief-review-inceptiontime-finding-alexnet-for-time-series-classification-d83445c494d7
+% https://datasciencemilan.medium.com/time-series-classification-with-deep-learning-205db7b47e1e
+% https://medium.com/data-science/deep-learning-for-time-series-classification-inceptiontime-245703f422db
+% https://medium.com/data-science/time-series-classification-with-deep-learning-d238f0147d6f
+
+InceptionTime~\cite{ismailfawaz2020inceptiontime} is an ensemble of deep Convolutional Neural Network (CNN) models.
+Its aim is to overcome the high computational costs of traditional methods such as HIVE-COTE while maintaining high accuracy.
+It scales linearly with the training set size and the time series length.
+
+It adopts an ensemble strategy.
+Since the model's accuracy depends on the initial weights which are initialized randomly, it is an ensemble of five different Inception networks with same architecture but are initialized with different weights randomly.
+It helps to reduce variance and improve the stability and accuracy of the results.
+
+Each network contains two different residual blocks, where each block is comprised of three inception modules.
+After all these inception blocks, a Global Average Pooling (GAP) layer is used to average the output multivariate time series.
+Finally, a fully-connected softmax layer is used.
+
+We explain the structure of its core building block, inception module.
+Its first component is the bottleneck layer. It is a $1 \times 1$ convolution that is used to reduce the dimensionality of the input to decrease the computational cost and achieve generalization
+%
+The second component is parallel convolutions.
+It applies different 1D convolutional filters of varying lengths simultaneously to capture patterns at multiple resolutions.
+It helps to identify local and global shape patterns.
+%
+Then, a parallel max-pooling layer, followed by a bottleneck layer is added to reduce the dimensionality.
+%
+Finally, the outputs of parallel convolutions and max-pooling are concatenated to output the final output.
+To note, to mitigate the vanishing gradient problem, shortcut linear connections (i.e., Residual Blocks) are used at every third inception module.
+%
+It is the second fastest state-of-the-art TSC classifier after ROCKET~\cite{middlehurst2021hivecote}.
+
+\subsubsection{TimesNet}
+
+% TimesNet: Unifying Time Series Analysis Through Temporal 2D-Variation Modeling | by Dong-Keon Kim | Medium
+% 关于TimesNet的结构相关解析-CSDN博客
+% 机器学习论文浅读:TimesNet - Thorn_R - 博客园
+% 杀疯了！时间序列大模型TimesNet—轻松摘冠五大任务 - 哔哩哔哩
+% 论文笔记：TIMESNET: TEMPORAL 2D-VARIATION MODELINGFOR GENERAL TIME SERIES ANALYSIS_timesnet: temporal 2d-variation modeling for gener-CSDN博客
+% 【模型解读】TimesNet: Temporal 2D-Variation Modeling For General Time Series Analysis - 知乎
+
+TimesNet~\cite{wu2022timesnet} is designed as a general purpose tool that it outperforms previous models in Long-term Forecasting, Short-term Forecasting, Anomaly Detection, Imputation, and Classification.
+%
+The main idea is based on the observations that real-world time series are multi-periodic.
+It breaks down the complex pattern due to multi-periodic into two types of simpler patterns, namely Intraperiod-variation (short-term fluctations within a single period) and Interperiod-variation (long-term trends accross different periods).
+%
+
+The core building block is a novel component called TimesBlocks.
+It first use Fast Fourier Transform (FFT) to identify the top-$k$ most significant frequencies (periods) in the data.
+For each identifed period, it expands 1D data into 2D matrix and so the standard 2D convolutional kernels can capture these two variations.
+This allow the models to benefit from advanced computer vision techniques that is designed to deal with 2D matrix.
+Finally, the extracted 2D features are reshaped back to 1D and combined using a weighted sum based on the amplitudes of the original frequencies. 
+
+By expanding 1D sequence to 2D matirx, it disentangles intricate periodic structures and hence improves the model's ability to capture complex temporal patterns.
 
 % \noindent\rule{\linewidth}{0.4pt}
-%%%
-%%%
-%%%
+%%
+%%
+%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
