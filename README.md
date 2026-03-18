@@ -35,6 +35,11 @@ by January 13.
 
 ## Raymond's suggestions
 
+- 50 slides
+- Don't include the formal definition, as it will distract the audience. Put them in backup slides.
+- Put the evaluation metric in backup slides for completeness
+- Tell the whole story instead of three individual works
+
 ```
 Organziation:
 --------------------------------------------------------
