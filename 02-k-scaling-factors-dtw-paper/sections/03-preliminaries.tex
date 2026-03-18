@@ -1,4 +1,4 @@
-\section{Preliminaries} \label{sec:preliminaries} % *!
+\section{Preliminaries} \label{sec:preliminaries}
 
 % *!
 We refer to time as the contextual attribute because it provides the context for the measurements to be made.
@@ -308,7 +308,7 @@ We direct the reader to \cite{shen2017searching} for the formal proof, while an 
 There are three items on the right-hand side of Equation \ref{eq:lb_shen-dtw}.
 The first and the last items are from the boundary condition.
 The continuity requirement ensures that each $c_i$ is involved in at least one alignment.
-The middle item returns the possible minimum distances contributed by each $c_j$'s, where $2 \leq j \leq n-1$.
+The middle item returns the possible minimum distances contributed by each $c_j$, where $2 \leq j \leq n-1$.
 To note, it is obvious that $\lbShen$ in Equation~\ref{eq:lb_shen-dtw} is tighter when we use the first pair of points and the last pair of points instead of doing the middle summation all from $j=1$ to $n$.
 It is because the distance contributed by the first pair (last pair) must be greater than $\delta(c_1, \mathbbm{q}_1)$ ($\delta(c_n, \mathbbm{q}_n)$).
 
@@ -343,7 +343,7 @@ The possible reach now is not only defined by $r$, but also by the scaling facto
 \begin{theorem}[] 
 \label{thm:lb_shen}
     For any $\ceil{m/l} \leq k \leq \min(\floor{lm}, n)$, 
-    $\operatorname{DTW}_r(Q^{\min(\floor{lm},n)}, C(1:k)^{\min(\floor{lm},n))})$ is always lower bounded by $\sum_{j=1}^k \delta(c_j, \mathbbm{q}_j)$.
+    $\operatorname{DTW}_r(Q^{\min(\floor{lm},n)}, C(1:k)^{\min(\floor{lm},n)})$ is always lower bounded by $\sum_{j=1}^k \delta(c_j, \mathbbm{q}_j)$.
 \end{theorem}
 
 Recall that USDTW calculates DTW distances between each rescaled prefix of $C$ to the rescaled $Q$, and outputs the minimum DTW distance, as in Equation~\ref{eq:usdtw}.

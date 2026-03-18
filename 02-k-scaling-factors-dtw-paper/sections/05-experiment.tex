@@ -1,4 +1,5 @@
 \section{Experiments} \label{sec:experiment}
+% *!
 
 We evaluate the performance of our proposed distance measure framework, PSD, via its two instantiations: PSED and PSDTW. 
 Specifically, we focus on a query retrieval task in which the query exhibits piecewise-scaled distortion.
@@ -157,7 +158,7 @@ Hence, we select \texttt{PSED\_parallel\_bsf} as the representative method for t
 
 We fix the parameters at $P=3$ and $l=1.5$. 
 \input{../tables/comparison_p}
-When $P$ is not given, the value of $P$ can be determined as follows.
+When $P$ in the target set is not given, the value of $P$ can be determined as follows.
 % The number of phases/regimes in the data can be determined using external methods that are designed for this purpose.
 A heuristic approach to determine $P$ is to test a range of values for $P$ as shown in Table~\ref{tab:comparison_p}.
 An incorrect matching of $P$ between the query set and the target set would significantly degrade accuracy.
@@ -172,7 +173,7 @@ It shows a significant speedup, ranging from 8.59X to 176.14X.
 \subsubsection{Results of the ten datasets (both train and test split)}
 
 \input{../tables/ten_datasets_accuracy_all_data}
-With the computational efficiency \texttt{PSED\_parallel\_bsf}, we are now able to conduct the experiment on all the data, including both the training set and the test set.
+With the computational efficiency \texttt{PSED\_parallel\_bsf}, we are now able to conduct the experiment on all the data, including both the train split and the test split.
 The results are shown in Table~\ref{tab:ten_datasets_accuracy_all_data}.
 Note that we retrieve only the most similar candidate to the query here for efficiency of early abandoning, so we report only $\overline{P@1}$ in the table. 
 It outperforms all the other methods.
