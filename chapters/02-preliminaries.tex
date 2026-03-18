@@ -246,7 +246,7 @@ Prefix and Suffix Invariant DTW ($\psi$-DTW)~\cite{silva2016prefix} addresses th
 Given two time series $x$ and $y$ of lengths $n$ and $m$ respectively, and a user-defined relaxation factor $r$, $\psi$-DTW alters the initialization of the traditional DTW cost matrix:
 
 \begin{equation}
-    dtw(i,j) = \begin{cases} \infty, & \text{if } (i = 0 \text{ and } j > r) \text{ or } (j = 0 \text{ and } i > r) \\ 0, & \text{if } (i = 0 \text{ and } j \le r) \text{ or } (j = 0 \text{ and } i \le r) \end{cases}
+    D(i,j) = \begin{cases} \infty, & \text{if } (i = 0 \text{ and } j > r) \text{ or } (j = 0 \text{ and } i > r) \\ 0, & \text{if } (i = 0 \text{ and } j \le r) \text{ or } (j = 0 \text{ and } i \le r) \end{cases}
 \end{equation}
 
 The above equation defines the base cases of DTW. The remaining part is the same as ordinary DTW.
