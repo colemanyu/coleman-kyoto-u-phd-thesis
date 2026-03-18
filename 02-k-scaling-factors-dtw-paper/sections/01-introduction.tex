@@ -24,7 +24,7 @@ In contrast, we identify abnormal subsequences for anomaly detection.
 %
 Almost all tasks can be reduced to arguing the similarity between two time series.
 A good distance (similarity) measure can determine the success or failure of the algorithms built on it. The choice of an appropriate distance measure is particularly evident in classification.
-Studies show that simple nearest-neighbor classification (1-NN) is difficult to beat and can compete with more complex methods~\cite{bagnall2017great}.
+Studies show that a simple nearest-neighbor (1-NN) classifier with an appropriate distance measure is difficult to beat and can compete with more complex methods~\cite{bagnall2017great}.
 
 A time series is treated as a whole rather than as simply a collection of data points. 
 The relationships between them are important. 
@@ -35,9 +35,9 @@ Besides, different invariances should be allowed.
 % DTW
 % https://www.reddit.com/r/grammar/comments/bfuqx4/what_is_the_correct_wording_for_one_of_if_not_the/
 Dynamic Time Warping (DTW) is one of, if not the most common, similarity measures.
-DTW provides invariance to time distortion by aligning and measuring the similarity between two series that may be misaligned in time.
+DTW provides invariance to time distortion by aligning and measuring the similarity between two series that are misaligned in time.
 However, it assumes that they are expressed at a similar global rate.
-Its performance is limited when global rates differ. 
+Its performance is limited when global rates differ significantly. 
 We often see this behavior in domains such as speech recognition, motion analysis, patient biomedical signals, and sensor data in the manufacturing industry.
 
 % US
@@ -65,9 +65,10 @@ DTW and US are used to achieve different kinds of invariance.
 DTW handles local distortion, while US handles global scaling.
 Furthermore, some studies show that for some data, the combination of US and DTW, namely USDTW, better reflects the similarity~\cite{fu2008scaling, shen2017searching, shen2018accelerating}. 
 US is first applied to transform the two time series into the same length to eliminate the effect resulting from the different rates. Then, DTW, rather than ED, is applied to address local distortion.
-USDTW is computationally more expensive than DTW because it involves the calculation of the DTW between $Q$ and different lengths of the prefixes of $C$, as shown in Figure~\ref{fig:us-prefix}. 
+USDTW is computationally more expensive than DTW because it involves the computation of the DTW between $Q$ and different lengths of the prefixes of $C$, as shown in Figure~\ref{fig:us-prefix}. 
 The different lengths correspond to different scaling factors.
 
+% *!
 % Something is missing
 The time series community heavily relies on the UCR Time Series Archive for benchmarking.
 Undoubtedly, it is a valuable resource.
@@ -88,7 +89,7 @@ It is also common for the sampling strategy to change over time~\cite{aggarwal20
 %
 Existing studies mostly assume perfect segmentation. 
 The time series in a dataset would have the same length, and each represents a single target action.
-\cite{silva2016prefix} points out that in a more realistic setting, due to improper segmentation in the data preparation phase, the time series could contain not just the target action but also other actions that were performed just before/after the target action.
+\cite{silva2016prefix} points out that in a more realistic setting, due to the improper segmentation in the data preparation phase, the time series could contain not just the target action but also other actions that were performed just before/after the target action.
 It proposed that some data on the prefix and suffix should be ignored by relaxing the endpoint constraints of the DTW formulation.
 But this study still assumes that there is only one target action in the time series. It cannot handle cases where the time series consists of multiple actions expressed at different rates.
 %
@@ -109,7 +110,10 @@ Within each pair, the segments are first rescaled to the same length, and the si
 
 Note that the proposed algorithm is agnostic to the user-chosen base distance measure.
 The segmentation results themselves review the phase structure of the time series. 
-Moreover, they can be leveraged for downstream use: first, align the pairs according to the segmentation results; then, use the other distance measure $M$ to compute the internal distance for each pair, where $M$ can achieve certain desired invariance within each pair; and return the sum of the distances.
+Moreover, they can be leveraged for downstream usage with other distance measures. 
+First, we align the pairs according to the segmentation results.
+Then, we use the other distance measure $M$ to compute the internal distance for each pair, where $M$ can achieve certain desired invariance within each pair.
+Finally, the sum of the distances is used to evaluate the similarity.
 
 % Contributions
 Our contributions are as follows:
@@ -118,7 +122,6 @@ Our contributions are as follows:
   It is agnostic to the base distance measure used.
   In particular, we focus on two instantiations of PSD using ED and DTW.
   They are called PSED and PSDTW, respectively.
-  % \item We design a dynamic programming method to compute PSD.
   \item Similar to the local constraints in DTW, we propose a constrained version of PSD based on the allowed segment lengths to improve the efficiency and to prevent pathological results. 
   \item Two other speedup techniques have been proposed, namely parallel computing and early abandoning. 
   Besides, we demonstrate the use of a lower bound to further speed up the computation of PSDTW.

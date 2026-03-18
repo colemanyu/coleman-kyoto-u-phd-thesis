@@ -1,11 +1,10 @@
 \begin{algorithm}[t]
-\caption{Replace lines 3 to 9 in Algorithm~\ref{alg:psdtw-reuse-reaches}to reuse the computed sorted reaches $\tilde{\mathbbm{q}}_k$.}
+\caption{Replace lines 3 to 14 in Algorithm~\ref{alg:psdtw-constrained}to reuse the computed sorted reaches $\tilde{\mathbbm{q}}_k$.}
 \label{alg:psdtw-reuse-reaches}
 \begin{algorithmic}[1]
-
-{\color{blue}
+\color{blue}
 \State $r'_{\mathrm{cache}} \gets -1$
-{\color{black}
+\color{black}
 \For{$i \gets (p \cdot L_{\mathrm{gmin}}^Q)$ \textbf{to} $\min(p \cdot L_{\mathrm{gmax}}^Q, m)$}
     \For{$L^Q \gets L_{\mathrm{gmin}}^Q$ \textbf{to} $L_{\mathrm{gmax}}^Q$}
         \State $i' \gets i - L^Q$
@@ -13,7 +12,7 @@
         \State $L_{\min}^C \gets \max(L_{\mathrm{gmin}}^C, \ceil{L^Q/l})$
         \State $L_{\max}^C \gets \min(\floor{L^Q/l}, L_{\mathrm{gmax}}^C)$
         \State $r' \gets r \times \max(L^Q, L_{\max}^C)$ 
-        {\color{blue}
+        \color{blue}
         \If{$r'_{\mathrm{cache}} = r'$}
             \For{$k \gets 1$ \textbf{to} $L_{\max}^C$}
                 \If{$k \leq |\mathbbm{Q}|$}
@@ -38,11 +37,9 @@
             \EndFor
             \State $r_{\mathrm{cache}} \gets r'$
         \EndIf
-        }
+        \color{black}
     \EndFor
 \EndFor
-}
-}
 \end{algorithmic}
 \end{algorithm}
 

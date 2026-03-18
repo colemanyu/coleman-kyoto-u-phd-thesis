@@ -1,5 +1,6 @@
 \section{Piecewise Scaling Distance} \label{sec:methods}
 
+% *!
 The motivation stems from the limitations of US and USDTW.
 They assume that the relationship between $Q$ and $C$ is governed by only a single, global scaling factor. 
 This assumption fails when applied to multi-rate data, where different phases of the time series express at different rates.
@@ -129,7 +130,8 @@ This allows the DTW deviation tolerance to scale adaptively with pieces of varyi
 
 \subsection{Speedup Techniques}
 
-\noindent\RuninHead{Length constraints of the segment} 
+\subsubsection{Length constraints of the segment} % *!
+
 \input{../algorithms/psdtw-constrained-initial}
 \input{../algorithms/psdtw-constrained}
 \input{../tables/algorithm_legend}
@@ -154,9 +156,9 @@ In line 3, given $p$ pieces in $Q$, the ending index of the last piece (i.e., th
 
 \input{../figures/L_Q-L_C-relationship}
 In line 4, we enumerate for all the allowed lengths $L^Q$.
-For the segment with length $L^Q$ in $Q$, the length $L^C$ of the corresponding aligned segment in $C$ will have a range from $L_{\min}^C$ to $L_{\max}^C$, as defined in lines 7--8, such that the ratio of $L^Q$ and $L^C$ would be bounded by $l$.
-Because $L^Q$ and $L^C$ increase in line 4 and line 14, 
-and the $i$ and $j$ are fixed by the outer loop, in line 3 and line 13, respectively, the $i'$ and $j'$ decrease correspondingly.
+For the segment with length $L^Q$ in $Q$, the length $L^C$ of the corresponding aligned segment in $C$ will have a range from $L_{\min}^C$ to $L_{\max}^C$, as defined in lines 9--10, such that the ratio of $L^Q$ and $L^C$ would be bounded by $l$.
+Because $L^Q$ and $L^C$ increase in line 4 and line 16, 
+and the $i$ and $j$ are fixed by the outer loop, in line 3 and line 15, respectively, the $i'$ and $j'$ decrease correspondingly.
 
 It is visualized in Figure~\ref{fig:L_Q-L_C-relationship}.
 %
@@ -164,53 +166,58 @@ A segment in $Q$ with ending index $i$ and starting index $i'+1$ would be compar
 For example, the starting index of the first segment being compared is $j' + 1$, which has length $L^C$.
 The starting index of the second segment is $j'$, which has length $L^C + 1$.
 
-In line 18, we terminate the current iteration if there are no previously valid segment pairs (i.e., $\mathit{dist}_\mathrm{prev} = \infty$).
+In line 31, we terminate the current iteration if there are no previously valid segment pairs (i.e., $\mathit{dist}_\mathrm{prev} = \infty$).
 
-In line 22, if the accumulated cost $\textit{dist}_{\text{prev}}$ exceeds the current best so far $\mathrm{bsf}$, we stop the current iteration as the resulting $(\mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}})$ is guaranteed to be greater than $\mathrm{bsf}$, which is stored in $D[i, j, p]$.
+In line 35, if the accumulated cost $\textit{dist}_{\text{prev}}$ exceeds the current best so far, we stop the current iteration as the resulting $(\mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}})$ is guaranteed to be greater than the best so far, which is stored in $D[i, j, p]$.
 
-To note, to be consistent with the results of using the lower bounding speedup technique, which will be introduced later, we compute the DTW in the reverse manner in line 33.
+To note, to be consistent with the results of using the lower bounding speedup technique, which will be introduced later, we compute the DTW in the reverse manner in line 37.
 Due to the nearest neighbor interpolation, $\operatorname{DTW}_r(X^L, Y^L)$ may not equal to $\operatorname{DTW}_r(\operatorname{rev}(X)^L, \operatorname{rev}(Y)^L)$, where $X$ and $Y$ are time series.
 
-In line 35, we also save the 2-tuple ($i', j'$), which serves as the cutting points between segments, to obtain the segmentation result.
+In line 39, we also save the 2-tuple ($i', j'$), which serves as the cutting points between segments, to obtain the segmentation result.
 
-\noindent\RuninHead{Parallel computing} 
+\subsubsection{Parallel computing} % *!
+
+% \noindent\RuninHead{Parallel computing} 
 We observe that the recurrence relation for the computation of $D[i, j, p]$ at $p$ depends exclusively on the results of $D$ computed at $p-1$, as shown in Equation~\ref{eq:psdtw-recurrence}.
 % There are no dependencies over indices $i'$ and $j$.
-It allows us to parallelize the loops over indices $i$ and $j$ on lines 3 and 13.
+It allows us to parallelize the loops over indices $i$ and $j$ on lines 3 and 15.
 In the following experimental section, we distribute the i-loop iterations (i.e., line 3 in Algorithm~\ref{alg:psdtw-constrained}, which is colored in \blue{blue}) across available threads only because there are already sufficient iterations from the i-loop to fill the available threads.
 There are $\left(\min(p \cdot L_{\mathrm{gmax}}^Q, m) - (p \cdot L_{\mathrm{gmin}}^Q) + 1\right)$ iterations from the i-loop.
 The parallel execution of the $i$-loop is implemented by \texttt{prange} in \texttt{Numba} in Python.
+  
+\subsubsection{Early Abandoning} % *!
 
-\noindent\RuninHead{Early Abandoning}  
 To accelerate the nearest neighbor search (or top-$k$ search) for a query $Q$ on a candidate set, we employ an early abandoning strategy. 
 It prunes the search branch within the PSD computation of a specific candidate $C$ as soon as the result corresponding to this search branch is determined to be suboptimal. 
 We maintain a best-so-far variable, $\mathrm{bsf}$, which represents the minimum final distance among the candidates processed with $Q$ so far. 
 $\mathrm{bsf}$ serves as an upper-bound threshold.
+To note, $\mathrm{bsf}$ is different to the best so far value stored in $D[i,j,p]$. 
 During the evaluation of a new candidate $C$, we monitor the accumulated partial distance, $\mathit{dist}_{\mathrm{prev}}$. 
 If $\mathit{dist}_{\mathrm{prev}}$ exceeds $\mathrm{bsf}$, the corresponding final distance is guaranteed to exceed $\mathrm{bsf}$.
 In such cases, the current search branch is immediately terminated. 
-The implementation of this pruning mechanism is detailed in lines 20--21 in Algorithm~\ref{alg:psdtw-constrained}, which are colored in \orange{orange}.
-In the case of top-$k$ search, we must maintain the top-$k$ final distances and use the $k$-th final distance as the threshold.
+The implementation of this pruning mechanism is detailed in lines 33--34 in Algorithm~\ref{alg:psdtw-constrained}, which are colored in \orange{orange}.
+In the case of top-$k$ search, we maintain the top-$k$ final distances and use the $k$-th final distance as the threshold.
 
-\noindent\RuninHead{Lower bounding} 
+\subsubsection{Lower bounding}
+
 \input{../algorithms/psdtw-reuse-reaches}
 Recall that DTW is quadratic in complexity.
 When we use DTW as a routine in PSD, the computation of the DTW of the interpolated segment can be sped up by computing $\lbShen$ for the lower bound.
 From Figure~\ref{fig:L_Q-L_C-relationship}, we observe that the same segment of $Q$, with length $L^Q$, is compared to a set of lengthening segments of $C$, with a fixed end at $j$.
-The length of these segments is from $L_{\min}^C$ to $L_{\max}^C$, as indicated in line 14 in Algorithm~\ref{alg:psdtw-constrained}.
+The length of these segments is from $L_{\min}^C$ to $L_{\max}^C$, as indicated in line 16 in Algorithm~\ref{alg:psdtw-constrained}.
 
 They share the same suffix with length $L_{\min}^C$.
 It encourages us to view both $Q$ and $C$ reversely.
-The reversed segments are denoted as $Q'$ and $C'$, as in lines 6 and 16 in Algorithm~\ref{alg:psdtw-constrained}.
+The reversed segments are denoted as $Q'$ and $C'$, as in lines 8 and 20 in Algorithm~\ref{alg:psdtw-constrained}.
 In this reversed view, they share the same prefix with length $L_{\min}^C$.
-Hence, we construct an indexed collection $\tilde{\mathbbm{Q}}$ for $Q'$ with the maximum length of the segments being compared in $C$, which is $L^C_{\max}$, as in lines 10--12.
+Hence, we construct an indexed collection $\tilde{\mathbbm{Q}}$ for $Q'$ with the maximum length of the segments being compared in $C$, which is $L^C_{\max}$, as in lines 12--14.
 
-In lines 24--27, we first compute the lower bound between $Q'$ and the shortest segment of $C$.
+In lines 22--25, we first compute the lower bound between $Q'$ and the shortest segment of $C$.
 We add the minimum possible contribution of each $c'$ to the distance contributed by the first alignment, which is $\textit{lb} = (c'_1 - q'_1)$.
-For the lower bound of the subsequent segments, we compute them incrementally in line 29.
-Because the last point of segment $C'$ must map to the last point of $Q'$, we further tighten the lower bound by using the last alignment in line 30 instead.
+For the lower bound of the subsequent segments, we compute them incrementally in line 27.
+Because the last point of segment $C'$ must map to the last point of $Q'$, we further tighten the lower bound by using the last alignment in line 28 instead.
 
-Furthermore, we can reduce the computational overhead of constructing the sorted reaches $\tilde{\mathbbm{q}_k}$ (lines 9--12). As illustrated in Figure~\ref{fig:L_Q-L_C-relationship}, the segment of $Q$ involved in the comparison grows incrementally. Since the reversed versions of these segments share a common prefix, the sorted reaches $\tilde{\mathbbm{q}_k}$ computed for a segment $Q'$ of length $L^Q$ can be reused to compute those for the subsequent segments. 
+Furthermore, we can reduce the computational overhead of constructing the sorted reaches $\tilde{\mathbbm{q}_k}$ (lines 11--14). As illustrated in Figure~\ref{fig:L_Q-L_C-relationship}, the segment of $Q$ involved in the comparison grows incrementally. Since the reversed versions of these segments share a common prefix, the sorted reaches $\tilde{\mathbbm{q}_k}$ computed for a segment $Q'$ of length $L^Q$ can be reused to compute those for the subsequent segments. 
 
 This optimization is detailed in Algorithm~\ref{alg:psdtw-reuse-reaches}, with the new components highlighted in {\color{blue}blue}. 
 It is important to note that because $r'$ is a function of $L^Q$, and the construction of $\tilde{\mathbbm{q}_k}$ depends on $r'$, reuse is limited to cases where $r'$ remains constant.
@@ -222,7 +229,7 @@ If the ending index has been changed, we need to add the new data points $q'_{e_
 $L_{\max}^C$ depends of $L^Q$.
 If $L_{\max}^C$ increase because $L^Q$ increase, we construct the new reach $\tilde{\mathbbm{q}}_k$ and sort it in lines 16--18.
 
-\subsection{Guided Distance} 
+\subsection{Guided Distance} % *!
 
 For faster computation, one would want to use a distance measure with linear complexity, such as ED, as the base measure for PSD.
 While PSED is effective for identifying phase-scaling changes, certain applications require capturing complex properties within those segments that ED cannot handle. 
