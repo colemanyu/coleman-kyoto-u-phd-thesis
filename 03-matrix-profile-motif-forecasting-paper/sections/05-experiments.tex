@@ -30,7 +30,7 @@ We first evaluate two primary variants, \textsf{GBRT-NN} and \textsf{GBRT-NN-S},
 
 The effect of the length $l$ of the immediate subsequence is investigated.
 We tested for five different lengths $l \in 1, 2, \ceil{h/4}, \ceil{h/2}, h$.
-For \texttt{Exchange-Rate} with $h = 9$, $l \in \{1, 2, 6, 12, 24\}$.
+For \texttt{PeMSD7} with $h = 9$, $l \in \{1, 2, 6, 12, 24\}$.
 For other datasets with $h = 24$, $l \in \{1, 2, 3, 5, 9\}$.
 \input{../figures/points_trend_analysis_RMSE}
 \input{../figures/points_trend_analysis_MAE}
@@ -89,7 +89,7 @@ Based on the above experiments, we present the following summary for the downstr
         \item Excluding time-covariates: 11 out of 12 cases showed improvement (9) or consistency (2).
         \item Including time-covariates: 100\% of cases showed improvement (10) or consistency (2).
     \end{enumerate}
-    \item Including similarly as a covariate always improves the results.
+    \item Including similarity as a covariate always improves the results.
     In particular, \textsf{GBRT-NN-S} performs much better than \textsf{GBRT-NN} in \texttt{Traffic}.
     The evaluation metrics are (RMSE, WAPE, MAE).
     Without known input-time covariates, the improvement is from (0.016, 0.079, 0.004) to (\textbf{0.008}, \textbf{0.039}, \textbf{0.002}).
@@ -101,7 +101,7 @@ Based on the above experiments, we present the following summary for the downstr
 % Discuss more complex methods NN+ and NN++
 We have further incorporated the target values (either only the last point (i.e., \textsf{GBRT-NN\textsuperscript{+}}) or all of them (i.e., \textsf{GBRT-NN\textsuperscript{++}})) of the nearest neighbor. 
 The results are in Tables~\ref{tab:results_without_covariates}, \ref{tab:results_with_covariates}.
-By incorporating these features, the models improve on \texttt{Traffic} and \texttt{PeMSD07}.
+By incorporating these features, the models improve on \texttt{Traffic} and \texttt{PeMSD7}.
 \textsf{GBRT-NN\textsuperscript{++}-S} performs the best for both the scenarios.
 
 For \texttt{Electricity}, incorporating the target values worsens the results, compared to the simpler models. But it is still better than the base line model \textsf{GBRT}, except for the case without known input-time covariates on RMSE.
@@ -114,7 +114,7 @@ Same as before, \texttt{Exchange-Rate} is insensitive to information of historic
 \subsection{Incorporating the time-covariates of the last point of the nearest neighbor}
 \input{../tables/results_with_covariates_nn_covariates}
 
-We also incorporate the covariates of the last point in the nearest-neighbor. The results is shown in Table~\ref{tab:results_with_covariates_nn_covariates}.
+We also incorporate the covariates of the last point in the nearest-neighbor. The results are shown in Table~\ref{tab:results_with_covariates_nn_covariates}.
 \texttt{PeMSD7} achieves better performance in these models and reaches the best for using \textsf{GBRT-NNC\textsuperscript{++}-S}.
 It worsens performance on \texttt{Electricity} and \texttt{Traffic}.
 It does not improve performance on \texttt{Exchange-rate}.

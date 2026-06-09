@@ -1,4 +1,5 @@
 \section{Preliminaries} \label{sec:preliminaries}
+% *!
 
 %Time Series
 To begin, we define the data type of interest: \textit{time series}.
@@ -28,6 +29,7 @@ For two time series $X$ and $Y$, the z-normalized Euclidean distance $\mathrm{di
 $\mathrm{dist}(X, Y)$ is bounded between zero and $2m$~\cite{mueen2010online}.
 
 \subsection{Matrix Profile}
+
 We will first introduce the definitions of Distance Profile and Matrix Profile.
 Then, we will introduce the algorithms to compute them fast.
 Finally, we will focus on a specific variation of Matrix Profile, which is Left Matrix Profile.
@@ -46,7 +48,7 @@ Given a length $m$, we can select an $m$-subsequence from $T$ as a query and com
     A \textit{matrix profile} $P = \min(D_1), \min(D_2), \dots, $$\min(D_{n-m+1})$ of $T$ is a vector of Euclidean distances between every subsequence $T_{i, m}$ of $T$ and its nearest neighbor in $T$.
 \end{definition}
 
-Another closed related time series of $P$, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
+Another closely related time series of $P$, namely the Matrix Profile Index $I$, stores the location of the corresponding nearest neighbor.
 
 \begin{definition}[Matrix profile index]
     A \textit{matrix profile index} $I = I_1, I_2, \dots, I_{n-m+1}$ of $T$ is a vector of integers, where $I_i = j$ if $d_{i, j} = \min{D_i}$.
@@ -115,7 +117,8 @@ Hence, it results $\mathcal{O}(n^2)$ for computing the matrix profile~\cite{zhu2
 
 Besides, the running time can be further sped up by parallelization for a single machine with multiple computation units, such as CPUs or GPUs~\cite{zhu2016matrix}.
 
-\subsection{Left Matirx Profile}
+\subsection{Left Matrix Profile} % *!
+
 In this study, instead of the general matrix profile (index), we are interested in the left version of it.
 The left version of the matrix profile informs us of the information about the left nearest neighbor of any $m$-subsequences in $T$~\cite{zhu2017matrix}.
 It is shown in Figure~\ref{fig:visualize-matrix-profile}.
@@ -136,9 +139,10 @@ To note, each entry $i$ in Matrix Profile $P_i$ is simply the minimum of $P_i^L$
     A \textit{left matrix profile index} $I^L$ is a vector of integers $I_1^L, I_2^L, \dots, I_{n-m+1}^L$ of $T$, where $I_i^L = j$ if $d_{i, j} = \min{D_i^L}$.
 \end{definition}
 
-The computational time of the left matrix is the same as the general matrix profile, since it is just separating the computation into two halves, one for the left and one for the right, which is not considered in this study.
+The computational complexity of the left matrix is the same as the general matrix profile, since the former one is just separating the computation of the later one into two halves, one for the left and one for the right, which is not considered in this study.
 
-\subsection{Gradient boosting}
+\subsection{Gradient boosting} % *!
+
 Gradient boosting~\cite{friedman2001greedy} is a boosting algorithm that ensembles a group of weak learners (usually decision trees) to make predictions.
 It sequentially adds learners to an ensemble, with each learner connecting its predecessor.
 It constructs weak learners in a way that each learner strategically corrects the predecessor's mistakes by fitting the new learner to the residual errors made by the predecessor~\cite{serrano2021grokking, geron2025handson}.

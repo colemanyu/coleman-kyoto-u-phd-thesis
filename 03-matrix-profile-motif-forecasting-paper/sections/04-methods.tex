@@ -1,5 +1,5 @@
 \section{Materials and Methods} \label{sec:method}
-
+% *!
 
 In this section, we first introduce the four datasets used in this study.
 We then formulate the time series forecasting problem and present the evaluation method, including the evaluation metrics.
@@ -7,7 +7,7 @@ We then explain how to use a Gradient Boosting Regression Tree (GBRT) for foreca
 Finally, we discuss how to leverage the nearest neighbor of a $m$-subsequence where the last data point is $y_i$ to derive covariates for $y_i$.
 The derived covariates can improve the performance of the GBRT forecaster.
 
-\subsection{Datasets} 
+\subsection{Datasets} % *!
 
 \input{../tables/datasets}
 Four datasets are used, as listed in Table~\ref{tab:dataset_statistics}.
@@ -28,7 +28,7 @@ They are called known inputs $\textbf{u}_i$ because they are known even in the f
 \input{../tables/known_covariates}
 Table~\ref{tab:known_covariates} shows the derived known inputs for the datasets.
 
-\subsection{Problem Formulation} 
+\subsection{Problem Formulation} % *!
 % \cite{torres2021deep}
 
 Time series forecasting models predict $h$ future values $y_{t+1}, y_{t+2}, \dots, y_{t+h}$ of a target $y$ at a given time point $t$.
@@ -60,7 +60,7 @@ The model estimates the value of $y_{t+\tau}$, denoted by $\hat{y}_{t+\tau}$, wi
 It is clear that the derived time-covariates from the date information are useful for forecasting when the target variable depends on the time of measurement.
 For example, if the target is the electricity consumption rate, there is a clear monthly pattern: consumption is higher in winter and summer, when heaters and air conditioners are used.
 
-\subsection{Evaluation Method} 
+\subsection{Evaluation Method} % *!
 
 Given a dataset $D$ of $N$ time series $T_i$, where $1 \leq i \leq N$, the error made by the forecaster on $D$ is simply the summation of errors made by the forecaster on each $T_i$.
 %
@@ -132,7 +132,7 @@ It makes WAPE independent of the scale of the data.
 %
 For all of them, a lower value is better.
 
-\subsection{Forecasting via GBRT} 
+\subsection{Forecasting via GBRT} % *!
 
 In order to apply GBRT into time series forecasting problem,
 we need to cast the input into an appropriate format to input into GBRT.
@@ -157,13 +157,13 @@ One may argue that the $h$ regressors operate individually and hence the tempora
 However, as the individual regressors are trained on the same flattened input $X_i'$, the prediction $Y_i$ would still preserve the temporal relationship~\cite{elsayed2021we}.
 
 We explain the above process through \texttt{Traffic} dataset, where $n = 10560$ (in which $|T_{\mathrm{train}}| = 10392$), $h = 24$, $w = h = 24$, $M_x = 0$, and $M_u = 6$.
-There are $10392-48+1 = 10345$ predictor-response pairs, which are extracted by a sliding window of size $48$ on $T_{\mathrm{train}}$.
+There are $10392-48+1 = 10345$ predictor-response pairs for one time series, which are extracted by a sliding window of size $48$ on $T_{\mathrm{train}}$.
 The size of the sliding window is the sum of the length $w$ of the window $X_i$ and the length $h$ of the output $Y_i$.
 $|X'_i| = w + M_x + M_u$.
 If the known inputs $u$ are incorporated into the forecasting, $|X'_i| = 30$.
 Otherwise, $|X'_i| = 24$.
 
-\subsection{Feature Engineering via Matrix Profile}
+\subsection{Feature Engineering via Matrix Profile} % *!
 
 We derive $\bm{x}_i$ using the information of the past nearest neighbor.
 
@@ -216,13 +216,13 @@ $\textcolor{tab:red}{y_{i-w+1}, y_{i-w+2}, \dots, y_i}, \textcolor{tab:blue}{t_{
 with length $w + M_x + l$.
 Each individual points in the immediate subsequence are appended directly to the predictor vector.
 
-\subsection{Extends to k-Nearest Neighbors}
+\subsection{Extends to k-Nearest Neighbors} % *!
 We further extend our methodology to incorporate features from the $k$-nearest neighbors ($k$-NN) rather than just the nearest neighbor ($1$-NN) of each predictor.
 
 During the extraction process over the Left Distance Profile ($D^L_i$), instead of retaining only the lowest distance value, 
 We iteratively identify the $k$ lowest distance values as follows.
 %
-We would like to retrieve the $k$-nearest neighbors without overlapping as defined by the exclusion time.
+We would like to retrieve the $k$-nearest neighbors without overlapping as defined by the exclusion zone.
 %
 First, we locate the index of the minimum value in $D^L_i$ to identify the first nearest neighbor. 
 Before the next iteration, we mask the exclusion zone surrounding this selected index.
@@ -232,7 +232,3 @@ Once the locations of the $k$ non-overlapping nearest neighbors are determined, 
 
 To denote the variants utilizing $k$-nearest neighbors, we update the name by prefixing the ``NN'' with the integer $k$ in the method name. 
 For example, when $k=2$, the \textsf{GBRT-NN} is denoted as \textsf{GBRT-2NN}.
-% \noindent\rule{\linewidth}{0.4pt}
-%%%
-%%%
-%%%

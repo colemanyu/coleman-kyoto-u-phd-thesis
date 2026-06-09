@@ -1,9 +1,10 @@
 \section{Related Work} \label{sec:related-work}
 
+% *!
 Many methods have been developed for time series forecasting.
 We introduce them by categories.
 
-\subsection{Traditional methods}
+\subsection{Traditional methods} % *!
 
 Traditional methods include rolling averages (RA), vector auto-regression (VAR)~\cite{lai2018modeling, box2015time}, and auto-regressive integrated moving averages (ARIMA)~\cite{elsayed2021we, box1970distribution, box2015time}.
 Because of their rigorous statistical properties, they have long been the standard.
@@ -14,24 +15,35 @@ However, most of these approaches have certain limitations.
 %
 % https://medium.com/data-science/understanding-the-limitations-of-arima-forecasting-899f8d8e5cf3
 % https://stats.stackexchange.com/questions/558252/what-are-the-downsides-of-arima-models
-They perform well when the data meet specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means that the mean and variance of the time series remain constant over time.
+They perform well when the data meet specific statistical assumptions, such as stationarity~\cite{lim2021timeseries}, which means that the mean and the variance of the time series remain constant over time.
 % For example, ARIMA performs well only if the underlying stochastic process of the time series satisfies the assumptions of ARIMA.
 %
 It motivates the community to develop machine learning methods, particularly deep learning methods for time series forecasting. 
 
-\subsection{Deep learning methods}
+\subsection{Deep learning methods} % *!
 
 Many deep learning models have been proposed, including RNN-based models, CNN-based models, GNN-based models, Transformer-based models, and compound models that incorporate different base models mentioned before~\cite{chen2023long}.
+%
 The compound models are promising.
 For example, RNNs are well suited to capturing long-term dependencies, whereas CNNs are well suited to capturing short-term dependencies. 
 A good way to improve performance is to combine them.
 For example, LSTnet~\cite{lai2018modeling} integrates CNN, RNN, and autoregressive~\cite{yule1927method} techniques to extract both short-term and long-term patterns.
 Using the occupancy rate of a freeway as an example~\cite{lai2018modeling} to explain these two patterns, the ``short-term'' patterns refer to the morning peaks against evening peaks, while the ``long-term'' patterns refer to the workday patterns against weekend patterns.
 Clearly, a good forecaster needs to capture and distinguish both kinds of patterns.
+%
+Deep learning methods have also been applied on chaotic time series to extract dynamic features by using complex hybrid architectures.
+\cite{su2025blsqlstm} proposed a hybrid quantum neural network model which combines Broad Learning System (BLS) and quantum long short-term memory (QLSTM) network, namely BLS-QLSTM.
+It employs phase space reconstruction and BLS for feature augmentation.
+To further improve prediction accuracy, the gating structure within the LSTM network are replaced by variational quantum circuits (VQCs) to form QLSTM.
+%
+A subsequent study~\cite{su2026blsattntcn} introduced a model called BLS-AttnTCN.
+It processes the enhanced features by a Temporal Convolutional Network (TCN) integrated with an attention mechanism to capture spatiotemporal patterns hierarchically and adaptively weight critical time steps while suppressing noise.
+As a result, prediction accuracy is enhanced.
+%
 Despite the superior performance deep learning methods have achieved, they tend to be overly complex, opaque, and incur high computational costs.
 The model proposed in this study can also be regarded as a compound model.
 
-\subsection{Nearest neighbor-based methods}
+\subsection{Nearest neighbor-based methods} % *!
 
 $k$-NN has also shown to be a promising method for time series forecasting~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast}.
 The $k$-NN uses the $w-1$ lagged values of the last time point $i$ to form a query $Q$ with length $w$.
@@ -43,16 +55,23 @@ The previous (historical) subsequences that are similar to $Q$ can provide a hin
 %
 Figure~\ref{fig:visualize-matrix-profile} depicts this idea. 
 Observe that the immediate subsequence of the right gray box is similar to that of the left gray box, which is the past (left) nearest neighbor of the right gray box.
+%
+\cite{srisuradetchai2024novel} expanded the usage of $k$-NN by including uncertainty quantification, namely a forecast interval, rather than traditional point forecasting.
+It is achieved by integrating $k$-NN with bootstrapping.
+The integrated model determines an optimal probability distribution from a range of forecasted values from different numbers of nearest neighbors.
+In other words, various $k$ parameter values are used.
+A bootstrap sample of forecasts is generated after the optimal probability distribution is identified.
+Its mean, 2.5th percentile, and 97.5th are then utilized as the point forecast, lower bound, and upper bound, respectively. 
 
 The fundamental difference between this study and previous approaches~\cite{tajmouati2024applying, martinez2019methodology, thi2021forecast} is that they directly use the subsequent points for prediction, whereas we use the nearest neighbor's information for each predictor as covariates, which are used as inputs for other forecasters.
 We explain this subtle difference by Figure~\ref{fig:visualize-matrix-profile}.
 The previous approaches simply use the information of the nearest neighbors of the last lookback window, which consisted of the last time point and its lagged values (i.e., the right gray box), for prediction.
 In contrast, we use the information of the nearest neighbors of \textit{all} of the windows in the time series.
 
-\subsection{Matrix Profile-based methods}
+\subsection{Matrix Profile-based methods} % *!
 
 To the best of our knowledge, there are only four studies using the matrix profile in time series forecasting.
-\cite{thi2021forecast} finds the most similar historical subsequence and uses its succeeding values as the prediction, similar to the nearest neighbor-based methods mentioned above.
+\cite{thi2021forecast} found the most similar historical subsequence and used its succeeding values as the prediction, similar to the nearest neighbor-based methods mentioned above.
 \cite{cartwright2021financial} used the matrix profile to visualize the financial time series data by identifying motifs.
 \cite{liu2021novel} used matrix profile to detect structural anomalies and incorporated the anomaly information to guide an attention-based long short-term memory (LSTM) model in forecasting COVID-19 indicators.
 \cite{saha2022improving} proposed an encoding-decoding methodology to learn repeating granular trends in periodic data.
