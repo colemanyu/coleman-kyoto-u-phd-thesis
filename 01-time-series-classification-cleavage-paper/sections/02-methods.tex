@@ -30,7 +30,7 @@ To identify the actual locations of the two cleavage sites in the pri-miRNA sequ
 Hence, only ``MI0000060'' (``hsa-let-7a-1'') would be selected in the table.
 It would serve as our running example.
 Its whole sequence is listed in Table~\ref{tab:hsa-let-7a-1}.
-After the selection process, we selected 827 experimental validated pre-miRNA sequences, each with its two mature miRNA products.
+Based on the filtering criterion (i.e., from Homo sapiens and having experimental supports), we selected 827 experimentally validated pre-miRNA sequences, each with its two mature miRNA products.
 This formed our dataset.
 
 
@@ -55,7 +55,7 @@ Hence, predicting secondary structures is easier and faster.
 % Secondary structure can still shed light on some of these functions in the structure-function relationships.
 We employed RNAfold from the ViennaRNA Package\footnote{The latest stable release is Version 2.7.0 (Accessed on 2025-06-22).} to predict the secondary structure for a given pri-miRNA  $S$~\cite{lorenz2011viennarna}.
 RNAfold returns the secondary structure in the dot-bracket notation and a matrix of base-pair probabilities.
-The matrix is a square matrix with the side length $|S|$, where each entry $m_{ij}$ is the probability of base $s_i$ paired up with base $s_j$.
+The matrix is a square pairwise matrix with the side length $|S|$, where each entry $m_{ij}$ is the probability of base $s_i$ paired up with base $s_j$.
 Dot-bracket notation is a way of representing the secondary structure of $S$. Open parentheses ``$($'' (Close parentheses ``$)$'') indicates that the base is paired with a complementary base further (earlier) along in $S$. Dot ``$.$'' indicates that the base is unpaired.
 Equipped with the matrix, we can construct the base-pair probability sequence of $S$. 
 The predicted secondary structure and the base-pair probability sequence of our running example are shown in Table~\ref{tab:hsa-let-7a-1}.
@@ -71,12 +71,12 @@ The same applies to the 3p cleavage site. It is located at the immediate bond be
 
 For each arm of each whole sequence, we extracted a 14-string\footnote{String with length $= 14$.} with the cleavage site located at the center of the string.
 The first 7 nt (nucleotide) before the center are highlighted in \textcolor{red}{\textbf{bold}}.
-In our running example, it would be ``\textcolor{red}{\textbf{UAUAGUU}}UUAGGU'' for the 5p cleavage site and ``\textcolor{red}{\textbf{GAGAUAA}}CUAUACA'' for the 3p cleavage site.
+In our running example, it would be ``\textcolor{red}{\textbf{UAUAGUU}}UUAGGGU'' for the 5p cleavage site and ``\textcolor{red}{\textbf{GAGAUAA}}CUAUACA'' for the 3p cleavage site.
 We refer to these 14-strings as cleavage patterns.
 % , as they contain the cleavage sites.
 We also generate non-cleavage patterns by selecting a 14-string with the center 6 nt away from the corresponding cleavage sites towards the corresponding mature miRNA~\cite{bao2016lbsizecleav, liu2021recgbm} for each arm of each whole sequence.
 % For example, the bond that is 6 nt away from the 5p cleavage site towards 5p mature miRNA is the bond between 21\textsuperscript{st} and 22\textsuperscript{nd} nucleuotides.
-% It is based on the assumption that dicer is less likely to cut the middle of the mature miRNA than the opposite side.
+% It is based on the assumption that Dicer is less likely to cut the middle of the mature miRNA than the opposite side.
 So, in our running example, the 5p non-cleavage pattern would be ``\textcolor{red}{\textbf{AGGUUGU}}AUAGUUU''.
 % The center of the 3p non-cleavage pattern is the bond between 62\textsuperscript{nd} and 63\textsuperscript{rd} nucleuotides. 
 The 3p non-cleavage pattern would be ``\textcolor{red}{\textbf{ACUAUAC}}AAUCUAC''.
@@ -169,7 +169,7 @@ The lower stability of $A$-$U$ pairs promotes strand separation, thereby facilit
 Regions rich in $A$ and $U$ are thus more likely to undergo strand selection and cleavage events.
 We assigned $A$ ($U$) with a larger absolute value than $G$ ($C$) to reflect this functional relevance.
 It aims to highlight sequence regions with higher cleavage potential.
-% The dicer cleavage sites are the bonds along the strands, the phosphodiester linkages.
+% The Dicer cleavage sites are the bonds along the strands, the phosphodiester linkages.
 % Dicer cleaves the pre-miRNA.
 % The resulting double-stranded miRNA molecule is unwound to form the guide strand and the passenger strand.
 % The stability of the double strand would affect the unwinding process.
@@ -180,9 +180,10 @@ It aims to highlight sequence regions with higher cleavage potential.
 \end{enumerate}
 It results in our baseline transformation method, namely ``Single value mapping'' as shown in row 1 of Table~\ref{tab:ts_encoding}. 
 $S$ is the input strand.
+Note that there are advanced encoding methods that consider specific values of the assignment to better encode the nucleotide relationship.
+Here, we present the general approach of the mapping and focus on preserving the complementary property.
 When we encode $S$ without incorporating the corresponding base-pair probability sequence $P$, we set $p_i$ = 1 for all the entries of $P$. 
 We use the first ten nucleotides of the complementary strand of the 3p cleav of ``hsa-let-7a-1'', as shown in Table~\ref{tab:hsa-let-7a-1_eight_strings} as $S$ in the examples in Table~\ref{tab:ts_encoding}.
-
 
 \input{../tables/ts_encoding}
 
@@ -311,7 +312,7 @@ For each group of kernels, we slide them across $T$ and compute the dot product 
 Recall that the dot product of two input vectors ($x$ and $w_i$) has the maximum value when the two vectors align in the same direction and the minimum value when they are oriented in opposite directions.
 We record the kernel that best matches the subsequence of $T$ at each timestamp in each group (i.e., argmax). We refer to these kernels as the winning kernels.
 This results in a $k$-dimensional count vector for each of the $g$ groups, where $k=3$ in Figure~\ref{fig:hydra_convolution}.
-This results in a total of $g \times k$ features, with default values of $g = 64$ and $k=8$
+This results in a total of $g \times k$ features, with default values of $g = 64$ and $k=8$.
 It uses a total of $k \times g = 512$ kernels per dilation.
 In addition to recording the kernel with the maximum response, we can also record the kernel with the minimum response, knowing that this kernel will be the best match with the ``inverted'' subsequence of $T$.
 Hydra is applied to both the original time series and its first-order differences.
@@ -373,6 +374,3 @@ MCC_{multi} = \frac{c \times s - \sum_k^K p_k \times t_k}
 {\sqrt{(s^2 - \sum_k^K p_k^2) \times (s^2 - \sum_k^K t_k^2)}}
 \end{align*}
 where $t_k = \sum_i^K C_{i, k}$ (denoting the number of times class $k$ actually occurred), $p_k = \sum_i^K C_{k, i}$ (denoting the number of times class $k$ was predicted), $c = \sum_k^K C_{k, k}$ (denoting the total number of samples correctly predicted) and $s = \sum_i^K \sum_j^K C_{i, j}$ (denoting the total number of samples).
-%%%
-%%%
-%%%

@@ -40,11 +40,11 @@ An miRNA can regulate the expression of several proteins.
 Hence, understanding the biogenesis of miRNAs is of great value.
 It involves the processing of primary miRNAs (pri-miRNAs).
 RNAs are 3D molecules.
-However, it is hard to measure the 3D structure (tertiary structure) from the experiment and predict it from 1D sequence.
-We can understand their properties by analyzing their 1D sequence or 2D structure, known as secondary structure. 
-RNA sequence is easily obtained through sequencing.
+While the 1D sequence of these molecules can be easily obtained by sequencing, it is hard to measure the 3D structure (tertiary structure) from the experiment and predict it directly from the 1D sequence.
+Many relevant properties of the 3D structure are typically investigated by analyzing the 1D sequence and the predicted 2D structure derived from it, known as secondary structure. 
+
 The sequence and its predicted secondary structure of a pri-miRNA ``hsa-let-7a-1'' is shown in Figure~\ref{fig:hsa-let-7a-1_ss}.
-% hsa-let-7a-1 will serve as our running example in this study.
+% hsa-let-7a-1 will serve as our running example in this paper.
 
 
 \input{../figures/hsa-let-7a-1_ss}
@@ -68,7 +68,7 @@ The stem-loop is still preserved, but the two arms become shorter.
 % One end is called 5' end, and the other is called 3' end.
 After that, the pri-miRNA is transported by Exportin 5 from the nucleus to the cytoplasm.
 % (i.e., outside the nucleus).
-It is further cleaved by an enzyme called dicer~\cite{lee2002microrna}. 
+It is further cleaved by an enzyme called Dicer~\cite{lee2002microrna}. 
 Dicer cleaves the stem-loop from the two arms at the two cleavage sites, shown as the two scissors in Figure~\ref{fig:hsa-let-7a-1_ss}.
 % We refer to the bond between two nucleotides along the strand that is cleaved by Dicer as the Dicer cleavage site.  
 The stem-loop is removed.
@@ -93,20 +93,20 @@ can become the guide strand.
 
 Dicer plays an important role in the biogenesis of miRNAs.
 % Hence, accurate cleavage of pre-miRNAs by Dicer is crucial for gene silencing.
-It is reasonable to argue that the structure of the pre-miRNAs informs dicer about the cleavage process.
+It is reasonable to argue that the structure of the pre-miRNAs informs Dicer about the cleavage process.
 % A recent study shows that a particular secondary RNA structure, namely 22-bulge, enhances the accuracy of miRNA biogenesis experimentally~\cite{SecondaryStructureRNA2022}.
-It would be of great benefit to understand how dicer selects cleavage sites from the neighborhood information near the cleavage sites.
+It would be of great benefit to understand how Dicer selects cleavage sites from the neighborhood information near the cleavage sites.
 % The neighborhood information refers to both the sequence and the secondary structure information.
 Studies~\cite{gu2012loop, feng2012comprehensive, macrae2007structural} revealed that the secondary structures are essential for cleavage site determination.
 Hence, to predict or classify whether a subsequence, extracted from the sequence of a pri-miRNA, contains a cleavage site, we can make use of both the sequence and secondary structure information.
 % \subsection{Related work}
 % General cleavage problem
-% Cleavage site prediction is not only defined on human dicer. Other examples include the calpain~\cite{CalpainCleavagePrediction2011} and caspasesl~\cite{SVMbasedPredictionCaspase2006}, which are proteases that cleave proteins. 
+% Cleavage site prediction is not only defined on human Dicer. Other examples include the calpain~\cite{CalpainCleavagePrediction2011} and caspasesl~\cite{SVMbasedPredictionCaspase2006}, which are proteases that cleave proteins. 
 % Most of the studies about cleavage site prediction focus on protein cleavage sites. 
 % A wide range of computational methods has been applied to this topic, including support vector machine~\cite{SVMbasedPredictionCaspase2006}, deep neural networks~\cite{PrecisePredictionCalpain2019}.
-% % Human dicer cleavage
-% In this study, we focus on human dicer cleavage sites.
-% We review the studies on human dicer cleavage sites here.
+% % Human Dicer cleavage
+% In this study, we focus on human Dicer cleavage sites.
+% We review the studies on human Dicer cleavage sites here.
 PHDcleav employed support vector machines (SVM), leveraging sequence and structure-based features for the classification~\cite{ahmed2013phdcleav}.
 LBSizeCleav improved upon it by considering the loop and bulge lengths~\cite{bao2016lbsizecleav}.
 \cite{liu2021recgbm} proposed an ensemble learning approach, using a gradient boosting machine for better accuracy.
@@ -139,12 +139,12 @@ There is a need to design a simpler model so that it can be easily extended to o
 % These sequences are strings because the entries are discrete.
 One way to analyze sequence data is to transform it into time series data.
 % By doing that, it builds a strong bridge between RNA analysis and time-series data mining.
-In response to this, we proposed a multivariate time series classification-based method.
+In response to this, we proposed a multivariate time series classification-based method to provide a simpler, more computationally efficient framework for this task.
 % Contributions
 Our contributions are shown as follows.
 \begin{enumerate}
     \item To the best of our knowledge, we are the first to frame the prediction of the cleavage sites as a multivariate time series classification problem.
-    \item We introduced several encoding methods to convert RNA data to time series. 
+    \item We introduced nine encoding methods to convert RNA sequences to time series. 
     % Time series modeling bridges bioinformatics and time series, which allows us to use state-of-the-art time series classification algorithms. 
     % Besides, the visualization power of time series allows us to understand the data more intuitively.
     \item We proposed utilizing the base-pair probabilities in the predicted secondary structure for the prediction. 
@@ -154,12 +154,3 @@ Our contributions are shown as follows.
     \item We conducted perturbation-based experiments. It shows that regions close to the cleavage sites are important for this problem. 
     It is consistent with the existing study~\cite{liu2021recgbm}.
 \end{enumerate}
-%%%
-%%%
-%%%
-
-
-
-
-
-

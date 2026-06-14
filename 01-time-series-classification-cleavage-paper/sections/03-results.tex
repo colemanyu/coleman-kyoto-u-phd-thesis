@@ -28,10 +28,10 @@ In each fold derived from the multi-class dataset, the training set has a size o
 We reported the average of the five classification metrics.
 
 The ROCKET-based classifiers require all channels in the multivariate time series to have equal length.
-We applied padding to the shorter channels using the constant value 100, which does not appear in the original time series. 
+We applied padding to the shorter channels with the constant value 100, which does not appear in the original time series. 
 It ensures the padding does not introduce ambiguity or interfere with the semantic meaning of the encoded nucleotide signals.
 
-\subsection{Channel Ablation Study}
+\subsection{Channel Importance Study}
 We utilized three types of data as the input features for each instance.
 They are (1) the RNA sequence, which consists of the primary strand and its complementary strand, (2) the secondary structure information, and (3) the base-pair probability sequence.
 To input the data into our time series-based classifiers, we converted them into multivariate time series.
@@ -40,7 +40,7 @@ For example, single value mapping encodes a strand in one channel, while grouped
 The secondary structure information is converted into a univariate time series.
 The base-pair probability sequence is already in numerical form and does not require further transformation.
 It can be used either as a standalone channel or incorporated into the encoding of the complementary strand.
-We performed a channel ablation study to determine the most informative combination of the above channels.
+We performed a channel importance study to determine the most informative combination of the above channels.
 
 We referred to the multivariate time series that consists of the channels from the RNA sequence only as the baseline setting.
 We added the other channels to this baseline.
@@ -92,7 +92,7 @@ A horizontal bar connecting combinations indicates no statistically significant 
 
 From Figure~\ref{fig:channel_ablation_cd}, we can see that including time series derived from secondary structure information and base-pair probability as a separate channel can significantly improve the performance of the classifiers. 
 Incorporating the base-pair probability sequence in the time series encoding of the complementary strand can also improve the classifier, but to a minor degree compared to serving as a standalone channel. 
-In our downstream analysis, we adopted the combination of RNA sequence time series, secondary structure time series, and base-pair probability time series as our multivariate time series input, with 4 to 6 channels, depending on the encoding used.
+In our downstream analysis, we adopted the combination of RNA sequence time series (2 to 4 channels), secondary structure time series (1 channel), and base-pair probability time series (1 channel) as our multivariate time series input, with 4 to 6 channels, depending on the encoding used.
 
 \subsection{Predictive Performance}
 The experiment was conducted on three datasets: the 5p arm, the 3p arm, and the multi-class datasets.
@@ -171,7 +171,9 @@ Note that for the 3p arm and the multi-class datasets, the combination of ``Cumu
 
 \input{../figures/best_encoding_cd}
 
-To summarize Table~\ref{tab:results}, we plot the CD diagrams for finding the best classifier, as shown in Figure~\ref{fig:best_model_cd}, and the best encoding method, as shown in Figure~\ref{fig:best_encoding_cd}.
+To summarize Table~\ref{tab:results}, we plot the CD diagrams for finding the best classifier, which is ROCKET in all cases, as shown in Figure~\ref{fig:best_model_cd}, and the best encoding method, which is enc 9 in the 5p arm dataset and enc 7 for the others, as shown in Figure~\ref{fig:best_encoding_cd}.
+It is suggested to use ROCKET as the baseline classifier.
+For the encoding, it is suggested to use enc 7 or enc 9.
 
 \subsection{Running Time Analysis}
 To compare the computational efficiency of MTSCCleav and DiCleave, we conducted a comparative analysis of their running times.
@@ -201,7 +203,7 @@ It suggests which features are essential for classification.
 The model was trained on the original training dataset.
 For each instance in the test dataset, we measure its original score and the masked score.
 We slid a masking window $w$ with a fixed length over the input time series $T$.
-$|w|$ was set to 4.
+$|w|$ was set to 4, which is about one third of the whole length.
 For each window position $i \in \{1, 2, ..., |T|-|w|+1\}$, we masked all entries across all the channels of $T$ within the window.
 Hence, we removed or hid that portion of information from the model during inference.
 The changes in classification performance in terms of accuracy relative to the unmasked original score of each $i$ are recorded.
@@ -234,26 +236,10 @@ The result is shown in Figure~\ref{fig:perturbation}.
 For the encoding methods, we cannot use the methods derived from the cumulative mapping because the accumulation would leak information from the masked region.
 We adopted ``Grouped fixed-length channel mapping'' as the encoding method and ROCKET as the classifier. 
 ``Grouped fixed-length channel mapping'' is the best encoding, other than the methods derived from the cumulative mapping, in all datasets, as shown in Figure~\ref{fig:best_encoding_cd}.
-ROCKET is the best classifier, as shown in Figure~\ref{fig:best_model_cd}..
+ROCKET is the best classifier, as shown in Figure~\ref{fig:best_model_cd}.
 
 In the 5p arm dataset, we found that masking subsequences at the tailing part caused a significant drop in the importance score, as shown in Figure~\ref{fig:perturbation}~(a).
 In the 3p arm dataset, we found that masking subsequences at the leading part caused a significant drop in the importance score, as shown in Figure~\ref{fig:perturbation}~(b).
 
 \subsection{Summary}
 Our method achieves better or comparable predictive results and a 3.7X to 28.8X speedup compared to the state-of-the-art (SOTA).
-
-%%%
-%%%
-%%%
-
-
-
-
-
-
-
-
-
-
-
-
