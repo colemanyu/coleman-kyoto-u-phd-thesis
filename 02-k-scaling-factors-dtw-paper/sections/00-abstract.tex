@@ -14,13 +14,13 @@ In addition, studies have demonstrated that combining DTW and US is necessary in
 % Motivation
 Surprisingly, all existing studies assume a single scaling factor across the entire time series.
 A time series could consist of phases. 
-Since each phase expresses at its own rate, using a single scaling factor is insufficient when comparing two time series that share similar phases but differ in expression rate.
+Since each phase expresses at its own rate, using a single scaling factor is insufficient when comparing two time series that share similar phases with different expression rates.
 %
 % Contribution
 We introduce the first framework that accounts for multiple scaling factors, Piecewise Scaling Distance (PSD).
-It employs other distance measures as its base distance measure.
+It employs a distance measure as its base distance measure.
 Because the direct implementation is slow, we propose a constrained version that enforces constraints based on the allowed segment lengths derived from the given scaling factor bound.
 It also prevents pathological results.
 Two additional speedup techniques have been proposed, which achieve 8.40X to 178.72X speedup.
-We also demonstrate the use of a lower bound when DTW is employed as the base distance measure to accelerate PSD computation.
+We also demonstrate the use of a lower bound when DTW is employed as the base distance measure to accelerate the corresponding PSD computation.
 Moreover, we show that PSD segmentation results can improve the accuracy of other distance measures.

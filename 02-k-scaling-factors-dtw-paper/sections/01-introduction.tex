@@ -1,8 +1,9 @@
-\section{Introduction} \label{sec:introduction}
+\section{Background} \label{sec:introduction} % *!
 
+% *!
 To study the mechanism of a process, we take measurements.
 They are usually taken continuously by the sensors. 
-It results continuous values at discrete timestamps. 
+It results in continuous values at discrete timestamps. 
 For example, smartphones collect users' GPS data;
 ECG monitors measure patients' heart rate.
 The continuous measurements compose a time series.
@@ -16,6 +17,7 @@ They are univariate time series.
 %
 We focus on univariate time series.
 
+% *!
 Many data mining tasks are defined on time series data.
 For example, given a set of time series, we can perform clustering based on pairwise similarities between them.
 A classifier can be trained when categorical labels are available.
@@ -26,20 +28,23 @@ Almost all tasks can be reduced to arguing the similarity between two time serie
 A good distance (similarity) measure can determine the success or failure of the algorithms built on it. The choice of an appropriate distance measure is particularly evident in classification.
 Studies show that a simple nearest-neighbor (1-NN) classifier with an appropriate distance measure is difficult to beat and can compete with more complex methods~\cite{bagnall2017great}.
 
+% *!
 A time series is treated as a whole rather than as simply a collection of data points. 
 The relationships between them are important. 
 They constitute trends and shapes. 
 Hence, the similarity measure is approximate-based rather than exact match-based~\cite{fu2011review}. 
 Besides, different invariances should be allowed. 
 
+% *!
 % DTW
 % https://www.reddit.com/r/grammar/comments/bfuqx4/what_is_the_correct_wording_for_one_of_if_not_the/
 Dynamic Time Warping (DTW) is one of, if not the most common, similarity measures.
-DTW provides invariance to time distortion by aligning and measuring the similarity between two series that are misaligned in time.
+DTW provides invariance to time distortion by aligning and measuring the similarity between the two series that are misaligned in time.
 However, it assumes that they are expressed at a similar global rate.
 Its performance is limited when global rates differ significantly. 
 We often see this behavior in domains such as speech recognition, motion analysis, patient biomedical signals, and sensor data in the manufacturing industry.
 
+% *!
 % US
 \input{../figures/nn-interpolation}
 \input{../figures/us-prefix}
@@ -50,21 +55,13 @@ The scaling factors are relatively small, since the nature of the music and the 
 However, in some other domains, we may encounter larger scaling factors.
 In bioinformatics, gene expression time series data could differ by a factor of 1.41~\cite{li2002simple, batista2014cid}.
 % Studies found that the time series of the electrical loads of the dishwasher could differ by a factor of 1.7~\cite{AcceleratingTimeSeries2018}.
-%
-% In Figure~\ref{fig:us-prefix}, $Q$ and a prefix of $C$ are similar, but at different rates.
-%
-% In searching, we typically have a query $Q$ and a longer candidate $C$.
-% We seek a prefix of $C$ that is close to $Q$.
-%
-% For better comparison, we need to eliminate the scaling effect.
-%
-% These observations demonstrate the necessity of uniform scaling.
 
+% *!
 % DTW + US
 DTW and US are used to achieve different kinds of invariance. 
-DTW handles local distortion, while US handles global scaling.
+DTW handles the local distortion, while US handles the global scaling.
 Furthermore, some studies show that for some data, the combination of US and DTW, namely USDTW, better reflects the similarity~\cite{fu2008scaling, shen2017searching, shen2018accelerating}. 
-US is first applied to transform the two time series into the same length to eliminate the effect resulting from the different rates. Then, DTW, rather than ED, is applied to address local distortion.
+US is first applied to transform the two time series into the same length to eliminate the effect resulting from the different rates. Then, DTW, rather than ED, is applied to address the local distortion.
 USDTW is computationally more expensive than DTW because it involves the computation of the DTW between $Q$ and different lengths of the prefixes of $C$, as shown in Figure~\ref{fig:us-prefix}. 
 The different lengths correspond to different scaling factors.
 
@@ -86,7 +83,7 @@ Besides, the durations of the actions are similar but not identical.
 For example, in a department store, an announcement, such as today's closing time, would be repeated several times continuously, with each repetition varying slightly in duration.
 It is also common for the sampling strategy to change over time~\cite{aggarwal2013data}.
 
-%
+% *!
 Existing studies mostly assume perfect segmentation. 
 The time series in a dataset would have the same length, and each represents a single target action.
 \cite{silva2016prefix} points out that in a more realistic setting, due to the improper segmentation in the data preparation phase, the time series could contain not just the target action but also other actions that were performed just before/after the target action.
@@ -97,24 +94,28 @@ But this study still assumes that there is only one target action in the time se
 To achieve invariance for this kind of scaling effect resulting from multiple rates, rather than using a single scaling factor, it is beneficial to identify these different phases and use the appropriate scaling factors for these segments (pieces).
 We refer to this as piecewise scaling (PS).
 
+% *!
 \input{../figures/psdtw-intuition}
 Figure~\ref{fig:psdtw-intuition} shows the intuition of PS.
 $C(1:k)$ and $Q$ share the same set of segments, but each has a different scaling.
 Multiple scaling factors must be used.
 It motivates us to design a new framework that considers applying a scaling factor on each of the phases as defined by dashed lines in the figure, during the comparison of two time series.
-To the best of our knowledge, no studies exist that address multiple scaling factors, but only one scaling factor~\cite{fu2008scaling, shen2017searching, shen2018accelerating}.
+To the best of our knowledge, no studies exist that address multiple scaling factors, but only one scaling factor~\cite{keogh2004indexing, fu2008scaling, shen2017searching, shen2018accelerating}.
 The proposed algorithm relaxes the assumption underlying US and USDTW, namely that only a single scaling factor is used to achieve x-axis scaling invariance.
 
+% *!
 \noindent\RuninHead{Problem statement} Given two time series $Q$ and $C$ and a user-given number of pieces $P$, we would like to design an algorithm that minimizes the sum of the distances of the $P$ aligned pairs of segments of $Q$ and $C$, as illustrated in Figure~\ref{fig:psdtw-intuition}. 
 Within each pair, the segments are first rescaled to the same length, and the similarity between the rescaled segments is measured using a user-chosen base distance measure.
 
+% *!
 Note that the proposed algorithm is agnostic to the user-chosen base distance measure.
 The segmentation results themselves review the phase structure of the time series. 
 Moreover, they can be leveraged for downstream usage with other distance measures. 
 First, we align the pairs according to the segmentation results.
-Then, we use the other distance measure $M$ to compute the internal distance for each pair, where $M$ can achieve certain desired invariance within each pair.
+Then, we use the other distance measure $M$ to compute the internal distance for each scaled pair, where $M$ can achieve certain desired invariance within each pair.
 Finally, the sum of the distances is used to evaluate the similarity.
 
+% *!
 % Contributions
 Our contributions are as follows:
 \begin{itemize}
@@ -129,6 +130,7 @@ Our contributions are as follows:
   \item We demonstrate that the segmentation results returned by PSD can improve the accuracy of other distance measures.
 \end{itemize}
 
+% *!
 % Roadmap
 The rest of this paper is structured as follows. 
 We present related work in Section~\ref{sec:related-work} and preliminaries in Section~\ref{sec:preliminaries}. 

@@ -10,6 +10,7 @@
     -  The use of capital letters and lowercase letters in paper titles should be consistent.
     -  Bold fonts should be used for such terms as DNA, program names, and MicroRNA in the titles of the papers.
 - [] No line numbers
+- Use `htbp`
 
 ## Notifications
 

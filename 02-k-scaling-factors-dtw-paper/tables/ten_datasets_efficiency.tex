@@ -1,25 +1,25 @@
-\begin{table*}[ht]
+\begin{table*}[ht] % *!
 \centering
-\caption{The number of distance calls and runtime on PSED\_vanilla and PSED\_parallel\_bsf of the ten datasets (train split).}
+\caption{The runtime of PSED\_vanilla and PSED\_parallel\_bsf on the ten datasets (train split). We also show the percentage of distance calls that are pruned and the speedup achieved.}
 % Note: The column specification has 5 columns
 \resizebox{1.0\columnwidth}{!}{
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{Name} & \texttt{PSED\_vanilla} & \texttt{PSED\_parallel\_bsf} & \multirow{2}{*}{\% distance calls pruned} & \multirow{2}{*}{Speed Up} \\
+\multirow{2}{*}{Name} & \texttt{PSED\_vanilla} & \texttt{PSED\_parallel\_bsf} & \multirow{2}{*}{\% distance calls pruned} & \multirow{2}{*}{Speedup} \\
 \cmidrule(lr){2-2} \cmidrule(lr){3-3}
 & Time (s) & Time (s) & & \\
 \midrule
 % Original PSED Data
-SonyAIBORobotSurface1 & 0.803 & 0.0934 & 77.69\% & 8.59X \\
-ECG200 & 96 & 3 & 90.74\% & 33.35X \\
-MedicalImages & 2267 & 35 & 96.44\% & 65.03X \\
-CBF & 43 & 1 & 74.75\% & 35.12X \\
-SwedishLeaf & 9936 & 99 & 96.19\% & 100.09X \\
-Plane & 650 & 5 & 96.66\% & 127.47X \\
-PowerCons & 2096 & 39 & 83.64\% & 53.21X \\
-GunPoint & 224 & 2 & 92.25\% & 100.73X \\
-Adiac & 19547 & 111 & 96.66\% & 176.14X \\
-Epilepsy & 7435 & 317 & 43.46\% & 23.47X \\
+SonyAIBORobotSurface1 & 0.745 & 0.089 & 77.69\% & 8.40X \\
+ECG200 & 96 & 3 & 90.74\% & 33.62X \\
+MedicalImages & 2108 & 36 & 96.44\% & 59.26X \\
+CBF & 41 & 1 & 74.75\% & 32.52X \\
+SwedishLeaf & 9785 & 98 & 96.19\% & 99.81X \\
+Plane & 648 & 5 & 96.66\% & 126.51X \\
+PowerCons & 2058 & 40 & 83.64\% & 51.81X \\
+GunPoint & 211 & 2 & 92.25\% & 99.33X \\
+Adiac & 19547 & 109 & 96.66\% & 178.72X \\
+Epilepsy & 7510 & 268 & 43.46\% & 28.01X \\
 \bottomrule
 \end{tabular}
 }

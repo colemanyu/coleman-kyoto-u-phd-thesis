@@ -1,53 +1,41 @@
-\begin{algorithm*}[t]
-\footnotesize
-\caption{Constrainted PSDTW with early abandoning and lower bounding}
+\begin{algorithm*}[t] % *!
+\scriptsize
+\caption{Constrainted PSDTW with parallel computing, early abandoning and lower bounding}
 \label{alg:psdtw-constrained}
 \begin{algorithmic}[1]
 \Require Query series $Q$, Candidate series $C$, DTW constraint parameter $r$ (in fraction), Number of pieces $P$, best\_so\_far $\mathrm{bsf}$
 \Ensure The final distance $D[m, n, P]$ if $D[m, n, P] \leq \mathrm{bsf}$, otherwise $\infty$
-\State Execute Algorithm~\ref{alg:psdtw-constrained-initial} for initialization
+\State Execute Algorithm~\ref{alg:psdtw-constrained-initial} for initialization.
 \For{$p \gets 1$ \textbf{to} $P$}
     \color{blue}
     \For{$i \gets (p \cdot L_{\mathrm{gmin}}^Q)$ \textbf{to} $\min(p \cdot L_{\mathrm{gmax}}^Q, m)$} \Comment{This iterations can be parallelized.}
     \color{black}
         {\color{black}\For{$L^Q \gets L_{\mathrm{gmin}}^Q$ \textbf{to} $L_{\mathrm{gmax}}^Q$}
             \State $i' \gets i - L^Q$ \Comment{$i'$: End point of previous segment on $Q$.}
-            \If{$i < 1$}
+            \If{$i' < 1$}
                 \State \textbf{continue}
             \EndIf
             \State $Q' \gets \operatorname{rev}(Q(i'+1: i))$ \Comment{$\operatorname{rev}(T)$: Reverse the input series $T$.}
             \State $L_{\min}^C \gets \max(L_{\mathrm{gmin}}^C, \ceil{L^Q/l})$
-            \State $L_{\max}^C \gets \min(\floor{L^Q/l}, L_{\mathrm{gmax}}^C)$
+            \State $L_{\max}^C \gets \min(\floor{L^Ql}, L_{\mathrm{gmax}}^C)$
             % {\color{green}
             \color{green}
             \State $r' \gets r \times \max(L^Q, L_{\max}^C)$ \Comment{Compute the integer value of $r$.}
             \For{$k \gets 1$ \textbf{to} $L_{\max}^C$} 
-                \State $\mathbbm{q}_k \gets (q'_{\max(1, \ceil{k/l} - r')}, \ldots, q'_{\min(\floor{kl} + r', L^Q)})$ \Comment{Construct indexed collection $\mathbbm{Q}$.}
+                \State $\mathbbm{q}_k \gets (q'_{\max(1, \ceil{k/l} - r')}, \ldots, q'_{\min(\floor{kl} + r', L^Q)})$ \Comment{Construct indexed collection $\mathbbm{Q}$ of $Q'$.}
                 \State $\tilde{\mathbbm{q}}_k \gets \operatorname{sort}(\mathbbm{q}_k)$
             \EndFor
             \color{black}
             % }
-            \For{$j \gets (p \cdot L_{\mathrm{gmin}}^C$) \textbf{to} $\min(p \cdot L_{\mathrm{gmax}}^C, n)$} 
+            \For{$j \gets (p \cdot L_{\mathrm{min}}^C$) \textbf{to} $\min(p \cdot L_{\mathrm{max}}^C, n)$} 
+                \State $\mathit{lb} \gets 0.0$, $\mathit{is\_lb\_initialized} \gets \textsc{False}$
                 \For{$L^C \gets L_{\min}^C$ \textbf{to} $L_{\max}^C$}
-                    \State $j' \gets j - L^Q$
-                    \If{$j < 1$}
+                    \State $j' \gets j - L^C$
+                    \If{$j' < 1$}
                         \State \textbf{continue}
                     \EndIf
                     \State $C' \gets \operatorname{rev}(C(j'+1: j))$
                     \State $\mathit{dist}_{\mathrm{prev}} \gets D[i', j', p-1]$
-                    \color{green}
-                    \If{$L^C = L_{\min}^C$} \Comment{Compute the lower bound from sketch.}
-                        \State $\mathit{lb} = (c'_1 - q'_1)^2$ \Comment{Partial distance contributed by the first alignment.}
-                        \For{$k \gets 2$ \textbf{to} $L^C$}
-                            \State $\mathit{lb} = \mathit{lb} + \delta(c'_k, \tilde{\mathbbm{q}}_k)$
-                        \EndFor
-                    \Else
-                        \State $\mathit{lb} = \mathit{lb} + \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C})$ \Comment{Compute the lower bound incrementally.}
-                    \EndIf
-                    \State $\mathit{lb}_\mathrm{check} = \mathit{lb} - \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C}) + (c'_{-1} - q'_{-1})^2$ \Comment{Tighten the lower bound by using the last alignment.}
-                    \If{$\mathit{dist}_{\mathrm{prev}} + \mathit{lb}_\mathrm{check}> D[i,j,p]$} 
-                        \State \textbf{continue}
-                    \EndIf
                     \color{black}
                     \If{$\mathit{dist}_\mathrm{prev} = \infty$}
                         \State \textbf{continue}
@@ -57,9 +45,56 @@
                         \State \textbf{continue}
                     \EndIf
                     \color{black}
-                    \If{$\mathit{dist}_{\mathrm{prev}}> D[i,j,p]$} \Comment{$D[i,j,p]$ stores the best so far.}
+                    \If{$\mathit{dist}_{\mathrm{prev}}> D[i,j,p]$} \Comment{$D[i,j,p]$ stores the best-so-far.}
                         \State \textbf{continue}
                     \EndIf
+                    \color{green}
+                    
+                    \If{$\neg \mathit{is\_lb\_initialized}$}
+                        \For{$k \gets 1$ \textbf{to} $L^C$} \Comment{Compute the lower bound from sketch.}
+                            \If{$k = 1$} \Comment{Partial distance contributed by the first alignment.}
+                                \State $\mathit{lb} = (c'_1 - q'_1)^2$ 
+                            \Else
+                                \State $\mathit{lb} = \mathit{lb} + \delta(c'_k, \tilde{\mathbbm{q}}_k)$
+                            \EndIf
+                            \If{$\mathit{lb} > D[i,j,p]$}
+                                \State \textbf{break}
+                            \EndIf
+                            \State $\mathit{is\_lb\_initialized} \gets \textsc{True}$
+                        \EndFor
+                    \Else
+                        \State $\mathit{lb} = \mathit{lb} + \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C})$ \Comment{Compute the lower bound incrementally.}
+                    \EndIf
+                    \If{$\mathit{lb} > D[i,j,p]$}
+                        \State \textbf{break}
+                    \EndIf
+                    
+                    % \If{$L^C = L_{\min}^C$} \Comment{Compute the lower bound from sketch.}
+                    %     \State $\mathit{lb} = (c'_1 - q'_1)^2$ \Comment{Partial distance contributed by the first alignment.}
+                    %     \For{$k \gets 2$ \textbf{to} $L^C$}
+                    %         \State $\mathit{lb} = \mathit{lb} + \delta(c'_k, \tilde{\mathbbm{q}}_k)$
+                    %     \EndFor
+                    % \Else
+                    %     \State $\mathit{lb} = \mathit{lb} + \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C})$ \Comment{Compute the lower bound incrementally.}
+                    % \EndIf
+                    
+                    \State $\mathit{lb}_\mathrm{check} = \mathit{lb} - \delta(c'_{L^C}, \tilde{\mathbbm{q}}_{L^C}) + (c'_{-1} - q'_{-1})^2$ \Comment{Tighten the lower bound by using the last alignment.}
+                    \If{$\mathit{dist}_{\mathrm{prev}} + \mathit{lb}_\mathrm{check}> D[i,j,p]$} 
+                        \State \textbf{continue}
+                    \EndIf
+                    % \color{black}
+                    % \If{$\mathit{dist}_\mathrm{prev} = \infty$}
+                    %     \State \textbf{continue}
+                    % \EndIf
+                    % \color{orange}
+                    % \If{$\mathit{dist}_\mathrm{prev} > \mathrm{bsf}$} 
+                    %     \State \textbf{continue}
+                    % \EndIf
+                    % \color{black}
+                    % \If{$\mathit{dist}_{\mathrm{prev}}> D[i,j,p]$} \Comment{$D[i,j,p]$ stores the best-so-far.}
+                    %     \State \textbf{continue}
+                    % \EndIf
+                    \color{black}
                     \State $\mathit{dist}_{\mathrm{seg}} \gets \operatorname{DTW}_r(Q'^L, C'^L$)                    \If{$\mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}} < D[i,j,p]$}
                         \State $D[i,j,p] \gets \mathit{dist}_{\mathrm{prev}}+\mathit{dist}_{\mathrm{seg}}$ \Comment{Also save the 2-tuple $(i', j')$ for the cut.}
                     \EndIf

@@ -1,32 +1,36 @@
-\section{Conclusion and Future Work} \label{sec:conclusion}
+\section{Concluding Remarks} \label{sec:conclusion} % *!
 
-In this paper, we proposed a novel distance measure framework, Piecewise Scaling Distance (PSD), which relaxes the strict assumption of a single uniform scaling factor across the entire time series. 
+% *!
+In this paper, we proposed a novel distance measure framework, Piecewise Scaling Distance (PSD), which relaxes the strict assumption of a single scaling factor across the entire time series. 
 %
 We presented an exact dynamic programming (DP) algorithm to solve this problem.
-To enhance efficiency and prevent pathological segment alignments, we introduced a constrained version, which limits the search space of segment lengths based on a given scaling factor bound. 
+To enhance efficiency and prevent pathological segment alignments, we introduced a constrained version, which limits the search space of the segment lengths based on a given scaling factor bound. 
 %
 To enhance computational efficiency, we integrated two optimization techniques for the general PSD framework.
 In addition, we proposed incorporating a lower-bounding strategy to accelerate PSDTW.
-Our experimental results demonstrate the necessity and effectiveness of PSD for identifying matches between a query $Q$ under piecewise scaling distortions and a set of candidate time series.
+Our experimental results demonstrate the necessity and effectiveness of PSD for identifying matches between a query $Q$ with piecewise scaling distortions and a set of candidate time series without such distortions.
 
+% *!
 We summarize the key deliverables.
 \begin{itemize}
-  \item It provides the distance measure that is robust to piecewise scaling distortions. Hence, it can be used to achieve better accuracy for higher-level tasks that use it as a subroutine.
-  \item Optimal phase cut: The algorithm outputs the cutting points $(i_p, j_p)$ (i.e., the ending points of the $p$\textsuperscript{th} segment) that partition the two input series into $P$ contiguous aligned segments.
+  \item PSD is robust to piecewise scaling distortions. Hence, it can be used to achieve better accuracy for higher-level tasks that use it as a subroutine.
+  \item Optimal phase cut: The algorithm outputs the cutting points that partition the two input series into $P$ contiguous aligned segments.
   Hence, it reveals the regimes in the time series.
-  \item Guided distance: The cutting points mentioned above can guide the application of other distance measures to compute the overall distance between the two series.
-  \item Phase-specific scaling factors: It identifies the local scaling factors for each phase, defined by the lengths between $i_p - i_{p-1}$ and $j_p - j_{p-1}$. 
+  \item Guided distance: The cutting points can guide the application of other distance measures to compute the overall distance between the two series.
+  \item Phase-specific scaling factors: It identifies the local scaling factors for each phase (i.e., the $p$\textsuperscript{th} segment), defined by the ratio between $i_{p+1} - i_p$ and $j_{p+1} - j_p$. 
   Hence, it reveals how expression rates vary across segments of the two series.
 \end{itemize}
 
-We discuss the potential impact and implications.
+% *!
+We discuss the potential impacts and implications.
 \begin{itemize}
     \item It improves accuracy when piecewise scaling distortions are present in the data, which is common in applications such as ``Query-by-Humming'' or ``Gesture Recognition'', where humans vary the speeds in different phases.
     \item The framework mitigates the need for manual segmentation by automatically identifying the optimal cutting points and reviewing optimal segment structures. 
-    It facilitates the continuous monitoring of sequential action without requiring a metronome or post-manual partitioning of the raw data stream.
+    It facilitates the continuous monitoring of sequential actions without requiring a metronome or post-manual partitioning of the raw data stream.
 \end{itemize}
 
-We discuss the challenges and future work here.
+% *!
+We discuss the challenges and future work.
 \begin{itemize}
     \item The number of pieces $P$ currently requires manual definition. 
     Although we can find the best value by testing a range of values, designing a more efficient method is a challenge.
@@ -34,11 +38,11 @@ We discuss the challenges and future work here.
     A lower bound specifically designed for PSD can admissibly prune unpromising candidates.
     We note that many subsequences that share the same portion (i.e., the suffix) are involved in the computation of the internal similarity. 
     It would be beneficial to reuse these computations to speed up the computation. 
-    It may be possible to reuse the result of the computation on the shorter segment to compute the result for the longer one.
+    It may be possible to reuse the result of the computation on the shorter segment to compute the result for the longer segment.
     A similar idea can be found in studies accelerating DTW.
     Incremental DTW~\cite{leodolter2021incdtw} allows for the reuse of the accumulating cost matrix for an incremental calculation of DTW.
     %
-    A difficulty in applying a similar idea to PSD is that PSD computes the distance measure between two growing segments after segment scaling by interpolation. 
+    A difficulty in applying a similar idea to PSD is that it computes the distance measure between two growing segments after scaling them via interpolation. 
     The interpolation alters the subsequence structure.
     It prevents the straightforward reuse of the computed result from the shorter segment for the longer segment.
 \end{itemize}

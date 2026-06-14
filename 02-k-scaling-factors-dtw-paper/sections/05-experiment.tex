@@ -11,13 +11,15 @@ The programs were implemented in Python.
 The Python interpreter version is 3.12.3.
 We utilized the \texttt{aeon}~\cite{middlehurst2024aeon} library of version 1.2.0 to obtain the baseline distance measures. 
 All experiments were conducted on a workstation running Almalinux 9, equipped with an Intel Xeon Gold 6326 CPU and 256GB of RAM.
+
+
 The code and data are available at \url{https://github.com/colemanyu/k-scaling-factor-dtw}.
 The data was downloaded from \url{https://www.timeseriesclassification.com}.
 % Note that an off-the-shelf personal computer is sufficient to perform an analysis using PSD.
 
 We detail the experimental setup in Section~\ref{sec:experimental-setup} and present the results in Section~\ref{sec:experimental-results}.
 
-\subsection{Experimental Setup} \label{sec:experimental-setup}
+\subsection{Experimental Setup} \label{sec:experimental-setup} % *!
 
 We utilize the GunPoint dataset, originally released in 2003~\cite{ratanamahatana2004everything}, as the running example. 
 Widely regarded as the ``iris'' dataset of the time series community~\cite{dau2019ucra}, it has appeared in over one thousand publications. 
@@ -37,11 +39,11 @@ If an actor is asked to perform the action three times continuously in a row, we
 % The first phase should take longer than subsequent phases because it is the first time the action is performed.
 This phenomenon is depicted in Figure~\ref{fig:us-concatenation_uniform_vs_random}, where the red solid curve represents an ideal case that consists of three identical phases (i.e., with identical rates), while the blue dashed curve represents a realistic scenario with varying rates.
 % The first action is slower than the second action.
-Consequently, retrieving such patterns requires assigning different scaling factors to each phase to accommodate the phase-specific rates (i.e., piecewise scaling distortions).
+Consequently, comparing them requires assigning different scaling factors to each phase to accommodate phase-specific rates (i.e., piecewise scaling distortions).
 
-\subsubsection{The target and query sets}
+\subsubsection{The target and query sets} % *!
 
-\noindent\RuninHead{The target set}
+\noindent\RuninHead{The target set} % *!
 We now describe the procedure for preparing the target and query sets for the retrieval task. 
 To construct the target set, we concatenate $P$ repetitions of each time series instance from the source dataset. 
 To ensure a fair comparison, we keep the resulting time series to match the original length $n$. 
@@ -57,7 +59,8 @@ We then generate $P$ random integers (lengths) within $[L_{\min}, L_{\max}]$ sub
 Both the target and query sets are derived from the same source dataset. Consequently, the ground truth target for a query is defined as the instance in the target set that is generated from the same underlying source time series.
 To note, we shuffled the ordering of the time series in the resulting target and query sets to prevent identical index orderings between the two sets, which could affect early abandoning performance.
 
-\subsubsection{Datasets}
+\subsubsection{Datasets} % *!
+
 \input{../figures/flow}
 \input{../tables/datasets_details}
 Table~\ref{tab:datasets_details} details the ten datasets used in this study. 
@@ -69,7 +72,9 @@ The experiment flowchart is depicted in Figure~\ref{fig:flow}.
 In our experiments, we set the warping window parameter $r = 0.1$, as suggested in the literature.
 
 \subsection{Experimental Results} \label{sec:experimental-results}
-We employ Top-$k$ Accuracy (often referred to as Precision@k~\cite{tatbul2018precision}) as the evaluation metric. 
+% *!
+
+We employ top-$k$ accuracy (often referred to as Precision@k~\cite{tatbul2018precision}) as the evaluation metric. 
 For a single query $Q$, this metric indicates whether the correct match is successfully retrieved within the top $k$ candidates:
 \begin{equation} 
 \label{eq:precision-k}
@@ -82,7 +87,7 @@ P@k(Q) =
 
 To determine the top-$k$ results, we compute the distance between $Q$ and every time series in the target set, generating a distance profile of length equal to the dataset size. 
 The top-$k$ results correspond to the $k$ instances with the smallest distances in this profile. 
-Finally, we evaluate the overall performance by computing the mean top-$k$ Accuracy across the entire query set $\mathcal{D}$:
+Finally, we evaluate the overall performance by computing the mean top-$k$ accuracy across the entire query set $\mathcal{D}$:
 \begin{equation} 
 \label{eq:precision-k-mean}
 \overbar{P@k} = \frac{\sum_{Q \in \mathcal{D}}{P@k(Q)}}{|\mathcal{D}|}
@@ -92,9 +97,10 @@ We choose $k \in {1, 3}$.
 $k=1$ refers to the exact retrieval. 
 $k=3$ give some tolerance for the retrieval. 
 
-\subsubsection{Results of GunPoint dataset (train split)}
+\subsubsection{Results of the GunPoint dataset (train split)} % *!
 
 \input{../tables/gunpoint_accuracy}
+
 We utilize the GunPoint dataset to evaluate how the parameters $P$ and $l$ affect the ability of PSD to achieve invariance under piecewise scaling. 
 The results are presented in Table~\ref{tab:gunpoint_accuracy}, 
 In the tables, the best performance of $\overbar{P@1}$ is highlighted in bold, and the second-best is \underline{underlined}.
@@ -104,7 +110,7 @@ PSED achieves the highest accuracy, followed closely by PSDTW.
 We attribute PSED's superior performance over PSDTW to the specific nature of the distortions in the query set, that is, the ``pure'' piecewise scaling distortions. 
 Since the query set exhibits only piecewise scaling distortions, the corresponding segments of the query and target time series differ solely in length (scale). 
 Consequently, the additional flexibility provided by DTW in PSDTW is unnecessary and may inadvertently increase the similarity of incorrect matches, thereby reducing discriminative power relative to the stricter PSED measure.
-However, PSDTW remains theoretically essential for handling local distortions within the phase.
+However, PSDTW remains theoretically essential for handling the local distortion within the phase.
 PSDTW applies DTW within the scaled segment, enabling robust alignment across local nonlinearities.
 
 \input{../tables/gunpoint_PSED-guided_accuracy}
@@ -136,22 +142,34 @@ Figure~\ref{fig:gunpoint-runtime} illustrates the runtime performance across var
 The first and third columns in the figure display the running time and the number of distance calculations, respectively, for all six methods. 
 To better visualize the performance differences among the efficient implementations, the second and fourth columns omit the \texttt{vanilla} baselines and focus exclusively on the other two optimized variants.
 
-The results indicate that \texttt{vanilla\_PSDTW} is orders of magnitude slower than the other approaches.
+The results indicate that \texttt{PSDTW\_vanilla} is orders of magnitude slower than the other approaches.
 % whereas the optimized methods operate within a similar performance range. 
 The computation time for all methods increases with the scaling factor $l$.
-The fourth column confirms that the lower bounding strategy effectively reduces the number of distance calculations (pruning power). 
+The fourth column confirms that the lower bounding strategy reduces the number of distance calls. 
 However, the second column reveals a critical trade-off in actual runtime.
-While the lower bound successfully accelerates PSDTW, it actually slows down PSED. 
-\input{../tables/time_proportion_lb}
-We report the time proportion of lower bound calculation in Table~\ref{tab:time_proportion_lb}, which shows that the time proportion of the lower bound calculation for PSED is much higher than that of PSDTW.
-This suggests that for the computationally lighter ED, the overhead of calculating the lower bound outweighs the time saved by pruning. 
-% Overall, the results demonstrate that PSED is significantly faster than PSDTW.
+While the lower bounding strategy successfully accelerates PSDTW in some cases (those with large runtime values), it always slows down PSED. 
+We note that in some cases, the speedup for PSDTW is tiny or occasionally slows it down.
+It is because we use it on top of early abandoning.
+Early abandoning has already pruned many distance calls, resulting in not enough calls to be pruned by the lower bounding strategy to outweigh the time spent computing the lower bound in those cases.
 
-\subsubsection{Results of the ten datasets (train split)}
+\input{../tables/time_proportion_lb}
+We report the estimated time proportion of the lower bound calculation in Table~\ref{tab:time_proportion_lb}.
+%
+The runtime of \texttt{parallel\_bsf\_lb} consists of the time for all the distance calls and the time spent computing the lower bound, while that of \texttt{parallel\_bsf} only consists of the former part.
+%
+We use the average time of a distance call of \texttt{parallel\_bsf} to estimate that of \texttt{parallel\_bsf\_lb}.
+We then estimate the time for all the distance calls of \texttt{parallel\_bsf\_lb} by multiplying the estimated average time of its distance call by the number of distance calls.
+By subtracting this estimated value from the runtime of \texttt{parallel\_bsf\_lb}, we obtain the corresponding estimated time spent computing the lower bound and hence its proportion.
+Note that the estimated time for all distance calls may exceed the overall runtime, leading to an estimated negative value for the time spent computing the lower bound and its proportion.
+%
+Table~\ref{tab:time_proportion_lb} shows that the estimated time proportion of the lower bound calculation for PSED is much higher than that of PSDTW.
+This suggests that for the computationally lighter ED, the overhead of calculating the lower bound always outweighs the time saved by pruning.
+
+\subsubsection{Results of the ten datasets (train split)} % *!
 
 We have the following findings from the previous experiment:
 \begin{enumerate}
-    \item From Table~\ref{tab:gunpoint_PSED-guided_accuracy}, PSED outperformed PSDTW in handling piecewise scaling distortions.
+    \item From Table~\ref{tab:gunpoint_PSED-guided_accuracy}, PSED outperformed PSDTW in handling piecewise scaling distortions in this task.
     \item From Figure~\ref{fig:gunpoint-runtime}, the lower bound offered no efficiency gain for PSED.
 \end{enumerate}
 Hence, we select \texttt{PSED\_parallel\_bsf} as the representative method for this evaluation.
@@ -161,7 +179,7 @@ We fix the parameters at $P=3$ and $l=1.5$.
 When $P$ in the target set is not given, the value of $P$ can be determined as follows.
 % The number of phases/regimes in the data can be determined using external methods that are designed for this purpose.
 A heuristic approach to determine $P$ is to test a range of values for $P$ as shown in Table~\ref{tab:comparison_p}.
-An incorrect matching of $P$ between the query set and the target set would significantly degrade accuracy.
+The correct matches between the ground-truth value and the user-given value on $P$ correspond to the best results.
 
 \input{../tables/ten_datasets_accuracy}
 \input{../tables/ten_datasets_PSED-guided_accuracy}
@@ -170,7 +188,7 @@ The accuracy results of the ten datasets (train split) are presented in Table~\r
 Finally, the runtime efficiency for all datasets is summarized in Table~\ref{tab:ten_datasets_efficiency}.
 It shows a significant speedup, ranging from 8.59X to 176.14X.
 
-\subsubsection{Results of the ten datasets (both train and test split)}
+\subsubsection{Results of the ten datasets (both train and test split)} % *!
 
 \input{../tables/ten_datasets_accuracy_all_data}
 With the computational efficiency \texttt{PSED\_parallel\_bsf}, we are now able to conduct the experiment on all the data, including both the train split and the test split.
