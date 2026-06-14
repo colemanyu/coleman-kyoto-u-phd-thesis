@@ -1,13 +1,14 @@
 \chapter{Preliminaries and Related Work} \label{ch:preliminaries}
 
-In this chapter, we provide background on time series analysis.
+
+In this chapter, we provide a background on time series analysis.
 A more detailed background will be presented in the respective chapters if necessary.
 
 Since many tasks require measuring the similarity between two time series, we introduce several popular distance measures in Section~\ref{sec:dist}, which complements Chapter~\ref{ch:ksfdtw}.
 They are developed for achieving different kinds of invariances.
 Note that there is no single best distance measure that can handle all types of data.
 %
-In particular, we introduce CID and Prefix and Suffix Invariant Dynamic Time Warping ($\psi$-DTW).
+In particular, we introduce ``CID'' and ``Prefix and Suffix Invariant Dynamic Time Warping ($\psi$-DTW)''.
 %
 CID can be regarded not as a single distance measure but as a framework for achieving complexity-invariance with respect to other distance measures used as the base measure.
 %
@@ -15,7 +16,7 @@ $\psi$-DTW proposes the idea that we need to ignore some subsequences during com
 
 Then, we introduce the analysis of time series using their subsequences in Section~\ref{sec:mp}.
 In detail, we focus on a powerful time-series data-mining primitive, namely the Matrix Profile, which complements Chapter~\ref{ch:mpmf}.
-Matrix profile can be considered a tool for annotating a given time series, enabling many interesting data mining tasks.
+Matrix profile can be considered as a tool for annotating a given time series, enabling many interesting data mining tasks.
 
 Finally, we focus on time series classification (TSC) in Section~\ref{sec:tsc}.
 In particular, we introduce methods for transforming time series into tabular representations, thereby enabling the use of other methods that were not originally designed for time series, which complements Chapter~\ref{ch:mpmf}.
@@ -25,12 +26,12 @@ Due to the prosperity of deep learning methods recently, we also provide a brief
 We first introduce the basic definitions of time series and subsequences.
 After that, some tasks defined on time series are also introduced.
 
-\section{Basic Definitions}
+\section{Basic Definitions} 
 
 We begin by defining a time series.
 A general form of a time series $T$ is an ordered pair of $n$ real-valued variables, $T = (b_1, c_1), (b_2, c_2), \dots, (b_n, c_n)$, where $b_i$ is the behavioral attribute and $c_i$ is the contextual attribute, where $1 \leq i \leq n$. 
 $c_i$ refers to the time stamp at which the measurement $b_i$ is taken.
-Since the measurements are always taken in a uniform manner, $t_i$ is simply incrementing from $1$ to $n$ uniformly.
+Since the measurements are always taken in a uniform manner, $c_i$ is simply incrementing from $1$ to $n$ uniformly.
 Hence, we can represent a time series more concisely as $T = t_1, t_2, \dots, t_n$, where $t_i = b_i$.
 
 \begin{definition}[Time Series] 
@@ -65,6 +66,7 @@ Several of them are listed below.
 \end{itemize}
 
 \section{Distance Measures} \label{sec:dist}
+
 To quantify the similarity between two time series, we need to define a distance measure, also known as a similarity measure, between them.
 A smaller value means that the two time series are more similar.
 %
@@ -74,9 +76,9 @@ Many distance measures have been proposed in the literature.
 Among them, the most established measures are undoubtedly Euclidean Distance (ED) and Dynamic Time Warping (DTW).
 They are representatives of the two board classes of distance measures, namely ``lock-step'' and ``elastic''.
 
-\subsection{Euclidean Distance (ED)}
-\input{../figures/alignment}
+\subsection{Euclidean Distance (ED)} 
 
+\input{../figures/alignment}
 ED is a lock-step distance measure. 
 Given two time series $Q$ and $C$ with the same length $n$, it compares the time point $q_i$ of $Q$ with the time point $c_i$ of $C$ at the same time (index). 
 Note that, traditionally, lockstep distance measures require the two time series to have the same length because of the one-to-one alignment, as shown in Figure~\ref{fig:alignment}.
@@ -96,7 +98,7 @@ It accounts for the linear association between the two time series using the Pea
 To note, there is another measure called Edit Distance for strings. And Edit Distance is also sometimes abbreviated as ED in string processing or bioinformatics.
 In this study, we focus on time series analysis and use ED to denote Euclidean distance rather than edit distance.
 
-\subsection{Dynamic Time Warping (DTW)}
+\subsection{Dynamic Time Warping (DTW)} 
 
 Dynamic Time Warping is an elastic measure~\cite{sakoe1978dynamic}.
 In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching, as shown in Figure~\ref{fig:alignment}.
@@ -110,7 +112,7 @@ DTW with a warping window constraint is called constrained DTW (cDTW).
 Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
 In the study, we focus on the Sakoe-Chiba band.
 
-\subsection{Derivative Dynamic Time Warping (DDTW)}
+\subsection{Derivative Dynamic Time Warping (DDTW)} 
 
 The Derivative Dynamic Time Warping (DDTW) is a variant of DTW~\cite{keogh2001derivative}.
 Instead of comparing original raw values, it compares two time series using their first-order derivatives, but with an approximation.
