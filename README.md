@@ -32,15 +32,15 @@ by January 13.
 50 minutes.
         - Presentation slides should also be distributed to the examiners on the day of the presentation.
         - It is OK that 1 page consists of 4 slides with printed double-sided. (i.e., 1 paper can contain 8 slides.)
-        - Water for examiners. Laser Pointer.
+        - <s>Water for examiners</s>, Laser Pointer.
      
 - The pre-defense 2.0
     - March 25 (Wednesday) PM3-7
-        - Building 7 (in Yoshida campus), the first floor, Seminar room 1 (room 127).
+    - Building 7 (in Yoshida campus), the first floor, Seminar room 1 (room 127).
      
 - Main defense
     - June 16: 10:30-12:00
-        - Seminar room 2 (1F room 131), building 7, Main campus 
+    - Seminar room 2 (1F room 131), building 7, Main campus 
 
 ## Remarks
 
