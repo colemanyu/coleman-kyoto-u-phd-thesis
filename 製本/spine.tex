@@ -1,0 +1,35 @@
+\documentclass{article}
+
+% Set the dimensions of the spine
+\usepackage[
+    paperheight=11in, 
+    paperwidth=0.6in, % Calculated based on 159 pages
+    margin=0.05in     % Tiny margins to maximize printable area
+]{geometry}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\begin{document}
+\pagestyle{empty} 
+\pagecolor{white} % Sets the background color to white
+\color{black}     % Sets the text color to black
+
+\centering
+\vfill 
+
+% Rotate the text -90 degrees to read top-to-bottom
+\rotatebox{-90}{%
+    % Wrap the title and subtitle in a tabular environment to stack them
+    \hspace{1cm} 
+    \begin{tabular}{@{}c@{}}
+        \Large Subsequence-Centric Methods for Enhancing Time Series Analysis: \\[0.5ex]
+        \Large Piecewise Similarity, Covariate Augmentation, and Genomic Encoding
+    \end{tabular}
+    \hspace{7cm} 
+    % Author
+    \Large Coleman Yu%
+}
+
+\vfill
+\end{document}
