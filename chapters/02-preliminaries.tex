@@ -1,5 +1,5 @@
 \chapter{Preliminaries and Related Work} \label{ch:preliminaries}
-
+% *!
 
 In this chapter, we provide a background on time series analysis.
 A more detailed background will be presented in the respective chapters if necessary.
@@ -15,7 +15,7 @@ CID can be regarded not as a single distance measure but as a framework for achi
 $\psi$-DTW proposes the idea that we need to ignore some subsequences during comparison for better results, which highlights the situation that whole sequence comparison performs poorly.
 
 Then, we introduce the analysis of time series using their subsequences in Section~\ref{sec:mp}.
-In detail, we focus on a powerful time-series data-mining primitive, namely the Matrix Profile, which complements Chapter~\ref{ch:mpmf}.
+In detail, we focus on a powerful time-series data-mining primitive, namely Matrix Profile, which complements Chapter~\ref{ch:mpmf}.
 Matrix profile can be considered as a tool for annotating a given time series, enabling many interesting data mining tasks.
 
 Finally, we focus on time series classification (TSC) in Section~\ref{sec:tsc}.
@@ -26,7 +26,7 @@ Due to the prosperity of deep learning methods recently, we also provide a brief
 We first introduce the basic definitions of time series and subsequences.
 After that, some tasks defined on time series are also introduced.
 
-\section{Basic Definitions} 
+\section{Basic Definitions} % *!
 
 We begin by defining a time series.
 A general form of a time series $T$ is an ordered pair of $n$ real-valued variables, $T = (b_1, c_1), (b_2, c_2), \dots, (b_n, c_n)$, where $b_i$ is the behavioral attribute and $c_i$ is the contextual attribute, where $1 \leq i \leq n$. 
@@ -65,7 +65,8 @@ Several of them are listed below.
     It will be further discussed in Chapter~\ref{ch:mpmf}.
 \end{itemize}
 
-\section{Distance Measures} \label{sec:dist}
+\section{Distance Measures} \label{sec:dist} % *!
+% *!
 
 To quantify the similarity between two time series, we need to define a distance measure, also known as a similarity measure, between them.
 A smaller value means that the two time series are more similar.
@@ -76,7 +77,7 @@ Many distance measures have been proposed in the literature.
 Among them, the most established measures are undoubtedly Euclidean Distance (ED) and Dynamic Time Warping (DTW).
 They are representatives of the two board classes of distance measures, namely ``lock-step'' and ``elastic''.
 
-\subsection{Euclidean Distance (ED)} 
+\subsection{Euclidean Distance (ED)} % *!
 
 \input{../figures/alignment}
 ED is a lock-step distance measure. 
@@ -98,7 +99,7 @@ It accounts for the linear association between the two time series using the Pea
 To note, there is another measure called Edit Distance for strings. And Edit Distance is also sometimes abbreviated as ED in string processing or bioinformatics.
 In this study, we focus on time series analysis and use ED to denote Euclidean distance rather than edit distance.
 
-\subsection{Dynamic Time Warping (DTW)} 
+\subsection{Dynamic Time Warping (DTW)} % *!
 
 Dynamic Time Warping is an elastic measure~\cite{sakoe1978dynamic}.
 In contrast to lock-step distance measures, elastic distance measures allow one-to-many point matching, as shown in Figure~\ref{fig:alignment}.
@@ -112,7 +113,7 @@ DTW with a warping window constraint is called constrained DTW (cDTW).
 Two famous windows are the Sakoe-Chiba band~\cite{sakoe1978dynamic} and the Itakura parallelogram~\cite{itakura1975minimum}.
 In the study, we focus on the Sakoe-Chiba band.
 
-\subsection{Derivative Dynamic Time Warping (DDTW)} 
+\subsection{Derivative Dynamic Time Warping (DDTW)} % *!
 
 The Derivative Dynamic Time Warping (DDTW) is a variant of DTW~\cite{keogh2001derivative}.
 Instead of comparing original raw values, it compares two time series using their first-order derivatives, but with an approximation.
@@ -128,7 +129,8 @@ The $1/2$ term in the second item of the numerator comes from the fact that the 
 Note that the estimate is not defined for the first and last elements of the time series in the above equation. 
 In these boundary cases, we use the estimates of the second and penultimate (i.e., the second-to-last thing) as the estimates for the first and last elements, respectively.
 
-\subsection{Weighted Dynamic Time Warping (WDTW)}
+\subsection{Weighted Dynamic Time Warping (WDTW)} % *!
+
 The Weighted Dynamic Time Warping (WDTW) is a variant of DTW~\cite{jeong2011weighted}. 
 It is a penalty-based DTW designed to prevent pathological paths.
 Recall that a warping window (e.g, Sakoe-Chiba band) is enforced on the cost matrix of DTW, such that some paths are excluded.
@@ -149,12 +151,13 @@ Where:
 \end{itemize}
 Intuitively, if $x_i$ and $y_j$ are far apart temporally, it will have a larger weight to discourage their alignment and vice versa.
 
-\subsection{Weighted Derivative Dynamic Time Warping (WDDTW)}
+\subsection{Weighted Derivative Dynamic Time Warping (WDDTW)} % *!
 
 \cite{jeong2011weighted} also proposed the weighted version of DDTW. 
 In brief, a weight is applied to the local cost function when computing DTW on the first derivative.
 
-\subsection{Shape Dynamic Time Warping (shapeDTW)}
+\subsection{Shape Dynamic Time Warping (shapeDTW)} % *!
+
 The Shape Dynamic Time Warping (shapeDTW) is a variant of DTW~\cite{zhao2018shapedtw}.
 The main modification to the original DTW is the way the local distance between points is computed.
 Recall that DTW compares single scalar points.
@@ -167,7 +170,8 @@ Then, the distance between descriptors is calculated rather than between raw val
 When a raw subsequence is chosen to construct the local descriptors, a common metric used for comparing two local descriptors is the Euclidean distance.
 In the evaluation, a raw subsequence is chosen to construct the local descriptors, which is the default setting in Aeon.
 
-\subsection{Amercing Dynamic Time Warping (ADTW)}
+\subsection{Amercing Dynamic Time Warping (ADTW)} % *!
+
 The Amercing Dynamic Time Warping (WDTW) is a variant of DTW~\cite{herrmann2023amercing}.
 It is also designed to constrain the amount of warping, as in cDTW and WDTW.
 While cDTW imposes a hard window and WDTW uses multiplicative weights (i.e, MLWF), ADTW introduces an additive penalty for non-diagonal alignment.
@@ -196,7 +200,7 @@ To note, ADTW generalizes ED and DTW.
 If $\omega = 0$, no need to pay the fine for the non-diagonal alignment, which reduces to DTW.
 If $\omega \rightarrow \infty$, the non-diagonal alignment becomes prohibitive, and it reduces to ED.
 
-\subsection{Complexity-Invariant Distance (CID)}
+\subsection{Complexity-Invariant Distance (CID)} % *!
 
 Real-world data often exhibit intrinsic variations that must be ``calibrated'' or ``penalized'' during measurement to prevent the distance from being artificially affected and match our intuition. 
 %
@@ -237,7 +241,8 @@ Hence, CID would degenerate to the original base distance measure.
 There are other cases where we need to calibrate the time series during measurement, such as uniform scaling.
 It is further discussed in Chapter~\ref{ch:ksfdtw}.
 
-\subsection{Prefix and Suffix Invariant Dynamic Time Warping}
+\subsection{Prefix and Suffix Invariant Dynamic Time Warping} % *!
+
 Sometimes, we cannot consider the whole sequence; we need to ignore some data to get a meaningful result.
 
 The endpoint constraints of DTW force the alignment of the first and last observations of the compared sequences.
@@ -255,10 +260,11 @@ The above equation defines the base cases of DTW. The remaining part is the same
 This study shows that a single time series in the dataset may not only contain the desired action. Hence, some data in the prefix or suffix should be ignored.
 We further argue that a time series may contain several actions in a row, instead of a single action in Chapter~\ref{ch:ksfdtw}.
 
-\section{Subsequence analysis using matrix profile} \label{sec:mp}
+\section{Subsequence analysis using matrix profile} \label{sec:mp} % *!
+% *!
 % Draw a figure for the matrix profile
 
-The Matrix Profile~\cite{zhu2020swiss} is a data mining primitive that can solve many tasks by computing the nearest neighbor of each $m$-subsequence in $T_A$. To note, those nearest neighbors could be found within the same time series (i.e., $T_A$) or from other time series (i.e., $T_B$). 
+Matrix Profile~\cite{zhu2020swiss} is a data mining primitive that can solve many tasks by computing the nearest neighbor of each $m$-subsequence in $T_A$. To note, those nearest neighbors could be found within the same time series (i.e., $T_A$) or from other time series (i.e., $T_B$). 
 The former case is called self-join or AA-join. The latter case is called AB-join.
 
 First, we introduce the Distance profile, which is used to compute the Matrix Profile.
@@ -281,7 +287,7 @@ Another closed related time series of $P$, namely the Matrix Profile Index $I$, 
 With $P$ and $I$, we know the location and similarity of the nearest neighbor of each $m$-subsequence in $T$.
 It can be computed in $\mathcal{O}(n^2)$~\cite{zhu2016matrix, zhong2024mass}.
 
-\subsection{Time series motifs}
+\subsection{Time series motifs} % *!
 
 Time series motifs are the most similar pairs of subsequences within a dataset~\cite{yeh2016matrix}. They find applications in music and machine log data.
 With the matrix profile, they can be identified by locating the two lowest values from $P$. Then, the two subsequences can be extracted from the corresponding locations, informed by $I$.
@@ -291,16 +297,16 @@ Let's denote the two subsequences of the motif as $A$ and $B$ in a time series $
 First, compute the mean time series $M$ from $A$ and $B$ by averaging.
 Set a threshold which equals $\theta = r \times \operatorname{ED}(A, B)$, where $r > 1$ is user-given and $\operatorname{ED}(A, B)$ is obtained from $P$.
 Then, we compute a distance profile of $M$ on $T$, which encodes the distances between $M$ and each subsequence with length $|M|$ in $T$.
-Any part of the distance profile that is smarter than $\theta$ points to a member of $M$ in $T$.
+Any part of the distance profile that is smaller than $\theta$ points to a member of $M$ in $T$.
 Now, we have a motif with more than 2 members. To distinguish, we call it a motif family.
 
-\subsection{Discords}
+\subsection{Discords} % *!
 
 Discords refers to outliers. In time series, they refer to the most unusual subsequences.
 Given the matrix profile, the highest peak (greater than a user-defined threshold) corresponds to a discord.
 The idea is that if a subsequence's nearest neighbor is far away from it (i.e., a peak), no other subsequence is similar to it, so it is an outlier.
 
-\subsection{Time series chains}
+\subsection{Time series chains} % *!
 
 It is a special kind of pattern that captures evolutionary behavior~\cite{zhu2017matrix}.
 Note that not any two members of the chain are similar.
@@ -326,7 +332,7 @@ We define the left version as follows. The right version can be defined similarl
 The left (right) matrix profile index defines a directional link between two similar subsequences.
 By analyzing these directional links, a sequence of evolving patterns over time can be identified. The time series chain captures degradation or evolving trends.
 
-\subsection{Segmentation}
+\subsection{Segmentation} % *!
 
 Semantic segmentation aims to partition a whole time series into contiguous subsequences~\cite{yeh2018time}. Each subsequence is internally consistent. It is called a regime.
 The main idea is that a subsequence in a regime should be similar to other subsequences in the same regime.
@@ -334,7 +340,7 @@ Recall that $I$ indicates the index of the nearest neighbor of a subsequence.
 Intuitively, these indices refer to similarity arcs between subsequences and their corresponding nearest neighbor. Then, for each time point, we can calculate how many arcs have passed through this point.
 A time point where few arcs cross indicates that it is a boundary of a regime, as the subsequences of its left are not similar to those on its right.
 
-\subsection{MPdist}
+\subsection{MPdist} % *!
 
 The aforementioned distance measures require the main body (even for $\psi$-DTW) of two time series to be aligned.
 MPdist moves the whole-sequence-based similarity to subsequence-based similarity.
@@ -357,8 +363,7 @@ It has a nice property that when $m = n$, where $n = |A| = |B|$, MPdist degenera
 It can be computed in $\mathcal{O}(\text{Number of subsequences} \times n)$.
 To note, it does not satisfy the triangle inequality, so it is not a distance metric.
 
-\subsection{Shapelets}
-% Contrast
+\subsection{Shapelets} % *!
 
 Shapelets~\cite{ye2009time} are subsequences that are maximally representative of a class.
 They are the characteristics of a time series.
@@ -385,10 +390,10 @@ In this simple case, one class only contains a time series $A$, and the other cl
 
 % \subsection{Consensus}
 
-\section{Time series classification}
-\label{sec:tsc}
+\section{Time series classification} \label{sec:tsc} % *!
 
-\subsection{Transformations for feature extraction} 
+\subsection{Transformations for feature extraction} % *!
+% *!
 
 Here, we introduce three transformation methods, including hctsa~\cite{fulcher2017hctsa}, catch22~\cite{lubba2019catch22}, and ROCKET~\cite{dempster2020rocket} (and its variants ~\cite{dempster2021minirocket, tan2022multirocket, dempster2023hydra}).
 They fall into two categories of transformation: curated and non-curated.
@@ -397,7 +402,7 @@ The transformations of ROCKET and its variants are non-curated.
 They simply generate a large set of features quickly and rely on a downstream classifier, such as a Ridge Classifier, to learn which features are useful for classification.
 They output feature vectors that capture the characteristics of the original time series, which are eventually input to the downsteam methods, such as classifiers, for the final results.
 
-\subsubsection{hctsa}
+\subsubsection{hctsa} % *!
 
 hctsa~\cite{fulcher2017hctsa} computes over 7,700 features from time series by leveraging past domain knowledge.
 Recall that we can summarize a time series by measuring its statistical values, such as the mean.
@@ -409,7 +414,7 @@ With the matrix, downstream tasks such as classification or regression can be ap
 This exhaustive approach enables researchers to identify which features are useful to the downstream tools, such as XGBoost, which can tell which features are the most discriminative by plotting the feature importance graph.
 One obvious limitation of this approach is its computational cost.
 
-\subsubsection{catch22}
+\subsubsection{catch22} % *!
 
 catch22~\cite{lubba2019catch22} is a follow-up study of hctsa.
 It aims to find a small set of time-series features that exhibit strong classification performance across a given collection of time-series problems and are minimally redundant.
@@ -419,7 +424,7 @@ Note that, with much fewer features, this yields a small tabular representation 
 Hence, it can be used with more computationally expensive methods.
 As a result, it provides a good balance between speed, accuracy, and domain explainability.
 
-\subsubsection{ROCKET}
+\subsubsection{ROCKET} % *!
 
 The main difference between ROCKET~\cite{dempster2020rocket} (and its variants~\cite{dempster2021minirocket, tan2022multirocket, dempster2023hydra}) and the aforementioned approaches is that the transformation is based on thousands of (random) convolutional kernels—filters with randomly assigned lengths, weights, and dilations —rather than on curated methods.
 To note, in MINIROCKET~\cite{dempster2021minirocket}, the convolutional kernels are created deterministically for faster speed.
@@ -428,7 +433,7 @@ The main idea is that by a sufficiently large and diverse set of random kernels,
 ROCKET has good predictive accuracy, and it's fast because the features are simply extracted by computationally cheap kernels.
 However, this has a main disadvantage: the resulting features are difficult to interpret.
 
-\subsection{Ridge Classifier}
+\subsection{Ridge Classifier} % *!
 
 The classifier that is usually chosen to work with ROCKET and its variants is a ridge classifier. The main advantage of it is speed. ROCKET and its variants generate a large number of features, making a fast classifier desirable.
 
@@ -447,7 +452,7 @@ Besides, the generated features by the random kernels in ROCKET and its variants
 Ridge regression shrinks regression coefficients toward zero by adding an L2 penalty.
 It reduces model complexity and helps with multicollinearity.
 
-\subsection{Deep learning for Time Series Classification}
+\subsection{Deep learning for Time Series Classification} % *!
 % \cite{shifaz2022scalable}
 
 Recently, deep learning has made advancements in many different aspects in data science such as computer vision.
@@ -468,7 +473,7 @@ One of the advantages of deep learning methods is transfer learning~\cite{yosins
 The model can be pre-trained on one dataset and then continue to train on a new dataset.
 It is particularly useful when the new dataset does not have enough labeled data.
 
-\subsubsection{InceptionTime}
+\subsubsection{InceptionTime} % *!
 
 % https://sh-tsang.medium.com/brief-review-inceptiontime-finding-alexnet-for-time-series-classification-d83445c494d7
 % https://datasciencemilan.medium.com/time-series-classification-with-deep-learning-205db7b47e1e
@@ -501,7 +506,7 @@ To note, to mitigate the vanishing gradient problem, shortcut linear connections
 %
 It is the second fastest state-of-the-art TSC classifier after ROCKET~\cite{middlehurst2021hivecote}.
 
-\subsubsection{TimesNet}
+\subsubsection{TimesNet} % *!
 
 % TimesNet: Unifying Time Series Analysis Through Temporal 2D-Variation Modeling | by Dong-Keon Kim | Medium
 % 关于TimesNet的结构相关解析-CSDN博客
