@@ -10,17 +10,17 @@ Details of the incorporated covariates are in Algorithm~\ref{alg:feature_eng}.
 }
 \label{tab:model_variants}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccccc}
 \toprule
-\textbf{Method} & \textbf{Base Features} & $\mathbf{NN_{\text{imm}}}$ & $\mathbf{NN_{\text{last}}}$ & $\mathbf{NN_{\text{tar}}}$ & $\mathbf{NN_{\text{cov}}}$ \\
+\textbf{Method} & \textbf{Base Features} & $\mathbf{NN_{\text{imm}}}$ & $\mathbf{NN_{\text{last}}}$ & $\mathbf{NN_{\text{tar}}}$ & $\mathbf{NN_{\text{cov}}}$ & $M_x$ \\
 \midrule
-\textsf{GBRT} & \checkmark & & & & \\
-\textsf{GBRT-NN} & \checkmark & \checkmark & & & \\
-\textsf{GBRT-NN\textsuperscript{+}} & \checkmark & \checkmark & \checkmark & & \\
-\textsf{GBRT-NN\textsuperscript{++}} & \checkmark & \checkmark & & \checkmark & \\
-\textsf{GBRT-NNC} & \checkmark & \checkmark & & & \checkmark \\
-\textsf{GBRT-NNC\textsuperscript{+}} & \checkmark & \checkmark & \checkmark & & \checkmark \\
-\textsf{GBRT-NNC\textsuperscript{++}} & \checkmark & \checkmark & & \checkmark & \checkmark \\
+\textsf{GBRT} & \checkmark & & & & & 0 \\
+\textsf{GBRT-NN} & \checkmark & \checkmark & & & & 1 \\
+\textsf{GBRT-NN\textsuperscript{+}} & \checkmark & \checkmark & \checkmark & & & 2 \\
+\textsf{GBRT-NN\textsuperscript{++}} & \checkmark & \checkmark & & \checkmark & & 2 \\
+\textsf{GBRT-NNC} & \checkmark & \checkmark & & & \checkmark & 2 \\
+\textsf{GBRT-NNC\textsuperscript{+}} & \checkmark & \checkmark & \checkmark & & \checkmark & 3 \\
+\textsf{GBRT-NNC\textsuperscript{++}} & \checkmark & \checkmark & & \checkmark & \checkmark & 3 \\
 \bottomrule
 \multicolumn{6}{l}{\small \textit{Note:} Appending \textsf{-S} to any method name additionally incorporates} \\
 \multicolumn{6}{l}{\small the similarity $s$ into the models.}

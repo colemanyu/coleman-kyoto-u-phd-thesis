@@ -1,17 +1,16 @@
 \begin{table*}[tb] % *!
 \centering
-\caption{Best models for each dataset with (RMSE, WAPE, MAE) respectively.
-}
+\caption{Best models for each dataset with (RMSE, WAPE, MAE) respectively.}
 \label{tab:best_models}
-\resizebox{\columnwidth}{!}{
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrr}
 \toprule
 \textbf{Dataset} & Without time-covariates & With time-covariates \\
 \midrule
-\texttt{Electricity} & \textsf{GBRT} (136.254, -, -), \textsf{GBRT-3NN\textsuperscript{++}-S} (-, 0.099, 54.895) & \textsf{GBRT-NN} (123.591, -, -), \textsf{GBRT-2NN\textsuperscript{++}-S} (-, 0.088, 48.822) \\
-\texttt{Traffic} & \textsf{GBRT-NN\textsuperscript{++}-S} (0.008, 0.035, 0.002) & \textsf{GBRT-NN\textsuperscript{++}-S} (0.009, 0.058, 0.003) \\
-\texttt{PeMSD7} & \textsf{GBRT-3-NN\textsuperscript{++}-S} (5.514, 0.050, 2.932) & \textsf{GBRT-3NNC\textsuperscript{++}-S} (5.090, 0.047, 2.743) \\
-\texttt{Exchange-Rate} & \textsf{GBRT-NN} (0.019, 0.015, 0.011) & \textsf{GBRT-NN} (0.019, 0.015, 0.012) \\
+\texttt{Electricity} & \textsf{GBRT} (\textbf{136.254}, 0.103, 57.929), \textsf{GBRT-NN\textsuperscript{++}-S} (140.920, \textbf{0.099}, \textbf{55.641}) & \textsf{GBRT-NN\textsuperscript{+}-S} (\textbf{120.542}, \textbf{0.088}, \textbf{49.396}) \\
+\texttt{Traffic} & \textsf{GBRT-NN\textsuperscript{+}-S} (\textbf{0.007}, \textbf{0.036}, \textbf{0.002}) & \textsf{GBRT-NN\textsuperscript{+}-S} (\textbf{0.009}, 0.062, \textbf{0.003}), \textsf{GBRT-2NN\textsuperscript{++}-S} (0.010, \textbf{0.058}, \textbf{0.003}) \\
+\texttt{PeMSD7} & \textsf{GBRT-3NN\textsuperscript{++}-S} (\textbf{5.511}, \textbf{0.050}, \textbf{2.928}) & \textsf{GBRT-3NNC\textsuperscript{++}-S} (\textbf{5.095}, \textbf{0.047}, \textbf{2.739}) \\
+\texttt{Exchange-Rate} & \textsf{GBRT-NN} (\textbf{0.018}, \textbf{0.015}, \textbf{0.011}) & \textsf{GBRT-NN} (\textbf{0.018}, \textbf{0.015}, \textbf{0.011}) \\
 \bottomrule
 \end{tabular}
 }

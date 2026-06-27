@@ -1,6 +1,6 @@
-\section{Discussion} \label{sec:discussion}
+\section{Discussion} \label{sec:discussion} % *!
 
-\subsection{"Lookahead" covariates help forecasting}
+\subsection{"Lookahead" covariates help forecasting} % *!
 
 The experimental results consistently demonstrate that leveraging nearest neighbor information significantly improves the predictive accuracy of GBRT models. 
 By identifying a historical subsequence of a nearest neighbor that is most similar to the current lookback window, the model gains access to a lookahead/template of what happened next in a similar past situation. 
@@ -11,7 +11,7 @@ For \texttt{PeMSD7}, incorporating information about the nearest neighbor itself
 The included similarity $s$ can be treated as a confidence measure for the "Lookahead" covariates.
 $NN_{\text{last}}$, $NN_{\text{tar}}$, and $NN_{\text{cov}}$ provides more information about the similar past situation.
 
-\subsection{Raw values vs. other representations}
+\subsection{Raw values vs. other representations} % *!
 
 While Matrix Profile requires z-normalization for subsequence similarity computation, using the raw values of the immediate subsequence allows the model to recover lost magnitude information.
 
@@ -20,7 +20,7 @@ However, the experiments show that this representation discards essential inform
 
 % \subsection{Date information dependency and history length}
 
-\subsection{Include k-nearest neighbors information}
+\subsection{Include k-nearest neighbors information} % *!
 
 Expanding the feature set to include covariates derived from $k$-nearest neighbors ($k=2, 3$) can improve the performance for datasets, namely \texttt{Electricity} and \texttt{PeMSD7}. 
 It can be seen from Table~\ref{tab:best_models} that models for $k$-nearest neighbors such as \textsf{GBRT-2NN\textsuperscript{++}-S}, \textsf{GBRT-3NN\textsuperscript{++}-S} and \textsf{GBRT-3NNC\textsuperscript{++}-S} appeared as the best models.

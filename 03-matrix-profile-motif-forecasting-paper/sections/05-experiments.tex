@@ -1,4 +1,5 @@
 \section{Experiments} \label{sec:experiments}
+% *!
 
 % exchange rate does not depend on time covariates
 % Traffic, including s worsen the performance
@@ -26,12 +27,12 @@ The results are in Tables~\ref{tab:results_without_covariates},
 In the table of experimental results, \textbf{bold} represents the best result, and \underline{underlined} represents the second best.
 We first evaluate two primary variants, \textsf{GBRT-NN} and \textsf{GBRT-NN-S}, for initial testing.
 
-\subsection{Effect of the length l of the immediate subsequence}
+\subsection{Effect of the length l of the immediate subsequence} % *!
 
 The effect of the length $l$ of the immediate subsequence is investigated.
-We tested for five different lengths $l \in 1, 2, \ceil{h/4}, \ceil{h/2}, h$.
-For \texttt{PeMSD7} with $h = 9$, $l \in \{1, 2, 6, 12, 24\}$.
-For other datasets with $h = 24$, $l \in \{1, 2, 3, 5, 9\}$.
+We tested for five different lengths $l \in \{ 1, 2, \ceil{h/4}, \ceil{h/2}, h\}$.
+For \texttt{PeMSD7} with $h = 9$, $l \in \{1, 2, 3, 5, 9\}$.
+For other datasets with $h = 24$, $l \in \{1, 2, 6, 12, 24\}$.
 \input{../figures/points_trend_analysis_RMSE}
 \input{../figures/points_trend_analysis_MAE}
 The results are plotted in Figures~\ref{fig:points_trend_analysis_RMSE},~\ref{fig:points_trend_analysis_MAE}.
@@ -39,32 +40,33 @@ Since the WAPE plot is similar to the MAE plot, only the RMSE and WAPE plots are
 The findings are as follows.
 
 \begin{itemize}
-    \item For \texttt{Electricity} and \texttt{PeMSD7}, the performance always improves for all the metrics as $l$ increases.
+    \item For \texttt{Electricity} and \texttt{PeMSD7}, the performance in general improves for all the metrics as $l$ increases.
     \item For \texttt{Traffic}, the performance of \textsf{GBRT-NN-S} on RMSE improves as $l$ increases. In contrast, the performance of \textsf{GBRT-NN} on RMSE decays as $l$ increases. 
     But on MAE, both models improve as $l$ increases.
     \item For \texttt{Exchange-Rate}, both models achieve the best result when $l = 6$ for all the metrics.
 \end{itemize}
 
-\subsection{Comparison between the two scenarios}
+\subsection{Comparison between the two scenarios} % *!
+
 We compare the performance of the models on the two different scenarios (i.e., whether incorporating time-derived known input covariates $\bm{u}_i$).
 
 \begin{itemize}
-    \item For \texttt{Electricity} and \texttt{PeMSD7}, the models perform better when time-covariates are incorporated for both scenarios.
-    \item For \texttt{Traffic}, incorporating the covariates worsens the results for both scenarios.
+    \item For \texttt{Electricity} and \texttt{PeMSD7}, the models perform better when time-covariates are incorporated.
+    \item For \texttt{Traffic}, incorporating the covariates worsens the results.
     \item For \texttt{Exchange-Rate}, the performances of the models are similar between the two scenarios. This indicates that this dataset is less dependent on time-covariates $\bm{u}_i$ (i.e., date information).
 \end{itemize}
 
-\subsection{Effect of using z-normalized instead of raw values}
+\subsection{Effect of using z-normalized instead of raw values} % *!
 
 In this part, we study the effect of using z-normalized target values of the immediate subsequences.
 By default, we use the target values directly as the features.
 We have tested using the z-normalized representation of the target values instead of the raw values in all the previous experiments.
-In detail, for each dataset, there are two scenarios, and the two models have been tested five times for five different $l$. It results in 20 combinations in the experimental setting. 
+In detail, for each dataset, there are two scenarios, and the two models have been tested five times for five different $l$. It results in 20 combinations for each dataset in the experimental setting. 
 \input{../figures/original_vs_normalize}
 The percentage change of using the z-normalized representation instead is shown in Figure~\ref{fig:original_vs_normalize}
 It shows that using the raw values of the immediate subsequence is preferable.
 
-\subsection{Effect of using pairwise difference representation instead of raw values}
+\subsection{Effect of using pairwise difference representation instead of raw values} % *!
 
 In this part, we study the effect of using pairwise differences, which captures the trend, as the features.
 We have tested using the pairwise difference representation of the target values instead of the raw values in all the previous experiments.
@@ -74,35 +76,36 @@ Hence, the length of the pairwise difference representation is the same as the o
 Same as the previous part, it has been tested for 20 combinations for using the pairwise difference representation instead.
 \input{../figures/raw_vs_pairwise}
 The result is plotted on Figure~\ref{fig:raw_vs_pairwise}.
-It shows that using the raw values of the immediate subsequence is preferable.
+It shows that again using the raw values of the immediate subsequence is preferable.
 
-\subsection{Summary of the experiments on the two primary models}
+\subsection{Summary of the experiments on the two primary models} % *!
+
 Based on the above experiments, we present the following summary for the downstream analysis.
 \begin{enumerate}
     \item \textbf{Lag Selection}: We set $l = 6$ for \texttt{Exchange-Rate} and $l = h$ for other datasets for the downstream analysis. 
     \item \textbf{Variable Impact of time covariates}: The inclusion of time-covariates $\bm{u}_i$ does not always help. It depends on the dataset.
-    \texttt{Exchange-Rate} only has a mild improvement on our models. It indicates that this dataset is not strongly dependent on historically similar occurrences.
+    Our models only have a mild improvement on \texttt{Exchange-Rate}. It indicates that this dataset is not strongly dependent on historically similar occurrences.
     It can also be noted by the small best $l$ (i.e., $l = 6$ given $h = 24$). 
-    \item \textbf{Data Representation}: Using raw values for the immediate subsequences. We argue that it is because raw values preserve original information.
+    \item \textbf{Data Representation}: Using raw values for the immediate subsequences. We argue that it is because raw values preserve the original information.
     \item Across 12 evaluation combinations (four datasets with three metrics), \textsf{GBRT-NN-S} achieved superior or consistent performance:
     \begin{enumerate}
-        \item Excluding time-covariates: 11 out of 12 cases showed improvement (9) or consistency (2).
-        \item Including time-covariates: 100\% of cases showed improvement (10) or consistency (2).
+        \item Excluding time-covariates: 11 out of 12 cases showed improvement (10) or consistency (1).
+        \item Including time-covariates: 100\% of cases showed improvement (11) or consistency (1).
     \end{enumerate}
-    \item Including similarity as a covariate always improves the results.
+    \item Including similarity as a covariate usually improves the results.
     In particular, \textsf{GBRT-NN-S} performs much better than \textsf{GBRT-NN} in \texttt{Traffic}.
     The evaluation metrics are (RMSE, WAPE, MAE).
-    Without known input-time covariates, the improvement is from (0.016, 0.079, 0.004) to (\textbf{0.008}, \textbf{0.039}, \textbf{0.002}).
-    With known input-time covariates, the improvement is from (0.018, 0.106, 0.006) to (\textbf{0.009}, \textbf{0.062}, \textbf{0.003}).
+    Without known input-time covariates, the improvement is from (0.016, 0.080, 0.004) to (\textbf{0.008}, \textbf{0.037}, \textbf{0.002}).
+    With known input-time covariates, the improvement is from (0.018, 0.108, 0.006) to (\textbf{0.010}, \textbf{0.064}, \textbf{0.003}).
 \end{enumerate}
 
-\subsection{Incorporating the target values of the nearest neighbor}
+\subsection{Incorporating the target values of the nearest neighbor} % *!
 
 % Discuss more complex methods NN+ and NN++
 We have further incorporated the target values (either only the last point (i.e., \textsf{GBRT-NN\textsuperscript{+}}) or all of them (i.e., \textsf{GBRT-NN\textsuperscript{++}})) of the nearest neighbor. 
 The results are in Tables~\ref{tab:results_without_covariates}, \ref{tab:results_with_covariates}.
 By incorporating these features, the models improve on \texttt{Traffic} and \texttt{PeMSD7}.
-\textsf{GBRT-NN\textsuperscript{++}-S} performs the best for both the scenarios.
+\textsf{GBRT-NN\textsuperscript{++}-S} performs the best for both the scenarios for these two datasets except on RMSE on \texttt{Traffic}.
 
 For \texttt{Electricity}, incorporating the target values worsens the results, compared to the simpler models. But it is still better than the base line model \textsf{GBRT}, except for the case without known input-time covariates on RMSE.
 It indicates that, in the absence of time covariates, they (\textsf{GBRT-NN\textsuperscript{+}-S}, \textsf{GBRT-NN\textsuperscript{++}-S}) make incorrect predictions for some outliers.
@@ -111,15 +114,15 @@ Same as before, \texttt{Exchange-Rate} is insensitive to information of historic
 
 % In general, these models improve average prediction performance but cannot handle certain outlier cases.
 
-\subsection{Incorporating the time-covariates of the last point of the nearest neighbor}
-\input{../tables/results_with_covariates_nn_covariates}
+\subsection{Incorporating the time-covariates of the last point of the nearest neighbor} % *!
 
+\input{../tables/results_with_covariates_nn_covariates}
 We also incorporate the covariates of the last point in the nearest-neighbor. The results are shown in Table~\ref{tab:results_with_covariates_nn_covariates}.
 \texttt{PeMSD7} achieves better performance in these models and reaches the best for using \textsf{GBRT-NNC\textsuperscript{++}-S}.
 It worsens performance on \texttt{Electricity} and \texttt{Traffic}.
 It does not improve performance on \texttt{Exchange-rate}.
 
-\subsection{Extend to the case of k-nearest neighbor}
+\subsection{Extend to the case of k-nearest neighbors} % *!
 
 \input{../tables/results_k_without_covariates}
 \input{../tables/results_k_with_covariates}
@@ -129,16 +132,50 @@ We have tested for $k \in 2,3$ instead of $k=1$, which has already demonstrated 
 The results are shown in Tables~\ref{tab:results_k_without_covariates}, \ref{tab:results_k_with_covariates}, \ref{tab:results_k_with_covariates_nn_covariates}.
 % \texttt{PeMSD7} obtain the overall best performance in \textsf{GBRT-3NNC\textsuperscript{++}-S}.
 
-\subsection{Summary of the experiment}
+\subsection{Summary of the experiments} % *!
 
 \input{../tables/best_models}
 Table~\ref{tab:best_models} summarizes the top-performing models for each dataset. 
-To note, for the \texttt{Electricity} dataset, no single model consistently outperforms the others across all three metrics. 
+To note, for the \texttt{Electricity} and \texttt{Traffic} datasets, no single model consistently outperforms the others across all three metrics. 
 In this case, we report all models that achieve the best performance in at least one metric. When ties occur, we prioritize simple models (i.e., those with fewer covariates).
 
-% \noindent\rule{\linewidth}{0.4pt}
-%%%
-%%%
-%%%
+\subsection{Impact of the Exclusion Zone and the Search Space Size} % *!
 
+\input{../figures/exclusion_zone_analysis_RMSE}
+\input{../figures/exclusion_zone_analysis_MAE}
 
+Recall that the exclusion zone is defined as $\ceil{m/d}$, where the default value of the denominator $d$ is $4$.
+By manipulating $d$, we can adjust the exclusion zone to further limit the historical search space available for identifying the left nearest neighbor.
+To evaluate the sensitivity of the model to the size of this search space, we tested for ten different values of $d \in \{ 4, 1, 0.1, 0.01, 0.005, 0.003, 0.0025, 0.002, 0.001, 0.0005 \}$.
+These values corresponds to $1/4$, $1$, $10$, $100$, $200$, $333$, $400$, $500$, $1000$, and  $2000$ times the subsequence length $m$ for the exclusion zone, respectively.
+The results are shown in Figures~\ref{fig:exclusion_zone_analysis_RMSE}, \ref{fig:exclusion_zone_analysis_MAE}.
+
+As shown in the figures, we observed a general pattern. 
+When the denominator $d$ is exceptionally small, the resulting exclusion zone becomes overwhelmingly large. 
+This drastically shrinks the pool of available historical candidates, forcing the models to select less similar left nearest neighbors. 
+As a result, the predictive quality of the derived covariates of the neighbors decays and the error metrics increase.
+
+Interestingly, we also observed that for certain datasets (\texttt{Electricity} and \texttt{Traffic}), moderately limiting the search space actually improves forecasting performance of some models. 
+This implies that different datasets possess unique optimal historical ranges. 
+By expanding the exclusion zone, the model is forced to ignore recent temporal nearest neighbor and instead identify more robust, long-term repeating nearest neighbor, which serve as better historical templates (i.e., lookahead) for the forecaster.
+
+\subsection{Decoupling Subsequence length from Lookback Window length}
+
+\input{../figures/motif_length_trend_analysis_RMSE}
+\input{../figures/motif_length_trend_analysis_MAE}
+
+In the above configuration of our proposed models, the subsequence length $m$ used by the Matrix Profile to find historical nearest neighbors is set equal to the length of the lookback window $w$ used by the GBRT forecaster. 
+However, to evaluate the sensitivity of $m$, we investigated the effect of decoupling these two parameters by testing for nine different values of $m \in \{ \floor{w/2}, w, 2w, 4w, 8w, 16w, 32w, 64w, 128w \}$.
+The results are shown in Figures~\ref{fig:motif_length_trend_analysis_RMSE}, \ref{fig:motif_length_trend_analysis_MAE}.
+
+For datasets other than \texttt{Exchange-Rate}, when we increase $m$ to certain degree, the performance of the forecaster has been improved.
+The improvement is obvious in \texttt{PeMSD7} dataset.
+%
+The improvement highlights that $w$ and $m$ play different roles in our models. 
+The length of the lookback window $w$ dictates the short-term tactical context required by the regression trees to map predictors to responses, as shown in Figure~\ref{fig:flattening}. 
+%
+In contrast, the subsequence length $m$ defines the length of the ``memory'' required to identify a valid historical occurrence (i.e., left nearest neighbor). 
+When $m$ is small, the Matrix Profile may identify a historical neighbor that matches the immediate short-term trend but belongs to a completely different long-term trend.
+%
+By using a larger $m$, the models require candidate historical occurrence to match a longer, broader dynamic sequence. 
+This stricter matching requirement filters out spurious short-term matches, ensuring that the derived covariates are drawn from a genuinely comparable historical occurrence, thereby generating higher-quality covariates for the forecaster and improving the forecaster.

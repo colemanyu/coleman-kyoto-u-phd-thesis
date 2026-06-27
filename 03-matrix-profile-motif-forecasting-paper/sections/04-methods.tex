@@ -169,14 +169,14 @@ We derive $\bm{x}_i$ using the information of the past nearest neighbor.
 
 Recall that for each $m$-subsequence $T_{i, m}$ in a time series $T$, where $m$ is user-given, we can identify its left nearest neighbor $NN^L_i$ via the left matrix profile index $P^L$ and retrieve the similarity between $T_{i, m}$ and $NN^L_i$ via the left matrix profile $I^L$.
 
-For each target value $y_i$, we construct a $w$-subsequence $Q_i$ consisting of $y_{i-w+1:i}$. By using $I^L$ with $m = w$, we can efficiently identify $NN^L_i$ for each of these $w$-subsequences.
-%
+For each target value $y_i$, we construct a $m$-subsequence $Q_i$ consisting of $y_{i-m+1:i}$. By using $I^L$, we can efficiently identify $NN^L_i$ for each of these $m$-subsequences.
+
 $NN^L_i$ can reveal the historical reference of $Q_i$.
 History repeats itself.
 For example, since $Q_i$ is similar to $NN^L_i$, the immediate subsequence of $Q_i$ should be similar to that of $NN^L$, which tells the future trajectory after $y_i$. The immediate subsequence can be regarded as a guess or template for the future trajectory.
-%
+
 The similarity obtained via $P^L$ can be regarded as the confidence of guessing such a future trajectory based on the immediate subsequence of $Q_i$.
-%
+
 A time series with different raw values can have the same z-normalized representation.
 Hence, a set of historical subsequences with the exact same z-normalized representation could correspond to different raw values.
 By extracting the raw values of the nearest neighbor, we restore this lost magnitude information and allow the GBRT to learn from it.
@@ -196,6 +196,16 @@ Note that the indexing systems differ between the matrix profile and the lookbac
 In the matrix profile, an $m$-subsequence is indexed by its starting position, as shown in Figure~\ref{fig:visualize-matrix-profile}. The gray boxes are indexed by their first points (the circles in the figures).
 The lookback windows are indexed by their last points (the triangles in the figures).
 Hence, for $Q_i$, which is a $m$-subsequences with $y_i$ as its last point, we map $i$ to the conventional starting index $k = i - m + 1$ to retrieve the correct nearest neighbor location and similarity score as in line 2 in Algorithm~\ref{alg:feature_eng}.
+
+To prevent data leakage when extracting the immediate subsequence with length $l$, we enforce a boundary in line 6.
+For the retrieved left nearest neighbor $NN^L_i$ which ends at index $j$, we restrict the extraction of its immediate subsequence to ensure that no future target values (i.e, those beyond index $i$) are accessed by truncating $NN_{\text{imm}}$ at $\min(j+l, i)$ in line 7.
+Because GBRT requires the predictor vector to have a fixed size, $NN_{\text{imm}}$ is padded with missing values (NaN) if it is shorter than $l$.
+
+To note, because of the exclusion zone, the initial subsequences do not have left nearest neighbor as shown in the second row of Figure~\ref{fig:visualize-matrix-profile}.
+Hence, their derived covariates would only contain missing values.
+%
+% https://apxml.com/courses/mastering-gradient-boosting-algorithms/chapter-4-xgboost-extreme-gradient-boosting/xgboost-sparsity-aware
+Fortunately, XGBoost inherently supports missing values via its sparsity-aware split finding algorithm.
 
 \input{../tables/model_variants}
 \textsf{GBRT} utilizes the baseline features, including the target values and the known input time-covariates~\cite{elsayed2021we}.

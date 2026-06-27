@@ -58,8 +58,8 @@ To retrieve a non-trivial result of the Matrix profile, we need to define the no
 For a given $m$-subsequence $Q$, the distance profile is zero at the location of $Q$ (because $Q$ must be a nearest neighbor of $Q$) and close to zero just before and after it.
 But the corresponding $m$-subsequences are trivial matches of $Q$.
 We need to define a zone, namely an exclusion zone, for this region.
-It is defined as $m/2$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $m/4$ instead~\cite{law2019stumpy}.
-We use $m/4$ as the exclusion zone in this study.
+It is defined as $\ceil{m/2}$ before and after the location of $Q$~\cite{yeh2016matrix}. The community implementation uses $\ceil{m/4}$ instead~\cite{law2019stumpy}.
+We use $\ceil{m/4}$ as the exclusion zone in this study.
 
 It may seem computationally expensive to perform Matrix Profile annotation at first glance.
 %

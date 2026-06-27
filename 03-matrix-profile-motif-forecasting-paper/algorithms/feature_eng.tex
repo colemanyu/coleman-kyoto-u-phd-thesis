@@ -9,7 +9,11 @@
 \State $idx_{\text{NN}} \leftarrow I^L[k]$ \Comment{Start index of $NN^L_i$}
 \State $j \leftarrow idx_{\text{NN}} + m - 1$ \Comment{Index of the last point of $NN^L_i$}
 \State $s \leftarrow P^L[k]$ \Comment{Similarity}
-\State $NN_{\text{imm}} \leftarrow y[j+1 : j+l]$ \Comment{Immediate subsequence following $NN_i^L$}
+\State $end\_idx \leftarrow \min(j+l, i)$ \Comment{To prevent data leakage}
+\State $NN_{\text{imm}} \leftarrow y[j+1 : end\_idx]$ \Comment{Immediate subsequence following $NN_i^L$}
+\If{$|NN_{\text{imm}}| < l$}
+    \State $NN_{\text{imm}} \leftarrow$ Pad $NN_{\text{imm}}$ with NaN to length $l$ 
+\EndIf
 \State $NN_{\text{last}} \leftarrow y[j]$ \Comment{Last target value of $NN^L_i$}
 \State $NN_{\text{tar}} \leftarrow y[idx_{\text{NN}} : j]$ \Comment{All the target values of $NN^L_i$}
 \State $NN_{\text{cov}} \leftarrow u[j]$ \Comment{Covariates at the last point of $NN^L_i$}
