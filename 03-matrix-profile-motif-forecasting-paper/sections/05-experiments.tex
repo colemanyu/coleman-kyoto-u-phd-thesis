@@ -144,6 +144,11 @@ In this case, we report all models that achieve the best performance in at least
 \input{../figures/exclusion_zone_analysis_RMSE}
 \input{../figures/exclusion_zone_analysis_MAE}
 
+In our standard configuration, given a time series of length $n$, both the GBRT and the left nearest neighbor search through Matrix Profile utilize the entire available time series. 
+%
+In this part, we evaluate the model's sensitivity by decoupling these two scopes. 
+While continuing to apply the GBRT on the whole time series of length $n$, we explicitly limit the historical search space available for identifying the left nearest neighbor by manipulating the exclusion zone. 
+%
 Recall that the exclusion zone is defined as $\ceil{m/d}$, where the default value of the denominator $d$ is $4$.
 By manipulating $d$, we can adjust the exclusion zone to further limit the historical search space available for identifying the left nearest neighbor.
 To evaluate the sensitivity of the model to the size of this search space, we tested for ten different values of $d \in \{ 4, 1, 0.1, 0.01, 0.005, 0.003, 0.0025, 0.002, 0.001, 0.0005 \}$.
